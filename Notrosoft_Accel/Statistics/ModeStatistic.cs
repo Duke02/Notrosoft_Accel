@@ -19,6 +19,13 @@ namespace Notrosoft_Accel.Statistics
         {
             // Flatten the 2d list of lists into a 1d list.
             var flattenedArray = Utilities.Flatten(values);
+
+            // Throw an exception if there are no input values.
+            if (flattenedArray.Count() <= 0)
+            {
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+            }
+
             // Create a dictionary that holds the value of the input as the key
             // and the number of times the key occurs in the input.
             // Then order it based on the counts.

@@ -20,6 +20,12 @@ namespace Notrosoft_Accel.Statistics
             // Flattens the 2D input into a 1d enumerable.
             var flattenedInput = Utilities.Flatten(values);
 
+            // Throw an exception if there's nothing in the inputted container.
+            if (flattenedInput.Count() <= 0)
+            {
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+            }
+
             // Sorts the input in ascending order then converts it into an array.
             var sortedInput = flattenedInput.OrderBy(val => val).ToArray();
 
