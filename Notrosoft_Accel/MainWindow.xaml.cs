@@ -23,6 +23,7 @@ namespace Notrosoft_Accel
         public MainWindow()
         {
             InitializeComponent();
+            Console.WriteLine("Hello World!");
         }
     }
 }
