@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Notrosoft_Accel.Statistics
 {
-    class ModeStatistic : IStatistic
+    public class ModeStatistic : IStatistic
     {
         public double Operate(IEnumerable<IEnumerable<double>> values)
         {
