@@ -26,6 +26,11 @@ namespace Notrosoft_Accel.Statistics
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
             }
 
+            // This is based off of the Counting Sort algorithm,
+            // https://en.wikipedia.org/wiki/Counting_sort
+            // but instead of having a secondary array, we just calculate 
+            // the counts of the input values in a dictionary and 
+            // get the max value with the greatest count.
             var distinctNums = flattenedArray.Distinct();
             var countDict = distinctNums.ToDictionary(n => n, n => 0);
 
