@@ -162,5 +162,22 @@ namespace Notrosoft_Accel.Tests
 
             Assert.AreEqual(expected, actual, _tolerance);
         }
+
+        [TestMethod]
+        public void Statistics_Median_LotsOfNumbers()
+        {
+            var medianStatistic = new MedianStatistic();
+            var data = new List<List<double>>();
+            for (int i = 0; i < 25; i++)
+            {
+                data.Add(GetLotsOfNumbers(i));
+            }
+            // 1X, 1X, 2X, 2X, 2X, 2, 3, 3X, 4X, 4X, 5X, 5X
+
+            var expected = 163;
+            var actual = medianStatistic.Operate(data);
+
+            Assert.AreEqual(expected, actual, _tolerance);
+        }
     }
 }
