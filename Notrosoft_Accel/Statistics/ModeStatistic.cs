@@ -26,14 +26,20 @@ namespace Notrosoft_Accel.Statistics
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
             }
 
-            // Create a dictionary that holds the value of the input as the key
-            // and the number of times the key occurs in the input.
-            // Then order it based on the counts.
-            var dictCount = flattenedArray.Distinct()
-                .ToDictionary(val => val, val => flattenedArray.Count(v => v == val))
-                .OrderByDescending(kv => kv.Value);
-            // Return the element with the largest value.
-            return dictCount.First().Key;
+            // This is based off of the Counting Sort algorithm,
+            // https://en.wikipedia.org/wiki/Counting_sort
+            // but instead of having a secondary array, we just calculate 
+            // the counts of the input values in a dictionary and 
+            // get the max value with the greatest count.
+            var distinctNums = flattenedArray.Distinct();
+            var countDict = distinctNums.ToDictionary(n => n, n => 0);
+
+            foreach (var num in flattenedArray)
+            {
+                countDict[num]++;
+            }
+
+            return countDict.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
         }
     }
 }
