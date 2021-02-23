@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notrosoft_Accel.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +16,11 @@ namespace Notrosoft_Accel.Statistics
         /// </summary>
         /// <param name="values">The 2 dimensional data to calculate the median from.</param>
         /// <returns>The median of the data.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public object Operate<T>(GenericData<T> values)
         {
+            // TODO: See if you can have T extend both double and int
             // Flattens the 2D input into a 1d enumerable.
-            var flattenedInput = Utilities.Flatten(values);
+            var flattenedInput = values.Flatten();
 
             // Throw an exception if there's nothing in the inputted container.
             if (flattenedInput.Count() <= 0)

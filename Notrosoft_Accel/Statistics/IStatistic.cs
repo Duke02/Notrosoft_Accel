@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notrosoft_Accel.Data;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,6 +15,6 @@ namespace Notrosoft_Accel.Statistics
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
         /// <returns>The statistic for the child class.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values);
+        public object Operate<T>(GenericData<T> values);
     }
 }

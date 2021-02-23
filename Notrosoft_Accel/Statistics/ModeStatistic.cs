@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notrosoft_Accel.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +16,10 @@ namespace Notrosoft_Accel.Statistics
         /// </summary>
         /// <param name="values">A 2D data collection of numbers.</param>
         /// <returns>The most common number of the inputted data.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public object Operate<T>(GenericData<T> values)
         {
             // Flatten the 2d list of lists into a 1d list.
-            var flattenedArray = Utilities.Flatten(values);
+            var flattenedArray = values.Flatten();
 
             // Throw an exception if there are no input values.
             if (flattenedArray.Count() <= 0)

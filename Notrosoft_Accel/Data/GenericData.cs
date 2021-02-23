@@ -69,5 +69,10 @@ namespace Notrosoft_Accel.Data
         {
             get => GetData(row, col);
         }
+
+        public IEnumerable<T> Flatten()
+        {
+            return Data.SelectMany(vals => vals);
+        }
     }
 }
