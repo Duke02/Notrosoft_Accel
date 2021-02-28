@@ -20,5 +20,18 @@ namespace Notrosoft_Accel
         {
             return values.SelectMany(vals => vals);
         }
+
+        public static double GetVariance(IEnumerable<double> values)
+        {
+            // Return the average/mean of the inputted values.
+            var average = flattenedValues.Average();
+
+            var squaredDifferences = flattenedValues
+                .Select(val => val - average)           // Calculate the difference from the average.
+                .Select(diff => diff * diff);           // Calculate the squared difference
+
+            // Return the average squared difference between the values, or the variance.
+            return squaredDifferences.Average();
+        }
     }
 }
