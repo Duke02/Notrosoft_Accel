@@ -15,5 +15,10 @@ namespace Notrosoft_Accel.Statistics
         /// <param name="values">The input values to calculate the statistic from.</param>
         /// <returns>The statistic for the child class.</returns>
         public double Operate(IEnumerable<IEnumerable<double>> values);
+
+        public Dictionary<string, double> GetAdditionalParameters()
+        {
+            return new Dictionary<string, double>();
+        }
     }
 }

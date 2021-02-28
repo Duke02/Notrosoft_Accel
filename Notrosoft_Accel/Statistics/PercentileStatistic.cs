@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Linq;
+
+namespace Notrosoft_Accel.Statistics
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PercentileStatistic : IStatistic
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="values">The input values to calculate the statistic from.</param>
+        /// <returns></returns>
+        public double Operate(IEnumerable<IEnumerable<double>> values)
+        {
+            // Flatten the 2D inputted container into a 1D container.
+            var flattenedValues = Utilities.Flatten(values);
+
+            // Throw an exception if there's nothing in the inputted container.
+            if(flattenedValues.Count() <= 0)
+            {
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+            }
+            
+            // Sort the values from least to greatest.
+            var sortedValues = flattenedValues.OrderBy(val => val);
+
+            var neededParams = GetAdditionalParameters();
+            var desiredPercentile = neededParams["percentile"];
+
+            double indexOfPercentile = desiredPercentile * sortedValues.Count();
+
+            var isCleanInt = Math.Abs(indexOfPercentile - (int) indexOfPercentile) < 0.001;
+            if (isCleanInt)
+            {
+                return sortedValues[(int) indexOfPercentile];
+            }
+            else
+            {
+                // Need to figure out the closest indexes and the weight I have to do between them.
+                int lowerIndex = (int) indexOfPercentile;
+                int upperIndex = (int) (indexOfPercentile + 1);
+
+                // The greater the weight, the closer the value
+                // should be towards the element at the upper index.
+                // Example: IndexOfPercentile is 2.6? weight is .6 
+                // and the upperIndex should be weighted more heavily.
+                var weight = indexOfPercentile - (int) indexOfPercentile;
+                return sortedValues[upperIndex] * weight + sortedValues[lowerIndex] * (1 - weight);
+            }
+            
+            
+        }
+
+        public Dictionary<string, double> GetAdditionalParameters()
+        {
+            // TODO: Actually have this call some front end code to get stuff working.
+            return new Dictionary<string, double>()
+            {
+                {"percentile". .1}
+            };
+        }
+    }
+}
