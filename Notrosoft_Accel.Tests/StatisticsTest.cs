@@ -13,7 +13,7 @@ namespace Notrosoft_Accel.Tests
 
         private List<double> GetLotsOfNumbers(int currIndex)
         {
-            return Enumerable.Range(1, (currIndex + 1) * (currIndex + 1)).Select(x => (double)x).ToList();
+            return Enumerable.Range(1, (currIndex + 1) * (currIndex + 1)).Select(x => (double) x).ToList();
         }
 
         [TestMethod]
@@ -176,6 +176,115 @@ namespace Notrosoft_Accel.Tests
 
             var expected = 163;
             var actual = medianStatistic.Operate(data);
+
+            Assert.AreEqual(expected, actual, _tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_Variance_LotsOfNumbers()
+        {
+            var medianStatistic = new VarianceStatistic();
+            var data = new List<List<double>>();
+            for (var i = 0; i < 25; i++)
+            {
+                data.Add(GetLotsOfNumbers(i));
+            }
+
+            var expected = 22278.24;
+            var actual = medianStatistic.Operate(data);
+
+            Assert.AreEqual(expected, actual, _tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_Variance()
+        {
+            var varianceStatistic = new VarianceStatistic();
+            var data = new List<List<double>>();
+
+            for (var i = 0; i < 5; i++)
+            {
+                data.Add(new List<double>
+                {
+                    0, 1, 2
+                });
+            }
+
+            Console.WriteLine(data.SelectMany(val => val).Count());
+
+            var expected = 0.666666667;
+            var actual = varianceStatistic.Operate(data);
+
+            Assert.AreEqual(expected, actual, _tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_StandardDeviation()
+        {
+            var stddevStatistic = new StandardDeviationStatistic();
+            var data = new List<List<double>>();
+
+            for (var i = 0; i < 5; i++)
+            {
+                data.Add(new List<double>
+                {
+                    0, 1, 2
+                });
+            }
+
+            var expected = 0.816496581;
+            var actual = stddevStatistic.Operate(data);
+
+            Assert.AreEqual(expected, actual, _tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_StandardDeviation_LotsOfNumbers()
+        {
+            var stddevStatistic = new StandardDeviationStatistic();
+            var data = new List<List<double>>();
+            for (var i = 0; i < 25; i++)
+            {
+                data.Add(GetLotsOfNumbers(i));
+            }
+
+            var expected = 149.2589696;
+            var actual = stddevStatistic.Operate(data);
+
+            Assert.AreEqual(expected, actual, _tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_CoeffVariation()
+        {
+            var cvStatistic = new CoefficientOfVarianceStatistic();
+            var data = new List<List<double>>();
+            for (var i = 0; i < 5; i++)
+            {
+                data.Add(new List<double>
+                {
+                    0, 1, 2
+                });
+            }
+
+            var expected = 0.816496581;
+            var actual = cvStatistic.Operate(data);
+
+            Assert.AreEqual(expected, actual, _tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_CoeffVariation_LotsOfNumbers()
+        {
+            var cvStatistic = new CoefficientOfVarianceStatistic();
+            var data = new List<List<double>>();
+            for (var i = 0; i < 25; i++)
+            {
+                data.Add(GetLotsOfNumbers(i));
+            }
+
+            var expected = 0.763863713;
+            var actual = cvStatistic.Operate(data);
 
             Assert.AreEqual(expected, actual, _tolerance);
         }
