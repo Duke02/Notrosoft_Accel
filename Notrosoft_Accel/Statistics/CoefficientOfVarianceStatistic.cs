@@ -5,13 +5,15 @@ using System.Linq;
 namespace Notrosoft_Accel.Statistics
 {
     /// <summary>
+    ///     Calculates the coefficient of variance statistic.
     /// </summary>
     public class CoefficientOfVarianceStatistic : IStatistic
     {
         /// <summary>
+        ///     Calculates the coefficient of variance statistic for the provided data.
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
-        /// <returns></returns>
+        /// <returns>The CV of the data.</returns>
         public double Operate(IEnumerable<IEnumerable<double>> values)
         {
             // Flatten the 2D inputted container into a 1D container.

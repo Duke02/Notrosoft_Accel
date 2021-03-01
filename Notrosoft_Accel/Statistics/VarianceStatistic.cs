@@ -10,7 +10,7 @@ namespace Notrosoft_Accel.Statistics
     public class VarianceStatistic : IStatistic
     {
         /// <summary>
-        ///     Calculates the variance for the provided values.
+        ///     Calculates the population variance for the provided values.
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
         /// <returns>The variation for the inputted values.</returns>

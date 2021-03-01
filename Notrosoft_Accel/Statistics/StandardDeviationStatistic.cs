@@ -5,15 +5,15 @@ using System.Linq;
 namespace Notrosoft_Accel.Statistics
 {
     /// <summary>
-    ///     The base interface for statistics that all statistics are to inherit from.
+    ///     Calculates the standard deviation statistic.
     /// </summary>
     public class StandardDeviationStatistic : IStatistic
     {
         /// <summary>
-        ///     Base method that all statistics are to override to use for their statistics.
+        ///     Calculates the population standard deviation of the inputted data.
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
-        /// <returns>The statistic for the child class.</returns>
+        /// <returns>The standard deviation of the data.</returns>
         public double Operate(IEnumerable<IEnumerable<double>> values)
         {
             // Flatten the 2D inputted container into a 1D container.
