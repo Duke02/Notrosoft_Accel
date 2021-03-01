@@ -24,9 +24,9 @@ namespace Notrosoft_Accel
         public static double GetVariance(IEnumerable<double> values)
         {
             // Return the average/mean of the inputted values.
-            var average = flattenedValues.Average();
+            var average = values.Average();
 
-            var squaredDifferences = flattenedValues
+            var squaredDifferences = values
                 .Select(val => val - average)           // Calculate the difference from the average.
                 .Select(diff => diff * diff);           // Calculate the squared difference
 
@@ -34,16 +34,18 @@ namespace Notrosoft_Accel
             return squaredDifferences.Average();
         }
 
-        public double GetCovariance(IEnumerable<double> xValues, IEnumerable<double> yValues)
+        public static double GetCovariance(IEnumerable<double> xValues, IEnumerable<double> yValues)
         {
             // Covariance = SumOf(x_i * y_i) - 1 / n * SumOf(x_i) * SumOf(y_i)
             // x_i = ith element of x
             // y_i = ith element of y
             // n = count of elements in x (must be same as count of elements in y)
-            var xyProducts = xValues.Zip(yValues).Select(xy => xy.Item1 * xy.Item2);
-            var sumOfX = xValues.Sum();
-            var sumOfY = yValues.Sum();
-            double n = xValues.Count();
+            var yValuesArray = yValues.ToArray();
+            var xValuesArray = xValues.ToArray();
+            var xyProducts = xValuesArray.Zip(yValuesArray).Select(xy => xy.Item1 * xy.Item2);
+            var sumOfX = xValuesArray.Sum();
+            var sumOfY = yValuesArray.Sum();
+            double n = xValuesArray.Length;
 
             return xyProducts.Sum() - 1 / n * sumOfX * sumOfY;
         }

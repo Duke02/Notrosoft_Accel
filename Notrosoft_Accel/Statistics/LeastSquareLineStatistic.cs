@@ -8,7 +8,7 @@ namespace Notrosoft_Accel.Statistics
     /// <summary>
     /// 
     /// </summary>
-    public class PercentileStatistic : IStatistic
+    public class LeastSquareLineStatistic : IStatistic
     {
         /// <summary>
         /// 
@@ -17,26 +17,28 @@ namespace Notrosoft_Accel.Statistics
         /// <returns></returns>
         public double Operate(IEnumerable<IEnumerable<double>> values)
         {
-            if (values.Count() != 2)
+            var valuesArray = values.ToArray();
+            
+            if (valuesArray.Count() != 2)
             {
                 throw new InvalidOperationException("Inputted values need to be a 2 dimensional collection of data!");
             }
             
             // TODO: There's probably an error here because of the indexing.
             // Just make it an array probably.
-            var xValues = values[0];
-            var yValues = values[1];
+            var xValues = valuesArray[0].ToArray();
+            var yValues = valuesArray[1].ToArray();
 
             // If the counts are the same between x and y values
             // we need to error out.
-            if (xValues.Count() != yValues.Count())
+            if (xValues.Length != yValues.Length)
             {
                 throw new InvalidOperationException(
                     "X Values need to have the same amount of data points as the y values.");
             }
 
             // If we don't have any values in any of the data, exit out.
-            if (xValues.Count() == 0)
+            if (!xValues.Any())
             {
                 throw new InvalidOperationException("Inputted data need to have more than 0 data points!");
             }

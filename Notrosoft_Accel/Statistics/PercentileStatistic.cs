@@ -18,21 +18,21 @@ namespace Notrosoft_Accel.Statistics
         public double Operate(IEnumerable<IEnumerable<double>> values)
         {
             // Flatten the 2D inputted container into a 1D container.
-            var flattenedValues = Utilities.Flatten(values);
+            var flattenedValues = Utilities.Flatten(values).ToArray();
 
             // Throw an exception if there's nothing in the inputted container.
-            if(flattenedValues.Count() <= 0)
+            if(!flattenedValues.Any())
             {
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
             }
             
             // Sort the values from least to greatest.
-            var sortedValues = flattenedValues.OrderBy(val => val);
+            var sortedValues = flattenedValues.OrderBy(val => val).ToArray();
 
             var neededParams = GetAdditionalParameters();
             var desiredPercentile = neededParams["percentile"];
 
-            double indexOfPercentile = desiredPercentile * sortedValues.Count();
+            double indexOfPercentile = desiredPercentile * sortedValues.Length;
 
             var isCleanInt = Math.Abs(indexOfPercentile - (int) indexOfPercentile) < 0.001;
             if (isCleanInt)
@@ -42,8 +42,8 @@ namespace Notrosoft_Accel.Statistics
             else
             {
                 // Need to figure out the closest indexes and the weight I have to do between them.
-                int lowerIndex = (int) indexOfPercentile;
-                int upperIndex = (int) (indexOfPercentile + 1);
+                var lowerIndex = (int) indexOfPercentile;
+                var upperIndex = (int) (indexOfPercentile + 1);
 
                 // The greater the weight, the closer the value
                 // should be towards the element at the upper index.
@@ -61,7 +61,7 @@ namespace Notrosoft_Accel.Statistics
             // TODO: Actually have this call some front end code to get stuff working.
             return new Dictionary<string, double>()
             {
-                {"percentile". .1}
+                {"percentile", .1}
             };
         }
     }
