@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Notrosoft_Accel.Statistics;
+using Notrosoft_Accel.Backend.Statistics;
 
 namespace Notrosoft_Accel.Tests
 {

@@ -1,19 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Notrosoft_Accel.Infrastructure;
 
-namespace Notrosoft_Accel.Statistics
+namespace Notrosoft_Accel.Backend.Statistics
 {
     /// <summary>
-    ///     Calculates the standard deviation statistic.
+    ///     Essentially a wrapper class for <see cref="Utilities.GetVariance" />
     /// </summary>
-    public class StandardDeviationStatistic : IStatistic
+    public class VarianceStatistic : IStatistic
     {
         /// <summary>
-        ///     Calculates the population standard deviation of the inputted data.
+        ///     Calculates the population variance for the provided values.
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
-        /// <returns>The standard deviation of the data.</returns>
+        /// <returns>The variation for the inputted values.</returns>
         public double Operate(IEnumerable<IEnumerable<double>> values)
         {
             // Flatten the 2D inputted container into a 1D container.
@@ -23,8 +24,7 @@ namespace Notrosoft_Accel.Statistics
             if (!flattenedValues.Any())
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
-            // The standard deviation is just the square root of the variance. 
-            return Math.Sqrt(Utilities.GetVariance(flattenedValues));
+            return Utilities.GetVariance(flattenedValues);
         }
     }
 }

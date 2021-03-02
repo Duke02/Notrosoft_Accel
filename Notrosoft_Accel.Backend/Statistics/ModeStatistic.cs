@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Notrosoft_Accel.Infrastructure;
 
-namespace Notrosoft_Accel.Statistics
+namespace Notrosoft_Accel.Backend.Statistics
 {
     /// <summary>
     ///     Statistic class that calculates the mode of inputted data.

@@ -1,19 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Notrosoft_Accel.Infrastructure;
 
-namespace Notrosoft_Accel.Statistics
+namespace Notrosoft_Accel.Backend.Statistics
 {
     /// <summary>
-    ///     Calculates the mathematical mean.
+    ///     Calculates the standard deviation statistic.
     /// </summary>
-    public class MeanStatistic : IStatistic
+    public class StandardDeviationStatistic : IStatistic
     {
         /// <summary>
-        ///     Calculates the mathematical mean (commonly called Average) from the provided data.
+        ///     Calculates the population standard deviation of the inputted data.
         /// </summary>
-        /// <param name="values">The 2D data to use in the calculations.</param>
-        /// <returns>The mathematical mean of the inputted data.</returns>
+        /// <param name="values">The input values to calculate the statistic from.</param>
+        /// <returns>The standard deviation of the data.</returns>
         public double Operate(IEnumerable<IEnumerable<double>> values)
         {
             // Flatten the 2D inputted container into a 1D container.
@@ -23,8 +24,8 @@ namespace Notrosoft_Accel.Statistics
             if (!flattenedValues.Any())
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
-            // Return the average/mean of the inputted values.
-            return flattenedValues.Average();
+            // The standard deviation is just the square root of the variance. 
+            return Math.Sqrt(Utilities.GetVariance(flattenedValues));
         }
     }
 }

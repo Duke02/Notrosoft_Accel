@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Notrosoft_Accel
+namespace Notrosoft_Accel.Infrastructure
 {
     /// <summary>
     ///     General utility functions to use throughout the project.

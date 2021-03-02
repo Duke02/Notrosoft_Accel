@@ -1,19 +1,20 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Notrosoft_Accel.Infrastructure;
 
-namespace Notrosoft_Accel.Statistics
+namespace Notrosoft_Accel.Backend.Statistics
 {
     /// <summary>
-    ///     Essentially a wrapper class for <see cref="Utilities.GetVariance" />
+    ///     Calculates the mathematical mean.
     /// </summary>
-    public class VarianceStatistic : IStatistic
+    public class MeanStatistic : IStatistic
     {
         /// <summary>
-        ///     Calculates the population variance for the provided values.
+        ///     Calculates the mathematical mean (commonly called Average) from the provided data.
         /// </summary>
-        /// <param name="values">The input values to calculate the statistic from.</param>
-        /// <returns>The variation for the inputted values.</returns>
+        /// <param name="values">The 2D data to use in the calculations.</param>
+        /// <returns>The mathematical mean of the inputted data.</returns>
         public double Operate(IEnumerable<IEnumerable<double>> values)
         {
             // Flatten the 2D inputted container into a 1D container.
@@ -23,7 +24,8 @@ namespace Notrosoft_Accel.Statistics
             if (!flattenedValues.Any())
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
-            return Utilities.GetVariance(flattenedValues);
+            // Return the average/mean of the inputted values.
+            return flattenedValues.Average();
         }
     }
 }

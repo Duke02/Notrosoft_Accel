@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Notrosoft_Accel.Statistics
+namespace Notrosoft_Accel.Backend.Statistics
 {
     /// <summary>
     ///     The base interface for statistics that all statistics are to inherit from.
