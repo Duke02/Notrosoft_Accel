@@ -46,18 +46,25 @@ namespace Notrosoft_Accel.Infrastructure
         /// <returns>The scalar covariance value of the inputted data.</returns>
         public static double GetCovariance(IEnumerable<double> xValues, IEnumerable<double> yValues)
         {
-            // Covariance = SumOf(x_i * y_i) - 1 / n * SumOf(x_i) * SumOf(y_i)
+            // Covariance = (SumOf((x_i - x_avg) * (y_i - y_avg))) / (n - 1)
             // x_i = ith element of x
             // y_i = ith element of y
-            // n = count of elements in x (must be same as count of elements in y)
+            // x_avg = average of x values
+            // y_avg = average of y values
+            // n = number of elements.
+
             var yValuesArray = yValues.ToArray();
             var xValuesArray = xValues.ToArray();
-            var xyProducts = xValuesArray.Zip(yValuesArray).Select(xy => xy.Item1 * xy.Item2);
-            var sumOfX = xValuesArray.Sum();
-            var sumOfY = yValuesArray.Sum();
-            double n = xValuesArray.Length;
 
-            return xyProducts.Sum() - 1 / n * sumOfX * sumOfY;
+            var xAverage = xValuesArray.Average();
+            var yAverage = yValuesArray.Average();
+
+            var numerator = xValuesArray
+                .Zip(yValuesArray)
+                .Select(xy => (xy.First - xAverage) * (xy.Second - yAverage))
+                .Sum();
+
+            return numerator / xValuesArray.Length;
         }
     }
 }

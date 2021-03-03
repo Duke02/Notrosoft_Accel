@@ -113,6 +113,15 @@ namespace Notrosoft_Accel.Tests
         }
 
         [TestMethod]
+        public void Statistics_Mean_ExceptionTest()
+        {
+            var meanStatistic = new MeanStatistic();
+            var data = new List<List<double>>();
+
+            Assert.ThrowsException<InvalidOperationException>(() => meanStatistic.Operate(data));
+        }
+
+        [TestMethod]
         public void Statistics_Median_TestOdd()
         {
             var medianStatistic = new MedianStatistic();
@@ -163,6 +172,15 @@ namespace Notrosoft_Accel.Tests
         }
 
         [TestMethod]
+        public void Statistics_Median_ExceptionTest()
+        {
+            var medianStatistic = new MedianStatistic();
+            var data = new List<List<double>>();
+
+            Assert.ThrowsException<InvalidOperationException>(() => medianStatistic.Operate(data));
+        }
+
+        [TestMethod]
         public void Statistics_Variance_LotsOfNumbers()
         {
             var medianStatistic = new VarianceStatistic();
@@ -193,6 +211,15 @@ namespace Notrosoft_Accel.Tests
             var actual = varianceStatistic.Operate(data);
 
             Assert.AreEqual(expected, actual, Tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_Variance_ExceptionTest()
+        {
+            var varianceStatistic = new VarianceStatistic();
+            var data = new List<List<double>>();
+
+            Assert.ThrowsException<InvalidOperationException>(() => varianceStatistic.Operate(data));
         }
 
         [TestMethod]
@@ -227,6 +254,15 @@ namespace Notrosoft_Accel.Tests
         }
 
         [TestMethod]
+        public void Statistics_StandardDeviation_ExceptionTest()
+        {
+            var stddevStatistic = new StandardDeviationStatistic();
+            var data = new List<List<double>>();
+
+            Assert.ThrowsException<InvalidOperationException>(() => stddevStatistic.Operate(data));
+        }
+
+        [TestMethod]
         public void Statistics_CoeffVariation()
         {
             var cvStatistic = new CoefficientOfVarianceStatistic();
@@ -254,6 +290,15 @@ namespace Notrosoft_Accel.Tests
             var actual = cvStatistic.Operate(data);
 
             Assert.AreEqual(expected, actual, Tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_CoeffVariation_ExceptionTest()
+        {
+            var cvStatistic = new CoefficientOfVarianceStatistic();
+            var data = new List<List<double>>();
+
+            Assert.ThrowsException<InvalidOperationException>(() => cvStatistic.Operate(data));
         }
     }
 }
