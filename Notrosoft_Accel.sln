@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notrosoft_Accel", "Notrosof
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notrosoft_Accel.Tests", "Notrosoft_Accel.Tests\Notrosoft_Accel.Tests.csproj", "{498F8286-5423-4116-96E1-7965D5FEEF60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notrosoft_Accel.Backend", "Notrosoft_Accel.Backend\Notrosoft_Accel.Backend.csproj", "{06A246BF-7122-446B-AC3B-DBD3CE8CE7DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notrosoft_Accel.Infrastructure", "Notrosoft_Accel.Infrastructure\Notrosoft_Accel.Infrastructure.csproj", "{21B9FCB4-EE23-43D9-B65B-060F3E93D97E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{498F8286-5423-4116-96E1-7965D5FEEF60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{498F8286-5423-4116-96E1-7965D5FEEF60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{498F8286-5423-4116-96E1-7965D5FEEF60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06A246BF-7122-446B-AC3B-DBD3CE8CE7DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06A246BF-7122-446B-AC3B-DBD3CE8CE7DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06A246BF-7122-446B-AC3B-DBD3CE8CE7DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06A246BF-7122-446B-AC3B-DBD3CE8CE7DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21B9FCB4-EE23-43D9-B65B-060F3E93D97E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21B9FCB4-EE23-43D9-B65B-060F3E93D97E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21B9FCB4-EE23-43D9-B65B-060F3E93D97E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21B9FCB4-EE23-43D9-B65B-060F3E93D97E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
