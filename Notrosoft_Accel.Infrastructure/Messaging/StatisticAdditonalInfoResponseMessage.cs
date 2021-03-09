@@ -10,15 +10,19 @@ namespace Notrosoft_Accel.Infrastructure.Messaging
     {
         public Dictionary<string, double> Paramters;
 
-
-        public StatisticAdditonalInfoResponseMessage(StatisticType statistic, Dictionary<string, double> parameters) :
-            base(
-                PrimaryMessageType.StatisticAdditionalInfoResponse)
+        public StatisticAdditonalInfoResponseMessage(StatisticType statistic, Dictionary<string, double> parameters,
+            ulong requestId) : base(PrimaryMessageType.StatisticAdditionalInfoResponse)
         {
             Paramters = parameters;
             Statistic = statistic;
+            RequestMessageId = requestId;
         }
 
         public StatisticType Statistic { get; }
+
+        /// <summary>
+        ///     The id of the request that this response answers.
+        /// </summary>
+        public ulong RequestMessageId { get; }
     }
 }

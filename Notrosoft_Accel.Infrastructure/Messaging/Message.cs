@@ -4,15 +4,20 @@ namespace Notrosoft_Accel.Infrastructure.Messaging
 {
     public abstract class Message : EventArgs
     {
+        private static ulong _lastMessageId;
+
         protected Message(PrimaryMessageType mainMessageType)
         {
             MainMessageType = mainMessageType;
+            MessageId = ++_lastMessageId;
         }
 
         /// <summary>
         ///     The main message type for the message. Helps with parsing the type of message.
         /// </summary>
         public PrimaryMessageType MainMessageType { get; }
+
+        public ulong MessageId { get; }
     }
 
     public enum PrimaryMessageType

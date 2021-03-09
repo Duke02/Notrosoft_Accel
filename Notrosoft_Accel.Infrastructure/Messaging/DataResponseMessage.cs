@@ -5,6 +5,7 @@ namespace Notrosoft_Accel.Infrastructure.Messaging
     /// <summary>
     ///     Front end sends this message filled with the data in response to a DataRequest Message.
     /// </summary>
+    // TODO: Maybe this doesn't need to exist?
     public class DataResponseMessage : Message
     {
         public DataResponseMessage(DataType type, IEnumerable<IEnumerable<double>> data) : base(
