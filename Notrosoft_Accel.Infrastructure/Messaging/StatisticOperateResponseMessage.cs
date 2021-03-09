@@ -2,9 +2,9 @@
 
 namespace Notrosoft_Accel.Infrastructure.Messaging
 {
-    public class StatisticOperationResponseMessage : Message
+    public class StatisticOperateResponseMessage : Message
     {
-        public StatisticOperationResponseMessage(StatisticType statistic, Dictionary<string, double> output,
+        public StatisticOperateResponseMessage(StatisticType statistic, Dictionary<string, double> output,
             Dictionary<string, double> parameters, DataType dataType) : base(
             PrimaryMessageType.StatisticOperateResponse)
         {

@@ -1,6 +1,10 @@
 ﻿namespace Notrosoft_Accel.Infrastructure.Messaging
 {
-    public class DataTypeResponseMessage
+    // TODO: Is this needed?
+    public class DataTypeResponseMessage : Message
     {
+        public DataTypeResponseMessage(PrimaryMessageType mainMessageType) : base(mainMessageType)
+        {
+        }
     }
 }

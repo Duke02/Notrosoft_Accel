@@ -56,23 +56,27 @@
         /// <summary>
         ///     Backend sends this message when it needs to know how to interpret the data from the front end.
         /// </summary>
+        // TODO: Is this necessary?
         DataTypeRequest,
 
         /// <summary>
         ///     Front end sends this message in response to a DataTypeRequest message with the data type of the data.
         /// </summary>
+        // TODO: Is this necessary?
         DataTypeResponse,
 
         /// <summary>
         ///     Backend sends this message when it needs more information about how to interpret the data that it has received.
         /// </summary>
         /// This is usually for interval and frequency data.
+        // TODO: Is this necessary?
         DataTypeInformationRequest,
 
         /// <summary>
         ///     Front end sends this message in response to a DataTypeInformationRequest message with the additional information
         ///     that the back end needed.
         /// </summary>
+        // TODO: Is this necessary?
         DataTypeInformationResponse
     }
 }
