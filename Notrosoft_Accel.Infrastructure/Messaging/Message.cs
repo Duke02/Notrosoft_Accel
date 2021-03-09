@@ -1,8 +1,10 @@
-﻿namespace Notrosoft_Accel.Infrastructure.Messaging
+﻿using System;
+
+namespace Notrosoft_Accel.Infrastructure.Messaging
 {
-    public abstract class Message
+    public abstract class Message : EventArgs
     {
-        public Message(PrimaryMessageType mainMessageType)
+        protected Message(PrimaryMessageType mainMessageType)
         {
             MainMessageType = mainMessageType;
         }
@@ -30,13 +32,13 @@
         /// <summary>
         ///     Back end sends this request when it needs more data for a given statistic.
         /// </summary>
-        StatisticInputRequest,
+        StatisticAdditionalInfoRequest,
 
         /// <summary>
         ///     Front end sends this response after getting more information from the user about a statistic the backend needed
         ///     more information for.
         /// </summary>
-        StatisticInputResponse,
+        StatisticAdditionalInfoResponse,
 
         /// <summary>
         ///     Backend sends this message when there was an error when calculating a statistic.

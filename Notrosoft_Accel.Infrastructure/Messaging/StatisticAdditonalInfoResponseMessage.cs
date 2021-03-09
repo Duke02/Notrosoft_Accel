@@ -6,13 +6,14 @@ namespace Notrosoft_Accel.Infrastructure.Messaging
     ///     Front end sends this response after getting more information from the user about a statistic the backend needed
     ///     more information for.
     /// </summary>
-    public class StatisticInputResponseMessage : Message
+    public class StatisticAdditonalInfoResponseMessage : Message
     {
         public Dictionary<string, double> Paramters;
 
 
-        public StatisticInputResponseMessage(StatisticType statistic, Dictionary<string, double> parameters) : base(
-            PrimaryMessageType.StatisticInputResponse)
+        public StatisticAdditonalInfoResponseMessage(StatisticType statistic, Dictionary<string, double> parameters) :
+            base(
+                PrimaryMessageType.StatisticAdditionalInfoResponse)
         {
             Paramters = parameters;
             Statistic = statistic;

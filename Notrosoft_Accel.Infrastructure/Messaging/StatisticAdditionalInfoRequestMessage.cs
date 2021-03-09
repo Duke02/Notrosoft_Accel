@@ -6,10 +6,11 @@ namespace Notrosoft_Accel.Infrastructure.Messaging
     /// <summary>
     ///     Back end sends this request when it needs more data for a given statistic.
     /// </summary>
-    public class StatisticInputRequestMessage : Message
+    public class StatisticAdditionalInfoRequestMessage : Message
     {
-        protected StatisticInputRequestMessage(StatisticType statistic, Dictionary<string, Predicate<double>> bounds) :
-            base(PrimaryMessageType.StatisticInputRequest)
+        protected StatisticAdditionalInfoRequestMessage(StatisticType statistic,
+            Dictionary<string, Predicate<double>> bounds) :
+            base(PrimaryMessageType.StatisticAdditionalInfoRequest)
         {
             Statistic = statistic;
             Bounds = bounds;
