@@ -51,7 +51,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         ///     Gets the percentile parameter that the user wants to do.
         /// </summary>
         /// <returns>A dictionary containing the percentile that the user wants to use.</returns>
-        public Dictionary<string, double> GetAdditionalParameters()
+        public override Dictionary<string, double> GetAdditionalParameters()
         {
             // TODO: Actually have this call some front end code to get stuff working.
             return new()
