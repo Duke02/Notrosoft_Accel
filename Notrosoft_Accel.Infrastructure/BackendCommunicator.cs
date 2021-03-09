@@ -46,22 +46,22 @@ namespace Notrosoft_Accel.Backend
         //     }
         // }
 
-        protected virtual void OnStatisticPerformed(StatisticOperateResponseMessage response)
+        public virtual void OnStatisticPerformed(StatisticOperateResponseMessage response)
         {
             StatisticPerformed?.Invoke(this, response);
         }
 
-        protected virtual void OnStatisticNeedsMoreInfo(StatisticAdditionalInfoRequestMessage request)
+        public virtual void OnStatisticNeedsMoreInfo(StatisticAdditionalInfoRequestMessage request)
         {
             StatisticNeedsMoreInfo?.Invoke(this, request);
         }
 
-        protected virtual void OnRequestData(DataRequestMessage e)
+        public virtual void OnRequestData(DataRequestMessage e)
         {
             RequestData?.Invoke(this, e);
         }
 
-        protected virtual void OnStatisticHadError(StatisticErrorMessage e)
+        public virtual void OnStatisticHadError(StatisticErrorMessage e)
         {
             StatisticHadError?.Invoke(this, e);
         }

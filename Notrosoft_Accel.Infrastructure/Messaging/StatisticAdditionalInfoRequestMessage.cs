@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Notrosoft_Accel.Backend.Statistics;
 
 namespace Notrosoft_Accel.Infrastructure.Messaging
 {
@@ -8,25 +9,30 @@ namespace Notrosoft_Accel.Infrastructure.Messaging
     /// </summary>
     public class StatisticAdditionalInfoRequestMessage : Message
     {
-        protected StatisticAdditionalInfoRequestMessage(StatisticType statistic,
-            Dictionary<string, Predicate<double>> bounds) :
-            base(PrimaryMessageType.StatisticAdditionalInfoRequest)
+        public StatisticAdditionalInfoRequestMessage(StatisticType typeOfStatistic, Statistic desiredStat,
+            IEnumerable<IEnumerable<double>> data) : base(PrimaryMessageType.StatisticAdditionalInfoRequest)
         {
-            Statistic = statistic;
-            Bounds = bounds;
+            TypeOfStatistic = typeOfStatistic;
+            StatisticToUse = desiredStat;
+            Data = data;
         }
 
         /// <summary>
         ///     The type of statistic that the backend needs information for.
         /// </summary>
-        public StatisticType Statistic { get; }
+        public StatisticType TypeOfStatistic { get; }
+
+        public Statistic StatisticToUse { get; }
 
         /// <summary>
         ///     The bounds for the statistic. Tests whether the user inputted value is within the bounds or not.
         /// </summary>
         /// Key is the name of the parameter needed.
+        // TODO: Change this to reference StatisticToUse.
         public Dictionary<string, Predicate<double>> Bounds { get; }
 
         public IEnumerable<string> ParametersNeeded => Bounds.Keys;
+
+        public IEnumerable<IEnumerable<double>> Data { get; }
     }
 }

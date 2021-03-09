@@ -59,5 +59,11 @@ namespace Notrosoft_Accel.Infrastructure
 
             return xyProducts.Sum() - 1 / n * sumOfX * sumOfY;
         }
+
+        public static IEnumerable<IEnumerable<double>> ConvertData(IEnumerable<IEnumerable<double>> data,
+            DataType dataType)
+        {
+            return data;
+        }
     }
 }

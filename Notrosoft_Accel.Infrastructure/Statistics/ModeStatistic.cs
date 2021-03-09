@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Notrosoft_Accel.Infrastructure;
+using Notrosoft_Accel.Infrastructure.Messaging;
 
 namespace Notrosoft_Accel.Backend.Statistics
 {
@@ -15,7 +16,8 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// </summary>
         /// <param name="values">A 2D data collection of numbers.</param>
         /// <returns>The most common number of the inputted data.</returns>
-        public override double Operate(IEnumerable<IEnumerable<double>> values)
+        public override StatisticOperateResponseMessage Operate(IEnumerable<IEnumerable<double>> values,
+            StatisticOperateRequestMessage requestMessage)
         {
             // Flatten the 2d list of lists into a 1d list.
             var flattenedArray = Utilities.Flatten(values).ToArray();
@@ -34,7 +36,24 @@ namespace Notrosoft_Accel.Backend.Statistics
 
             foreach (var num in flattenedArray) countDict[num]++;
 
-            return countDict.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+            var mode = countDict.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+
+            return PackageOutputIntoMessage(requestMessage, mode);
+        }
+
+        public override StatisticOperateResponseMessage PackageOutputIntoMessage(
+            StatisticOperateRequestMessage requestMessage, params double[] output)
+        {
+            var mode = output[0];
+
+            var outputDict = new Dictionary<string, double>
+            {
+                {"mode", mode}
+            };
+            var parameters = new Dictionary<string, double>();
+
+            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, parameters,
+                requestMessage.TypeOfData, requestMessage.MessageId);
         }
     }
 }

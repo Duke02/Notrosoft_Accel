@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Notrosoft_Accel.Infrastructure;
+using Notrosoft_Accel.Infrastructure.Messaging;
 
 namespace Notrosoft_Accel.Backend.Statistics
 {
@@ -14,8 +15,10 @@ namespace Notrosoft_Accel.Backend.Statistics
         ///     Calculates the best fit linear line for the given data.
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
+        /// <param name="requestMessage"></param>
         /// <returns>The slope for the linear line. TODO: Needs to return intercept as well.</returns>
-        public override double Operate(IEnumerable<IEnumerable<double>> values)
+        public override StatisticOperateResponseMessage Operate(IEnumerable<IEnumerable<double>> values,
+            StatisticOperateRequestMessage requestMessage)
         {
             var valuesArray = values.ToArray();
 
@@ -46,8 +49,24 @@ namespace Notrosoft_Accel.Backend.Statistics
             var slope = Utilities.GetCovariance(xValues, yValues) / Utilities.GetVariance(xValues);
             var intercept = yAverage - slope * xAverage;
 
-            // TODO: Figure out a way to return the slope and intercept.
-            return slope;
+            return PackageOutputIntoMessage(requestMessage, slope, intercept);
+        }
+
+        public override StatisticOperateResponseMessage PackageOutputIntoMessage(
+            StatisticOperateRequestMessage requestMessage, params double[] output)
+        {
+            var slope = output[0];
+            var intercept = output[1];
+
+            var outputDict = new Dictionary<string, double>
+            {
+                {"slope", slope},
+                {"intercept", intercept}
+            };
+            var parameters = new Dictionary<string, double>();
+
+            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, parameters,
+                requestMessage.TypeOfData, requestMessage.MessageId);
         }
     }
 }
