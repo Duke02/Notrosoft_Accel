@@ -8,14 +8,14 @@ namespace Notrosoft_Accel.Backend.Statistics
     /// <summary>
     ///     Calculates the mathematical mean.
     /// </summary>
-    public class MeanStatistic : IStatistic
+    public class MeanStatistic : Statistic
     {
         /// <summary>
         ///     Calculates the mathematical mean (commonly called Average) from the provided data.
         /// </summary>
         /// <param name="values">The 2D data to use in the calculations.</param>
         /// <returns>The mathematical mean of the inputted data.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public override double Operate(IEnumerable<IEnumerable<double>> values)
         {
             // Flatten the 2D inputted container into a 1D container.
             var flattenedValues = Utilities.Flatten(values).ToArray();

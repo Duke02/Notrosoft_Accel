@@ -8,14 +8,14 @@ namespace Notrosoft_Accel.Backend.Statistics
     /// <summary>
     ///     Statistic class that calculates the mode of inputted data.
     /// </summary>
-    public class ModeStatistic : IStatistic
+    public class ModeStatistic : Statistic
     {
         /// <summary>
         ///     Calculates the mode (most common number) of the inputted data.
         /// </summary>
         /// <param name="values">A 2D data collection of numbers.</param>
         /// <returns>The most common number of the inputted data.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public override double Operate(IEnumerable<IEnumerable<double>> values)
         {
             // Flatten the 2d list of lists into a 1d list.
             var flattenedArray = Utilities.Flatten(values).ToArray();

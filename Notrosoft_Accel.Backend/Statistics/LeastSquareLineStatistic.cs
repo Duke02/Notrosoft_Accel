@@ -8,14 +8,14 @@ namespace Notrosoft_Accel.Backend.Statistics
     /// <summary>
     ///     Calculates the Least Squares Line Statistic.
     /// </summary>
-    public class LeastSquareLineStatistic : IStatistic
+    public class LeastSquareLineStatistic : Statistic
     {
         /// <summary>
         ///     Calculates the best fit linear line for the given data.
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
         /// <returns>The slope for the linear line. TODO: Needs to return intercept as well.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public override double Operate(IEnumerable<IEnumerable<double>> values)
         {
             var valuesArray = values.ToArray();
 

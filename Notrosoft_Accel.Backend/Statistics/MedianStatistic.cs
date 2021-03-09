@@ -8,14 +8,14 @@ namespace Notrosoft_Accel.Backend.Statistics
     /// <summary>
     ///     Calculates the median (middle value of sorted data) statistic from given data.
     /// </summary>
-    public class MedianStatistic : IStatistic
+    public class MedianStatistic : Statistic
     {
         /// <summary>
         ///     Calculates the Median Statistic from the provided 2 dimensional data.
         /// </summary>
         /// <param name="values">The 2 dimensional data to calculate the median from.</param>
         /// <returns>The median of the data.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public override double Operate(IEnumerable<IEnumerable<double>> values)
         {
             // Flattens the 2D input into a 1d enumerable.
             var flattenedInput = Utilities.Flatten(values).ToArray();
