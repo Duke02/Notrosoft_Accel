@@ -117,7 +117,6 @@ namespace Notrosoft_Accel.Backend
 
             if (needsAdditionalInfo)
             {
-                // TODO: Set up way to get the message back and still be able to run the show.
                 var additionalInfoMessage =
                     new StatisticAdditionalInfoRequestMessage
                     {
