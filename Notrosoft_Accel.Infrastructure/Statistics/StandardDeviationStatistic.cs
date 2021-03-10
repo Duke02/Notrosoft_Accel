@@ -15,9 +15,10 @@ namespace Notrosoft_Accel.Backend.Statistics
         ///     Calculates the population standard deviation of the inputted data.
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
+        /// <param name="requestMessage"></param>
         /// <returns>The standard deviation of the data.</returns>
         public override StatisticOperateResponseMessage Operate(IEnumerable<IEnumerable<double>> values,
-            StatisticOperateRequestMessage requestMessage)
+            StatisticPerformMessage requestMessage)
         {
             // Flatten the 2D inputted container into a 1D container.
             var flattenedValues = Utilities.Flatten(values).ToArray();
@@ -32,8 +33,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             return PackageOutputIntoMessage(requestMessage, stddev);
         }
 
-        public override StatisticOperateResponseMessage PackageOutputIntoMessage(
-            StatisticOperateRequestMessage requestMessage, params double[] output)
+        public override StatisticOperateResponseMessage PackageOutputIntoMessage(StatisticPerformMessage requestMessage,
+            params double[] output)
         {
             var stddev = output[0];
 
@@ -41,9 +42,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             {
                 {"stddev", stddev}
             };
-            var parameters = new Dictionary<string, double>();
 
-            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, parameters,
+            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, requestMessage.Parameters,
                 requestMessage.TypeOfData, requestMessage.MessageId);
         }
     }

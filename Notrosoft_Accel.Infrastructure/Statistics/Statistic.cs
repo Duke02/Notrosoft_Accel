@@ -15,14 +15,9 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="requestMessage"></param>
         /// <returns>The statistic for the child class.</returns>
         public abstract StatisticOperateResponseMessage Operate(IEnumerable<IEnumerable<double>> values,
-            StatisticOperateRequestMessage requestMessage);
+            StatisticPerformMessage requestMessage);
 
-        public virtual Dictionary<string, double> GetAdditionalParameters()
-        {
-            return new();
-        }
-
-        public abstract StatisticOperateResponseMessage PackageOutputIntoMessage(
-            StatisticOperateRequestMessage requestMessage, params double[] output);
+        public abstract StatisticOperateResponseMessage PackageOutputIntoMessage(StatisticPerformMessage requestMessage,
+            params double[] output);
     }
 }

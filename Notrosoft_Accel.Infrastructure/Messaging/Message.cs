@@ -84,6 +84,11 @@ namespace Notrosoft_Accel.Infrastructure.Messaging
         ///     that the back end needed.
         /// </summary>
         // TODO: Is this necessary?
-        DataTypeInformationResponse
+        DataTypeInformationResponse,
+
+        /// <summary>
+        ///     Backend sends this information to send all the relevant data for the statistic actually operate.
+        /// </summary>
+        StatisticPerform
     }
 }

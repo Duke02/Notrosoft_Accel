@@ -15,9 +15,10 @@ namespace Notrosoft_Accel.Backend.Statistics
         ///     Calculates the population variance for the provided values.
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
+        /// <param name="requestMessage"></param>
         /// <returns>The variation for the inputted values.</returns>
         public override StatisticOperateResponseMessage Operate(IEnumerable<IEnumerable<double>> values,
-            StatisticOperateRequestMessage requestMessage)
+            StatisticPerformMessage requestMessage)
         {
             // Flatten the 2D inputted container into a 1D container.
             var flattenedValues = Utilities.Flatten(values).ToArray();
@@ -31,8 +32,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             return PackageOutputIntoMessage(requestMessage, variance);
         }
 
-        public override StatisticOperateResponseMessage PackageOutputIntoMessage(
-            StatisticOperateRequestMessage requestMessage, params double[] output)
+        public override StatisticOperateResponseMessage PackageOutputIntoMessage(StatisticPerformMessage requestMessage,
+            params double[] output)
         {
             var variance = output[0];
 
@@ -40,9 +41,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             {
                 {"variance", variance}
             };
-            var parameters = new Dictionary<string, double>();
 
-            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, parameters,
+            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, requestMessage.Parameters,
                 requestMessage.TypeOfData, requestMessage.MessageId);
         }
     }

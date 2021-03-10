@@ -18,7 +18,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="requestMessage"></param>
         /// <returns>The slope for the linear line. TODO: Needs to return intercept as well.</returns>
         public override StatisticOperateResponseMessage Operate(IEnumerable<IEnumerable<double>> values,
-            StatisticOperateRequestMessage requestMessage)
+            StatisticPerformMessage requestMessage)
         {
             var valuesArray = values.ToArray();
 
@@ -52,8 +52,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             return PackageOutputIntoMessage(requestMessage, slope, intercept);
         }
 
-        public override StatisticOperateResponseMessage PackageOutputIntoMessage(
-            StatisticOperateRequestMessage requestMessage, params double[] output)
+        public override StatisticOperateResponseMessage PackageOutputIntoMessage(StatisticPerformMessage requestMessage,
+            params double[] output)
         {
             var slope = output[0];
             var intercept = output[1];
@@ -63,9 +63,8 @@ namespace Notrosoft_Accel.Backend.Statistics
                 {"slope", slope},
                 {"intercept", intercept}
             };
-            var parameters = new Dictionary<string, double>();
 
-            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, parameters,
+            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, requestMessage.Parameters,
                 requestMessage.TypeOfData, requestMessage.MessageId);
         }
     }

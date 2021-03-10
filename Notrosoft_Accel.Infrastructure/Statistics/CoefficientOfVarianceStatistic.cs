@@ -18,7 +18,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="requestMessage"></param>
         /// <returns>The CV of the data.</returns>
         public override StatisticOperateResponseMessage Operate(IEnumerable<IEnumerable<double>> values,
-            StatisticOperateRequestMessage requestMessage)
+            StatisticPerformMessage requestMessage)
         {
             // Flatten the 2D inputted container into a 1D container.
             var flattenedValues = Utilities.Flatten(values).ToArray();
@@ -37,8 +37,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             return PackageOutputIntoMessage(requestMessage, stddev / average);
         }
 
-        public override StatisticOperateResponseMessage PackageOutputIntoMessage(
-            StatisticOperateRequestMessage requestMessage, params double[] output)
+        public override StatisticOperateResponseMessage PackageOutputIntoMessage(StatisticPerformMessage requestMessage,
+            params double[] output)
         {
             var cv = output[0];
             var outputDict = new Dictionary<string, double>
@@ -46,7 +46,7 @@ namespace Notrosoft_Accel.Backend.Statistics
                 {"cv", cv}
             };
             return new StatisticOperateResponseMessage(StatisticType.CoefficientOfVariance, outputDict,
-                new Dictionary<string, double>(), requestMessage.TypeOfData, requestMessage.MessageId);
+                requestMessage.Parameters, requestMessage.TypeOfData, requestMessage.MessageId);
         }
     }
 }

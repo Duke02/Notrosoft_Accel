@@ -15,9 +15,10 @@ namespace Notrosoft_Accel.Backend.Statistics
         ///     Calculates the percentile for the provided data.
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
+        /// <param name="requestMessage"></param>
         /// <returns>The requested percentile for the inputted data.</returns>
         public override StatisticOperateResponseMessage Operate(IEnumerable<IEnumerable<double>> values,
-            StatisticOperateRequestMessage requestMessage)
+            StatisticPerformMessage requestMessage)
         {
             // Flatten the 2D inputted container into a 1D container.
             var flattenedValues = Utilities.Flatten(values).ToArray();
@@ -29,8 +30,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             // Sort the values from least to greatest.
             var sortedValues = flattenedValues.OrderBy(val => val).ToArray();
 
-            // TODO: Don't do this anymore.
-            var neededParams = GetAdditionalParameters();
+            var neededParams = requestMessage.Parameters;
             var desiredPercentile = neededParams["percentile"];
 
             var indexOfPercentile = desiredPercentile * sortedValues.Length;
@@ -59,21 +59,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             return PackageOutputIntoMessage(requestMessage, percentile);
         }
 
-        /// <summary>
-        ///     Gets the percentile parameter that the user wants to do.
-        /// </summary>
-        /// <returns>A dictionary containing the percentile that the user wants to use.</returns>
-        public override Dictionary<string, double> GetAdditionalParameters()
-        {
-            // TODO: Actually have this call some front end code to get stuff working.
-            return new()
-            {
-                {"percentile", .1}
-            };
-        }
-
-        public override StatisticOperateResponseMessage PackageOutputIntoMessage(
-            StatisticOperateRequestMessage requestMessage, params double[] output)
+        public override StatisticOperateResponseMessage PackageOutputIntoMessage(StatisticPerformMessage requestMessage,
+            params double[] output)
         {
             var percentile = output[0];
 
@@ -81,10 +68,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             {
                 {"percentile", percentile}
             };
-            // TODO: Change this.
-            var parameters = new Dictionary<string, double>();
 
-            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, parameters,
+            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, requestMessage.Parameters,
                 requestMessage.TypeOfData, requestMessage.MessageId);
         }
     }

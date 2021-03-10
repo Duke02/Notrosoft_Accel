@@ -15,9 +15,10 @@ namespace Notrosoft_Accel.Backend.Statistics
         ///     Calculates the Median Statistic from the provided 2 dimensional data.
         /// </summary>
         /// <param name="values">The 2 dimensional data to calculate the median from.</param>
+        /// <param name="requestMessage"></param>
         /// <returns>The median of the data.</returns>
         public override StatisticOperateResponseMessage Operate(IEnumerable<IEnumerable<double>> values,
-            StatisticOperateRequestMessage requestMessage)
+            StatisticPerformMessage requestMessage)
         {
             // Flattens the 2D input into a 1d enumerable.
             var flattenedInput = Utilities.Flatten(values).ToArray();
@@ -54,8 +55,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             return PackageOutputIntoMessage(requestMessage, medianValue);
         }
 
-        public override StatisticOperateResponseMessage PackageOutputIntoMessage(
-            StatisticOperateRequestMessage requestMessage, params double[] output)
+        public override StatisticOperateResponseMessage PackageOutputIntoMessage(StatisticPerformMessage requestMessage,
+            params double[] output)
         {
             var median = output[0];
 
@@ -63,9 +64,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             {
                 {"median", median}
             };
-            var parameters = new Dictionary<string, double>();
 
-            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, parameters,
+            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, requestMessage.Parameters,
                 requestMessage.TypeOfData, requestMessage.MessageId);
         }
     }

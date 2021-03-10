@@ -15,9 +15,10 @@ namespace Notrosoft_Accel.Backend.Statistics
         ///     Calculates the mathematical mean (commonly called Average) from the provided data.
         /// </summary>
         /// <param name="values">The 2D data to use in the calculations.</param>
+        /// <param name="requestMessage"></param>
         /// <returns>The mathematical mean of the inputted data.</returns>
         public override StatisticOperateResponseMessage Operate(IEnumerable<IEnumerable<double>> values,
-            StatisticOperateRequestMessage requestMessage)
+            StatisticPerformMessage requestMessage)
         {
             // Flatten the 2D inputted container into a 1D container.
             var flattenedValues = Utilities.Flatten(values).ToArray();
@@ -30,8 +31,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             return PackageOutputIntoMessage(requestMessage, flattenedValues.Average());
         }
 
-        public override StatisticOperateResponseMessage PackageOutputIntoMessage(
-            StatisticOperateRequestMessage requestMessage, params double[] output)
+        public override StatisticOperateResponseMessage PackageOutputIntoMessage(StatisticPerformMessage requestMessage,
+            params double[] output)
         {
             var mean = output[0];
 
@@ -39,9 +40,8 @@ namespace Notrosoft_Accel.Backend.Statistics
             {
                 {"mean", mean}
             };
-            var parameters = new Dictionary<string, double>();
 
-            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, parameters,
+            return new StatisticOperateResponseMessage(requestMessage.Statistic, outputDict, requestMessage.Parameters,
                 requestMessage.TypeOfData, requestMessage.MessageId);
         }
     }

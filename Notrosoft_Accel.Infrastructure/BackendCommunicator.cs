@@ -5,47 +5,6 @@ namespace Notrosoft_Accel.Backend
 {
     public class BackendCommunicator
     {
-        public void InitializeEventHandlers()
-        {
-            // TODO: How do I set up this to handle the events the front end sends to me?
-        }
-
-        // public event EventHandler<Message> BackendHandler;
-        //
-        // protected virtual void OnMessageReceived(Message e)
-        // {
-        //     switch (e.MainMessageType)
-        //     {
-        //         // Get a request to perform a statistic.
-        //         case PrimaryMessageType.StatisticOperateRequest:
-        //             break;
-        //         // Get a response from a previously sent message about getting
-        //         // additional info for parameters, etc. for a statistic.
-        //         case PrimaryMessageType.StatisticAdditionalInfoResponse:
-        //             break;
-        //         // Get a response from a previously sent message about 
-        //         // getting the data to perform the statistics on.
-        //         case PrimaryMessageType.DataResponse:
-        //             break;
-        //         case PrimaryMessageType.DataTypeRequest:
-        //             break;
-        //         case PrimaryMessageType.DataTypeResponse:
-        //             break;
-        //         case PrimaryMessageType.DataTypeInformationRequest:
-        //             break;
-        //         case PrimaryMessageType.DataTypeInformationResponse:
-        //             break;
-        //         // All the cases that the backend doesn't handle.
-        //         case PrimaryMessageType.StatisticOperateResponse:
-        //         case PrimaryMessageType.StatisticAdditionalInfoRequest:
-        //         case PrimaryMessageType.StatisticError:
-        //         case PrimaryMessageType.DataRequest:
-        //             break;
-        //         default:
-        //             throw new ArgumentOutOfRangeException();
-        //     }
-        // }
-
         public virtual void OnStatisticPerformed(StatisticOperateResponseMessage response)
         {
             StatisticPerformed?.Invoke(this, response);
@@ -64,6 +23,11 @@ namespace Notrosoft_Accel.Backend
         public virtual void OnStatisticHadError(StatisticErrorMessage e)
         {
             StatisticHadError?.Invoke(this, e);
+        }
+
+        public virtual void OnPerformStatistic(StatisticPerformMessage e)
+        {
+            PerformStatistic?.Invoke(this, e);
         }
 
 
@@ -86,5 +50,10 @@ namespace Notrosoft_Accel.Backend
         ///     Event for when the statistic had an error during execution.
         /// </summary>
         public event EventHandler<StatisticErrorMessage> StatisticHadError;
+
+        /// <summary>
+        ///     Event for when the backend is ready for actually performing a statistic.
+        /// </summary>
+        public event EventHandler<StatisticPerformMessage> PerformStatistic;
     }
 }

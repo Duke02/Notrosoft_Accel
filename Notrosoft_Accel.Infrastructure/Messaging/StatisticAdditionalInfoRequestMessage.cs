@@ -9,30 +9,28 @@ namespace Notrosoft_Accel.Infrastructure.Messaging
     /// </summary>
     public class StatisticAdditionalInfoRequestMessage : Message
     {
-        public StatisticAdditionalInfoRequestMessage(StatisticType typeOfStatistic, Statistic desiredStat,
-            IEnumerable<IEnumerable<double>> data) : base(PrimaryMessageType.StatisticAdditionalInfoRequest)
+        public StatisticAdditionalInfoRequestMessage() : base(PrimaryMessageType.StatisticAdditionalInfoRequest)
         {
-            TypeOfStatistic = typeOfStatistic;
-            StatisticToUse = desiredStat;
-            Data = data;
         }
 
         /// <summary>
         ///     The type of statistic that the backend needs information for.
         /// </summary>
-        public StatisticType TypeOfStatistic { get; }
+        public StatisticType Statistic { get; set; }
 
-        public Statistic StatisticToUse { get; }
+        public Statistic StatisticToUse { get; set; }
 
         /// <summary>
         ///     The bounds for the statistic. Tests whether the user inputted value is within the bounds or not.
         /// </summary>
         /// Key is the name of the parameter needed.
         // TODO: Change this to reference StatisticToUse.
-        public Dictionary<string, Predicate<double>> Bounds { get; }
+        public Dictionary<string, Predicate<double>> Bounds { get; set; }
 
         public IEnumerable<string> ParametersNeeded => Bounds.Keys;
 
-        public IEnumerable<IEnumerable<double>> Data { get; }
+        public IEnumerable<IEnumerable<double>> Data { get; set; }
+
+        public DataType TypeOfData { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Notrosoft_Accel
         /// <summary>
         ///     Event for when the user has filled in the additional information that the statistic needs.
         /// </summary>
-        public event EventHandler<StatisticAdditonalInfoResponseMessage> HaveAdditionalInfoForStatistic;
+        public event EventHandler<StatisticAdditionalInfoResponseMessage> HaveAdditionalInfoForStatistic;
 
         /// <summary>
         ///     Event for when the user has filled in all of the data and is ready for the backend.
@@ -21,17 +21,17 @@ namespace Notrosoft_Accel
         public event EventHandler<DataResponseMessage> HaveData;
 
 
-        protected virtual void OnHaveData(DataResponseMessage e)
+        public virtual void OnHaveData(DataResponseMessage e)
         {
             HaveData?.Invoke(this, e);
         }
 
-        protected virtual void OnHaveAdditionalInfoForStatistic(StatisticAdditonalInfoResponseMessage e)
+        public virtual void OnHaveAdditionalInfoForStatistic(StatisticAdditionalInfoResponseMessage e)
         {
             HaveAdditionalInfoForStatistic?.Invoke(this, e);
         }
 
-        protected virtual void OnNeedToPerformStatistic(StatisticOperateRequestMessage e)
+        public virtual void OnNeedToPerformStatistic(StatisticOperateRequestMessage e)
         {
             NeedToPerformStatistic?.Invoke(this, e);
         }

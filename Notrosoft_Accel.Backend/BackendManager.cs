@@ -20,20 +20,48 @@ namespace Notrosoft_Accel.Backend
         private void InitializeEventHandlers()
         {
             _frontEnd.NeedToPerformStatistic += FrontEndOnNeedToPerformStatistic;
+            _frontEnd.HaveAdditionalInfoForStatistic += FrontEndOnHaveAdditionalInfoForStatistic;
+            _backend.PerformStatistic += BackendOnPerformStatistic;
         }
 
-        private void FrontEndOnNeedToPerformStatistic(object sender, StatisticOperateRequestMessage e)
+        private void BackendOnPerformStatistic(object sender, StatisticPerformMessage message)
+        {
+            var desiredStat = message.StatisticToPerform;
+            var convertedData = message.Data;
+
+            var outputMessage = desiredStat.Operate(convertedData, message);
+
+            _backend.OnStatisticPerformed(outputMessage);
+        }
+
+        private void FrontEndOnHaveAdditionalInfoForStatistic(object sender,
+            StatisticAdditionalInfoResponseMessage response)
+        {
+            var performStatMessage = new StatisticPerformMessage
+            {
+                Data = response.Data,
+                Parameters = response.Parameters,
+                RequestMessageId = response.RequestMessageId,
+                Statistic = response.Statistic,
+                StatisticToPerform = response.StatisticToPerform,
+                TypeOfData = response.TypeOfData
+            };
+
+            _backend.OnPerformStatistic(performStatMessage);
+        }
+
+        private void FrontEndOnNeedToPerformStatistic(object sender, StatisticOperateRequestMessage request)
         {
             // Figure out the statistic that needs to be performed.
             // Convert the data to the appropriate format.
             // Figure out if the statistic needs additional info.
             // Send the data to the statistic.
 
-            var convertedData = Utilities.ConvertData(e.Data, e.TypeOfData);
+            var convertedData = Utilities.ConvertData(request.Data, request.TypeOfData);
             Statistic desiredStat = null;
             var needsAdditionalInfo = false;
 
-            switch (e.Statistic)
+            switch (request.Statistic)
             {
                 case StatisticType.Mean:
                     desiredStat = new MeanStatistic();
@@ -85,19 +113,34 @@ namespace Notrosoft_Accel.Backend
                     throw new ArgumentOutOfRangeException();
             }
 
+            if (desiredStat == null) return;
+
             if (needsAdditionalInfo)
             {
                 // TODO: Set up way to get the message back and still be able to run the show.
                 var additionalInfoMessage =
-                    new StatisticAdditionalInfoRequestMessage(e.Statistic, desiredStat, convertedData);
+                    new StatisticAdditionalInfoRequestMessage
+                    {
+                        Data = convertedData,
+                        Statistic = request.Statistic,
+                        StatisticToUse = desiredStat,
+                        TypeOfData = request.TypeOfData
+                    };
+
                 _backend.OnStatisticNeedsMoreInfo(additionalInfoMessage);
             }
             else
             {
-                // TODO: Have this send a message to the backend to actually perform the stat
-                // Use the new PerformStatisticMessage class.
-                var outputMessage = desiredStat?.Operate(convertedData, e);
-                if (outputMessage != null) _backend.OnStatisticPerformed(outputMessage);
+                var performStatMessage = new StatisticPerformMessage
+                {
+                    Data = convertedData,
+                    RequestMessageId = request.MessageId,
+                    Statistic = request.Statistic,
+                    StatisticToPerform = desiredStat,
+                    TypeOfData = request.TypeOfData
+                };
+
+                _backend.OnPerformStatistic(performStatMessage);
             }
         }
     }
