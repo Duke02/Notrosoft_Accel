@@ -1,18 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Data;
+using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace Notrosoft_Accel
 {
@@ -22,53 +12,91 @@ namespace Notrosoft_Accel
     public partial class MainWindow : Window
     {
         public static int colNum = 10;
+        public static int rowNum = 10;
+        public static List<List<DataList>> dataList = new List<List<DataList>>();
+        
+
         public MainWindow()
         {
-            List<List<double>> arr2d = new List<List<double>>();
-            List<double> rows = new List<double>();
-            rows.Add(12.1);
-            rows.Add(13.1992);
-            arr2d.Add(rows);
-            arr2d.Add(rows);
+            // The List<String> representing the default column List of size colNum.
+            List<DataList> colConstruct = new List<DataList>();
+
+            for (int i = 0; i < colNum; i++)
+            {
+                colConstruct.Add(new DataList(""));
+            }
+            // Construct the rows as the empty column structure
+            for (int i = 0; i < rowNum; i++)
+            {
+                dataList.Add(colConstruct);
+            }
 
             InitializeComponent();
             Console.WriteLine("Hello World!");
         }
+
+        void dataGridList()
+        {
+            DataList.DataContext = dataList;
+        }
         void dataGridTable()
         {
-            DataTable notData = new DataTable();
+            DataTable dataTable = new DataTable();
 
-            char name = 'a';
+
+            // Column header constructor
+            char name = 'A';
+            int iteration = 1;
             String nS = ("" + name);
+            // Column constructor
             for (int i = 0; i < colNum; i++)
             {
-                DataColumn c1 = new DataColumn(nS, typeof(double));
-                name++;
-                nS = ("" + name);
-                notData.Columns.Add(c1);
+                DataColumn newColumn = new DataColumn(nS, typeof(String));
+                if (name < 'Z') name++;
+                else
+                {
+                    name = 'A';
+                    iteration++;
+                }
+                nS = ("");
+                for (int j = 0; j < iteration; j++)
+                {
+                    nS += name;
+                }
+                
+                dataTable.Columns.Add(newColumn);
             }
             
-            DataRow r1 = notData.NewRow();
+            for (int i = 0; i < rowNum; i++)
+            {
+                DataRow newRow = dataTable.NewRow();
+                for (int j = 0; j < colNum; j++)
+                {
+                    newRow[j] = dataList[i][j];
+                }                
+                dataTable.Rows.Add(newRow);
+            }
             
-            r1[0] = 12.1;
-            r1[1] = 13.1992;
-            r1[5] = 0.01;
-            r1[6] = 101;
-
-            DataRow r2 = notData.NewRow();
-            r2[0] = 1313.3131;
-            r2[1] = 0.922388811;
-
-            notData.Rows.Add(r1);
-            notData.Rows.Add(r2);
-
             
-            Data.ItemsSource = notData.DefaultView;
+            DataList.DataContext = dataTable.DefaultView;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            dataGridTable();
+            dataGridList();
+        }
+
+        private void addColumnButton_Click(object sender, RoutedEventArgs e)
+        {
+            ;
+            
+            colNum++;
+
+            for (int i = 0; i < rowNum; i++)
+            {
+                dataList[i].Add(new DataList(""));
+            }
+            dataGridList();
         }
     }
 }
