@@ -11,8 +11,8 @@ namespace Notrosoft_Accel
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static int colNum = 1;
-        public static int rowNum = 1;
+        public static int colNum = 10;
+        public static int rowNum = 10;
         public static List<List<string>> dataList = new List<List<string>>();
         
 
@@ -72,7 +72,7 @@ namespace Notrosoft_Accel
                 dataTable.Rows.Add(newRow);
             }
             
-            Data.DataContext = dataTable.DefaultView;
+            Data.ItemsSource = dataTable.DefaultView;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
