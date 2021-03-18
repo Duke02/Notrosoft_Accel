@@ -13,17 +13,17 @@ namespace Notrosoft_Accel
     {
         public static int colNum = 10;
         public static int rowNum = 10;
-        public static List<List<DataList>> dataList = new List<List<DataList>>();
+        public static List<List<string>> dataList = new List<List<string>>();
         
 
         public MainWindow()
         {
             // The List<String> representing the default column List of size colNum.
-            List<DataList> colConstruct = new List<DataList>();
+            List<string> colConstruct = new List<string>();
 
             for (int i = 0; i < colNum; i++)
             {
-                colConstruct.Add(new DataList(""));
+                colConstruct.Add("");
             }
             // Construct the rows as the empty column structure
             for (int i = 0; i < rowNum; i++)
@@ -35,10 +35,6 @@ namespace Notrosoft_Accel
             Console.WriteLine("Hello World!");
         }
 
-        void dataGridList()
-        {
-            DataList.DataContext = dataList;
-        }
         void dataGridTable()
         {
             DataTable dataTable = new DataTable();
@@ -51,7 +47,7 @@ namespace Notrosoft_Accel
             // Column constructor
             for (int i = 0; i < colNum; i++)
             {
-                DataColumn newColumn = new DataColumn(nS, typeof(String));
+                DataColumn newColumn = new DataColumn(nS, typeof(string));
                 if (name < 'Z') name++;
                 else
                 {
@@ -76,27 +72,29 @@ namespace Notrosoft_Accel
                 }                
                 dataTable.Rows.Add(newRow);
             }
-            
-            
-            DataList.DataContext = dataTable.DefaultView;
+            DataRow nR = dataTable.NewRow();
+            nR[0] = dataList[0][0];
+            nR[1] = dataList[0][0];
+            dataTable.Rows.Add(nR);
+            Data.DataContext = dataTable.DefaultView;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            dataGridList();
+            dataGridTable();
         }
 
         private void addColumnButton_Click(object sender, RoutedEventArgs e)
         {
-            ;
+            
             
             colNum++;
 
             for (int i = 0; i < rowNum; i++)
             {
-                dataList[i].Add(new DataList(""));
+                dataList[i].Add("");
             }
-            dataGridList();
+            dataGridTable();
         }
     }
 }

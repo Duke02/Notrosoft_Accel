@@ -21,10 +21,10 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <DataGrid x:Name="DataList" AlternatingRowBackground="LightGray" CanUserReorderColumns="False" 
+            <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False" 
                       CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50" 
                       GridLinesVisibility="All" HeadersVisibility="All" 
-                      Grid.Column="0" Grid.Row="1" Cursor="IBeam"/>
+                      Grid.Column="1" Grid.Row="1" Cursor="IBeam"/>
 
         </Grid>
 
