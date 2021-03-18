@@ -24,7 +24,8 @@
             <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False" 
                       CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50" 
                       GridLinesVisibility="All" HeadersVisibility="All" 
-                      Grid.Column="1" Grid.Row="1" Cursor="IBeam"/>
+                      Grid.Column="0" Grid.Row="1" Cursor="IBeam" ScrollViewer.CanContentScroll="True" IsSynchronizedWithCurrentItem="False">
+            </DataGrid>
 
         </Grid>
 

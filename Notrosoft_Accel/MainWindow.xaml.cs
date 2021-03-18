@@ -11,8 +11,8 @@ namespace Notrosoft_Accel
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static int colNum = 10;
-        public static int rowNum = 10;
+        public static int colNum = 1;
+        public static int rowNum = 1;
         public static List<List<string>> dataList = new List<List<string>>();
         
 
@@ -38,7 +38,6 @@ namespace Notrosoft_Accel
         void dataGridTable()
         {
             DataTable dataTable = new DataTable();
-
 
             // Column header constructor
             char name = 'A';
@@ -72,10 +71,7 @@ namespace Notrosoft_Accel
                 }                
                 dataTable.Rows.Add(newRow);
             }
-            DataRow nR = dataTable.NewRow();
-            nR[0] = dataList[0][0];
-            nR[1] = dataList[0][0];
-            dataTable.Rows.Add(nR);
+            
             Data.DataContext = dataTable.DefaultView;
         }
 
