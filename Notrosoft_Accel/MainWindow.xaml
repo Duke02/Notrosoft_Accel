@@ -26,7 +26,9 @@
                       GridLinesVisibility="All" HeadersVisibility="All" 
                       Grid.Column="0" Grid.Row="1" Cursor="IBeam" ScrollViewer.CanContentScroll="True" IsSynchronizedWithCurrentItem="False">
             </DataGrid>
+            <Button x:Name="addColumnButton" Grid.Column="1" Grid.Row="0" Content="Add Column" Click="addColumnButton_Click">
 
+            </Button>
         </Grid>
 
         <Grid Background="#FF2BC5E8" HorizontalAlignment="Stretch" 
@@ -47,9 +49,7 @@
             <TextBlock Grid.Column="0" Grid.Row="0" Text="File" FontSize="30" Margin="5,0,5,0"/>
             <TextBlock Grid.Column="1" Grid.Row="0" Text="Graph" FontSize="30" Margin="5,0,5,0"/>
             <TextBlock Grid.Column="2" Grid.Row="0" Text="Statistics" FontSize="30" Margin="5,0,5,0"/>
-            <Button x:Name="addColumnButton" Grid.Column="0" Grid.Row="1" Content="Add Column" Click="addColumnButton_Click">
-
-            </Button>
+            
         </Grid>
 
     </Grid>

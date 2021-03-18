@@ -11,10 +11,10 @@ namespace Notrosoft_Accel
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static int colNum = 10;
-        public static int rowNum = 10;
-        public static List<List<string>> dataList = new List<List<string>>();
-        
+        public static int colNum = 10;  // Number of Columns present in the data structure
+        public static int rowNum = 10;  // Number of Rows present in the data structure
+        public static List<List<string>> dataList = new List<List<string>>();   // The data structure
+        public static DataTable dataTable = new DataTable();  // DataTable sits between the dataList of the backend and DataGrid of the GUI
 
         public MainWindow()
         {
@@ -35,28 +35,32 @@ namespace Notrosoft_Accel
             Console.WriteLine("Hello World!");
         }
 
+        // Constructs a dataTable object and binds it to the DataGrid's ItemsSource.
         void dataGridTable()
         {
-            DataTable dataTable = new DataTable();
+            // Set the dataTable to a new object
+            dataTable = new DataTable();
 
             // Column header constructor
-            char name = 'A';
-            int iteration = 1;
-            String nS = ("" + name);
+            char currentNameCharacter = 'A';                // The character that determines the name of the column
+            int iteration = 1;                              // The current iteration through the uppercase letters 
+            String newColName = ("" + currentNameCharacter);// The constructed first name (should simply by "A")
+
             // Column constructor
             for (int i = 0; i < colNum; i++)
             {
-                DataColumn newColumn = new DataColumn(nS, typeof(string));
-                if (name < 'Z') name++;
+                // Instantiate a new DataColumn type
+                DataColumn newColumn = new DataColumn(newColName, typeof(string));
+                if (currentNameCharacter < 'Z') currentNameCharacter++;
                 else
                 {
-                    name = 'A';
+                    currentNameCharacter = 'A';
                     iteration++;
                 }
-                nS = ("");
+                newColName = ("");
                 for (int j = 0; j < iteration; j++)
                 {
-                    nS += name;
+                    newColName += currentNameCharacter;
                 }
                 
                 dataTable.Columns.Add(newColumn);
@@ -84,6 +88,15 @@ namespace Notrosoft_Accel
         {
             
             
+            for (int i = 0; i < rowNum; i++)
+            {
+                List<string> updatedRow = new List<string>();
+                for (int j = 0; j < colNum; j++)
+                {
+                    updatedRow.Add(dataTable.Rows[i][j].ToString());
+                }
+                dataList[i] = updatedRow;
+            }
             colNum++;
 
             for (int i = 0; i < rowNum; i++)
