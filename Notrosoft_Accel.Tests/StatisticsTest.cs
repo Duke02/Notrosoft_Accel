@@ -13,7 +13,18 @@ namespace Notrosoft_Accel.Tests
 
         private List<double> GetLotsOfNumbers(int currIndex)
         {
-            return Enumerable.Range(1, (currIndex + 1) * (currIndex + 1)).Select(x => (double) x).ToList();
+            return Enumerable.Range(1, (currIndex + 1) * (currIndex + 1)).Select(x => (double)x).ToList();
+        }
+
+        private List<List<double>> GetSmallDataSet()
+        {
+            return new List<List<double>>
+            {
+                new List<double>
+                {
+                    0,1,2,0,1,2,0,1,2,0,1,2,0,1,2
+                }
+            };
         }
 
         [TestMethod]
@@ -21,12 +32,7 @@ namespace Notrosoft_Accel.Tests
         {
             var modeStatistic = new ModeStatistic();
 
-            var data = new List<List<double>>();
-            for (var i = 0; i < 5; i++)
-                data.Add(new List<double>
-                {
-                    1, 1, 2, 3, 4
-                });
+            var data = GetSmallDataSet();
 
             var expected = 1.0;
             var actual = modeStatistic.Operate(data);
