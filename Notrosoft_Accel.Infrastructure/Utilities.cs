@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Notrosoft_Accel.Infrastructure
@@ -8,6 +9,16 @@ namespace Notrosoft_Accel.Infrastructure
     /// </summary>
     public static class Utilities
     {
+        // https://cs.stackexchange.com/a/14457
+        // This value is +1 than the actual max.
+        /// <summary>
+        ///     The max input that the <see cref="Factorial" /> function can take. It's 1 more than the actual limit, so use i
+        ///     < MaxFactorialInput.
+        /// </summary>
+        private const int MaxFactorialInput = 171;
+
+        private static double[] _factorials;
+
         /// <summary>
         ///     Flattens the provided 2D container into a 1D container.
         /// </summary>
@@ -58,6 +69,32 @@ namespace Notrosoft_Accel.Infrastructure
             double n = xValuesArray.Length;
 
             return xyProducts.Sum() - 1 / n * sumOfX * sumOfY;
+        }
+
+        public static double Factorial(int n)
+        {
+            // If the inputted required is too big, then don't even try to compute it.
+            if (n > MaxFactorialInput)
+                throw new ArgumentOutOfRangeException(
+                    $"Factorial function can only process {MaxFactorialInput}! without running out of space.");
+
+            // If we've already calculated all of the possible factorials,
+            // don't recalculate them.
+            if (_factorials != null) return _factorials[n];
+
+            // Calculate the factorials for the first time.
+            _factorials = new double[MaxFactorialInput];
+
+            // 0! = 1, 1! = 1
+            // (Ngl I had to look this up)
+            _factorials[0] = 1;
+            _factorials[1] = 1;
+
+            // n! = n * (n-1)!
+            for (var i = 2; i < MaxFactorialInput; i++) _factorials[i] = i * _factorials[i - 1];
+
+            // Return the requested factorial.
+            return _factorials[n];
         }
     }
 }
