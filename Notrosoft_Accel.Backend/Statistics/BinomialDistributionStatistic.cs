@@ -13,6 +13,8 @@ namespace Notrosoft_Accel.Backend.Statistics
 
             if (!flattenedValues.Any())
                 throw new ArgumentException("Binomial Distribution requires input data to operate.");
+
+            return 0;
         }
     }
 }
