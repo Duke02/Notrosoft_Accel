@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Notrosoft_Accel.Backend\Notrosoft_Accel.Backend.csproj"/>
     <ProjectReference Include="..\Notrosoft_Accel\Notrosoft_Accel.csproj" />
   </ItemGroup>
 
