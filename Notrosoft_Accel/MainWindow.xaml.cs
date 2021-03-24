@@ -11,8 +11,8 @@ namespace Notrosoft_Accel
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static int colNum = 10;  // Number of Columns present in the data structure.
-        public static int rowNum = 10;  // Number of Rows present in the data structure.
+        public static int colNum = 20;  // Number of Columns present in the data structure.
+        public static int rowNum = 20;  // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new List<List<string>>();   // The data structure.
         public static DataTable dataTable = new DataTable();  // DataTable sits between the dataList of the backend and DataGrid of the GUI.
 
