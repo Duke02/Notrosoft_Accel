@@ -15,7 +15,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
         /// <returns>The slope for the linear line. TODO: Needs to return intercept as well.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public Dictionary<string, object> Operate(IEnumerable<IEnumerable<double>> values, params object[] param)
         {
             var valuesArray = values.ToArray();
 
@@ -47,7 +47,11 @@ namespace Notrosoft_Accel.Backend.Statistics
             var intercept = yAverage - slope * xAverage;
 
             // TODO: Figure out a way to return the slope and intercept.
-            return slope;
+            return new Dictionary<string, object>
+            {
+                {"slope", slope},
+                {"intercept", intercept}
+            };
         }
     }
 }

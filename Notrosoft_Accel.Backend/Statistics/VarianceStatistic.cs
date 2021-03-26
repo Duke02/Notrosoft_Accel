@@ -15,7 +15,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
         /// <returns>The variation for the inputted values.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public Dictionary<string, object> Operate(IEnumerable<IEnumerable<double>> values, params object[] param)
         {
             // Flatten the 2D inputted container into a 1D container.
             var flattenedValues = Utilities.Flatten(values).ToArray();
@@ -24,7 +24,12 @@ namespace Notrosoft_Accel.Backend.Statistics
             if (!flattenedValues.Any())
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
-            return Utilities.GetVariance(flattenedValues);
+            var variance = Utilities.GetVariance(flattenedValues);
+
+            return new Dictionary<string, object>
+            {
+                {"variance", variance}
+            };
         }
     }
 }

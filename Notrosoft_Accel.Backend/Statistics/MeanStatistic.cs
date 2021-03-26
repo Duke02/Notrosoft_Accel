@@ -15,7 +15,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// </summary>
         /// <param name="values">The 2D data to use in the calculations.</param>
         /// <returns>The mathematical mean of the inputted data.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public Dictionary<string, object> Operate(IEnumerable<IEnumerable<double>> values, params object[] param)
         {
             // Flatten the 2D inputted container into a 1D container.
             var flattenedValues = Utilities.Flatten(values).ToArray();
@@ -25,7 +25,10 @@ namespace Notrosoft_Accel.Backend.Statistics
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
             // Return the average/mean of the inputted values.
-            return flattenedValues.Average();
+            return new Dictionary<string, object>
+            {
+                {"mean", flattenedValues.Average()}
+            };
         }
     }
 }

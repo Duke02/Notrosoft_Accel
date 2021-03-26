@@ -15,7 +15,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// </summary>
         /// <param name="values">The 2 dimensional data to calculate the median from.</param>
         /// <returns>The median of the data.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public Dictionary<string, object> Operate(IEnumerable<IEnumerable<double>> values, params object[] param)
         {
             // Flattens the 2D input into a 1d enumerable.
             var flattenedInput = Utilities.Flatten(values).ToArray();
@@ -29,6 +29,8 @@ namespace Notrosoft_Accel.Backend.Statistics
 
             var count = sortedInput.Length;
 
+            double median;
+
             // If the length is even...
             if (count % 2 == 0)
             {
@@ -37,13 +39,22 @@ namespace Notrosoft_Accel.Backend.Statistics
                 var secondIndex = firstIndex - 1;
 
                 // And return their midpoint.
-                return (sortedInput[secondIndex] + sortedInput[firstIndex]) / 2.0;
+                median = (sortedInput[secondIndex] + sortedInput[firstIndex]) / 2.0;
+            }
+            else
+            {
+                // Just return the middle of the input.
+                var middleIndex = count / 2;
+
+                median = sortedInput[middleIndex];
             }
 
-            // Just return the middle of the input.
-            var middleIndex = count / 2;
-
-            return sortedInput[middleIndex];
+            return new Dictionary<string, object>
+            {
+                {
+                    "median", median
+                }
+            };
         }
     }
 }

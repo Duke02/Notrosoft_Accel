@@ -15,7 +15,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// </summary>
         /// <param name="values">A 2D data collection of numbers.</param>
         /// <returns>The most common number of the inputted data.</returns>
-        public double Operate(IEnumerable<IEnumerable<double>> values)
+        public Dictionary<string, object> Operate(IEnumerable<IEnumerable<double>> values, params object[] param)
         {
             // Flatten the 2d list of lists into a 1d list.
             var flattenedArray = Utilities.Flatten(values).ToArray();
@@ -34,7 +34,11 @@ namespace Notrosoft_Accel.Backend.Statistics
 
             foreach (var num in flattenedArray) countDict[num]++;
 
-            return countDict.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+            var mode = countDict.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+            return new Dictionary<string, object>
+            {
+                {"mode", mode}
+            };
         }
     }
 }
