@@ -11,6 +11,7 @@ namespace Notrosoft_Accel
     /// </summary>
     public partial class MainWindow : Window
     {
+        static Interlayer interlayer = new Interlayer();
         public static int colNum = 20;  // Number of Columns present in the data structure.
         public static int rowNum = 20;  // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new List<List<string>>();   // The data structure.
@@ -115,6 +116,11 @@ namespace Notrosoft_Accel
             }
             // Redo the dataTable to DataGrid binding.
             dataGridTable();
+        }
+
+        private void StatsButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

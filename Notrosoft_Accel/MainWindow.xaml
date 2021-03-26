@@ -8,34 +8,34 @@
         mc:Ignorable="d"
         Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded">
 
+    
+        <Grid>
 
-    <Grid>
-
-
-        <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="70,70,0,0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+         <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="70,70,0,0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="10" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition MinWidth="50" MaxWidth="200"/>
                 <ColumnDefinition Width="1" />
             </Grid.ColumnDefinitions>
-            
-            <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" CanContentScroll="True" Grid.Column="0" Grid.Row="1">
+
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+
                 <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False" 
                       CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50" 
                       GridLinesVisibility="All" HeadersVisibility="All" Cursor="IBeam" ScrollViewer.CanContentScroll="True"
-                      IsSynchronizedWithCurrentItem="False" 
+                      IsSynchronizedWithCurrentItem="False"  Grid.Column="0" Grid.Row="1"
                       ScrollViewer.VerticalScrollBarVisibility="Visible" 
                       ScrollViewer.HorizontalScrollBarVisibility="Visible" 
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" EnableRowVirtualization="False" AreRowDetailsFrozen="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
                       >
                 </DataGrid>
+
             </ScrollViewer>
-            
             <Button x:Name="addColumnButton" Grid.Column="1" Grid.Row="0" 
                         Content="Add Column" Click="addColumnButton_Click" MaxWidth="200" />
             <TextBlock Text="This is where all the output will go
@@ -45,7 +45,7 @@
 
 
         </Grid>
-
+        
         <Grid Background="#FF2BC5E8" HorizontalAlignment="Stretch" 
               VerticalAlignment="Top">
             <Grid.RowDefinitions>
@@ -63,10 +63,11 @@
             
             <TextBlock Grid.Column="0" Grid.Row="0" Text="File" FontSize="30" Margin="5,0,5,0"/>
             <TextBlock Grid.Column="1" Grid.Row="0" Text="Graph" FontSize="30" Margin="5,0,5,0"/>
-            <TextBlock Grid.Column="2" Grid.Row="0" Text="Statistics" FontSize="30" Margin="5,0,5,0"/>
+            <Button Grid.Column="2" Grid.Row="0" Content="Statistics" FontSize="20" Margin="5,0,5,0"
+                    x:Name="StatsButton" Click="StatsButton_Click"/>
             
         </Grid>
 
     </Grid>
-
+    
 </Window>
