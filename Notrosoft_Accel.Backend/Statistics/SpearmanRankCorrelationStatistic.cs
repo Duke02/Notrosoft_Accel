@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Notrosoft_Accel.Infrastructure;
 
 namespace Notrosoft_Accel.Backend.Statistics
 {
@@ -7,7 +9,36 @@ namespace Notrosoft_Accel.Backend.Statistics
     {
         public Dictionary<string, object> Operate(IEnumerable<IEnumerable<double>> values, params object[] parameters)
         {
-            throw new NotImplementedException();
+            var concreteValues = values.Select(vals => vals.ToArray()).ToArray();
+
+            if (concreteValues.Length != 2)
+                throw new InvalidOperationException(
+                    "Spearman Rank Correlation Statistic needs 2 variables to operate on.");
+
+            var xData = concreteValues[0].ToList();
+            var yData = concreteValues[1].ToList();
+
+            var xRanks = xData.OrderBy(x => x)
+                .Select(x => xData.IndexOf(x))
+                .Select(x => (double) x)
+                .ToArray();
+
+            var yRanks = yData.OrderBy(y => y)
+                .Select(y => yData.IndexOf(y))
+                .Select(y => (double) y)
+                .ToArray();
+
+            var numerator = Utilities.GetCovariance(xRanks, yRanks);
+
+            var stdDevXRank = Math.Sqrt(Utilities.GetVariance(xRanks));
+            var stdDevYRank = Math.Sqrt(Utilities.GetVariance(yRanks));
+
+            var spearman = numerator / stdDevXRank / stdDevYRank;
+
+            return new Dictionary<string, object>
+            {
+                {"spearman", spearman}
+            };
         }
     }
 }
