@@ -110,5 +110,10 @@ namespace Notrosoft_Accel.Infrastructure
         {
             return Combination(n, k) * Math.Pow(p, k) * Math.Pow(1 - p, n - k);
         }
+
+        public static Dictionary<string, int> ConvertToFrequencyValues(IEnumerable<double> flattenedValues)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
