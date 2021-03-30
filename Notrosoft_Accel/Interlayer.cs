@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Notrosoft_Accel.Infrastructure;
+using Notrosoft_Accel.Backend.Statistics;
 
 namespace Notrosoft_Accel
 {
@@ -9,7 +10,7 @@ namespace Notrosoft_Accel
         private readonly List<List<int>> _ints = new();
         private List<List<string>> _strings = new();
 
-        public bool doStatistics(List<List<string>> input, StatisticType stat)
+        public string doStatistics(List<List<string>> input, StatisticType stat, params object[] param)
         {
             // Ensure List is horizontal, not vertical.
             if (input.Count < input[0].Count)
@@ -25,63 +26,111 @@ namespace Notrosoft_Accel
                 _doubles[i][j] = double.Parse(_strings[i][j]);
                 _ints[i][j] = int.Parse(_strings[i][j]);
             }
-
+            // Set the return variable for statistic operations.
+            Dictionary<string, object> keyValues = new Dictionary<string, object>(); 
+            // String constructed based off the statistic performed.
+            string returnStr;
+            // String used for when a Statistical method is not implemented quite yet.
+            string NaS = "Statistic method has not been added yet";
             switch (stat)
             {
                 case StatisticType.Mean:
-                    return true;
+                    var mean = new MeanStatistic();
+                    keyValues = mean.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.Median:
-                    return true;
+                    var median = new MedianStatistic();
+                    keyValues = median.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.Mode:
-                    return true;
+                    var mode = new ModeStatistic();
+                    keyValues = mode.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.StandardDeviation:
-                    return true;
+                    var sDev = new StandardDeviationStatistic();
+                    keyValues = sDev.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.Variance:
-                    return true;
+                    var variance = new VarianceStatistic();
+                    keyValues = variance.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.CoefficientOfVariance:
-                    return true;
+                    var coeffVar = new CoefficientOfVarianceStatistic();
+                    keyValues = coeffVar.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.Percentile:
                     // Need parameter between 0 and 1 for percentile
-                    return true;
+                    var percentile = new PercentileStatistic();
+                    keyValues = percentile.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.ProbabilityDistribution:
                     // Outputs mean and stdev
-                    return true;
+                    return NaS;
                     break;
+
                 case StatisticType.BinomialDistribution:
                     // Outputs something.TBD
-                    return true;
+                    var binDis = new BinomialDistributionStatistic();
+                    keyValues = binDis.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.LeastSquaresLine:
                     // /outputs slope and intercept
-                    return true;
+                    var leastSqr = new LeastSquareLineStatistic();
+                    keyValues = leastSqr.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.ChiSquare:
                     // TODO: Learn.
-                    return true;
+                    var chiSqr = new ChiSquareStatistic();
+                    keyValues = chiSqr.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.CorrelationCoefficient:
-                    return true;
+                    var corrCoe = new CorrelationCoefficientStatistic();
+                    keyValues = corrCoe.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.SignTest:
                     // Complicated.
-                    return true;
+                    var sign = new SignTestStatistic();
+                    keyValues = sign.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.RankSumTest:
                     // Complicated.
-                    return true;
+                    var rankSum = new RankSumTestStatistic();
+                    keyValues = rankSum.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 case StatisticType.SpearmanRankCorrelationCoefficient:
-                    return true;
+                    var spearman = new SpearmanRankCorrelationStatistic();
+                    keyValues = spearman.Operate(_doubles, param);
+                    return NaS;
                     break;
+
                 default:
-                    return false;
+                    return NaS;
             }
         }
     }

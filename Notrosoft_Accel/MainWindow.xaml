@@ -23,7 +23,6 @@
                 <ColumnDefinition Width="1" />
             </Grid.ColumnDefinitions>
 
-           
 
                 <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False" 
                       CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50" 
@@ -31,12 +30,11 @@
                       IsSynchronizedWithCurrentItem="False"  Grid.Column="0" Grid.Row="1"
                       ScrollViewer.VerticalScrollBarVisibility="Visible" 
                       ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" EnableRowVirtualization="False" AreRowDetailsFrozen="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" EnableRowVirtualization="False" AreRowDetailsFrozen="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" LoadingRow="Data_LoadingRow"
                       >
                 </DataGrid>
 
-            
-            <Button x:Name="addColumnButton" Grid.Column="1" Grid.Row="0" 
+                <Button x:Name="addColumnButton" Grid.Column="1" Grid.Row="0" 
                         Content="Add Column" Click="addColumnButton_Click" MaxWidth="200" />
             <TextBlock Text="This is where all the output will go
                        Next line test

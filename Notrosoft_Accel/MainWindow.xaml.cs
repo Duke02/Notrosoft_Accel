@@ -44,27 +44,15 @@ namespace Notrosoft_Accel
 
             // Column header constructor.
             char currentNameCharacter = 'A';                // The character that determines the name of the column.
-            int iteration = 1;                              // The current iteration through the uppercase letters.
             String newColName = ("" + currentNameCharacter);// The constructed first name (should simply by "A").
 
             // Column constructor
             for (int i = 0; i < colNum; i++)
             {
+                
                 // Instantiate a new DataColumn with a string type to be put into the DataTable.
-                DataColumn newColumn = new DataColumn(newColName, typeof(string));
+                DataColumn newColumn = new DataColumn((i + 1).ToString(), typeof(string));
 
-                // This block simply creates the name of the next column to be added (used as it's header).
-                if (currentNameCharacter < 'Z') currentNameCharacter++;
-                else
-                {
-                    currentNameCharacter = 'A';
-                    iteration++;
-                }
-                newColName = ("");
-                for (int j = 0; j < iteration; j++)
-                {
-                    newColName += currentNameCharacter;
-                }
                 
                 // Add the new column to the list of columns in the DataTable.
                 dataTable.Columns.Add(newColumn);
@@ -118,9 +106,12 @@ namespace Notrosoft_Accel
             dataGridTable();
         }
 
-        private void StatsButton_Click(object sender, RoutedEventArgs e)
+        
+        // Defines the Row headers
+        private void Data_LoadingRow(object sender, System.Windows.Controls.DataGridRowEventArgs e)
         {
-
+            string header = (' ' + (e.Row.GetIndex().ToString()));
+            e.Row.Header = header;
         }
     }
 }
