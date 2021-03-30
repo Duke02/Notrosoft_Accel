@@ -16,7 +16,7 @@ namespace Notrosoft_Accel
         public static int rowNum = 20;  // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new List<List<string>>();   // The data structure.
         public static DataTable dataTable = new DataTable();  // DataTable sits between the dataList of the backend and DataGrid of the GUI.
-
+        private int[] currCell = { 0, 0 };
         public MainWindow()
         {
             // The List<String> representing the default column List of size colNum.
@@ -51,7 +51,7 @@ namespace Notrosoft_Accel
             {
                 
                 // Instantiate a new DataColumn with a string type to be put into the DataTable.
-                DataColumn newColumn = new DataColumn((i + 1).ToString(), typeof(string));
+                DataColumn newColumn = new DataColumn((i).ToString(), typeof(string));
 
                 
                 // Add the new column to the list of columns in the DataTable.
@@ -110,8 +110,41 @@ namespace Notrosoft_Accel
         // Defines the Row headers
         private void Data_LoadingRow(object sender, System.Windows.Controls.DataGridRowEventArgs e)
         {
-            string header = (' ' + (e.Row.GetIndex().ToString()));
+            string header = ' ' + e.Row.GetIndex().ToString();
             e.Row.Header = header;
         }
+
+        
+
+       
+
+        // Adding rows handler.
+        private void addRowButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Copies all data input to the dataTable back to the dataList for permanence.
+            for (int i = 0; i < rowNum; i++)
+            {
+                List<string> updatedRow = new List<string>();
+                for (int j = 0; j < colNum; j++)
+                {
+                    updatedRow.Add(dataTable.Rows[i][j].ToString());
+                }
+                dataList[i] = updatedRow;
+            }
+            // Inrease the column number.
+            rowNum++;
+            List<string> emptyCol = new List<string>();
+            // Add an additional empty column to each row in the list.
+            for (int i = 0; i < rowNum; i++)
+            {
+                emptyCol.Add("");
+            }
+
+            dataList.Add(emptyCol);
+            // Redo the dataTable to DataGrid binding.
+            dataGridTable();
+        }
+
+        
     }
 }

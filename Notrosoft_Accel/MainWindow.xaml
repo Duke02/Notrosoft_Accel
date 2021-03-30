@@ -11,13 +11,14 @@
     
         <Grid>
 
-         <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="70,70,0,0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+         <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,70,0,0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="10" />
+                <RowDefinition Height="30" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition MinWidth="50" MaxWidth="200"/>
                 <ColumnDefinition Width="1" />
@@ -27,18 +28,22 @@
                 <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False" 
                       CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50" 
                       GridLinesVisibility="All" HeadersVisibility="All" Cursor="IBeam" ScrollViewer.CanContentScroll="True"
-                      IsSynchronizedWithCurrentItem="False"  Grid.Column="0" Grid.Row="1"
+                      IsSynchronizedWithCurrentItem="False"  Grid.Column="1" Grid.Row="1" 
                       ScrollViewer.VerticalScrollBarVisibility="Visible" 
                       ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" EnableRowVirtualization="False" AreRowDetailsFrozen="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" LoadingRow="Data_LoadingRow"
-                      >
-                </DataGrid>
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                      EnableRowVirtualization="False" AreRowDetailsFrozen="True" 
+                      CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" 
+                      LoadingRow="Data_LoadingRow" SelectionUnit="CellOrRowHeader"
+                      />
 
-                <Button x:Name="addColumnButton" Grid.Column="1" Grid.Row="0" 
+            <Button x:Name="addColumnButton" Grid.Column="2" Grid.Row="0" 
                         Content="Add Column" Click="addColumnButton_Click" MaxWidth="200" />
+            <Button x:Name="addRowButton" Grid.Column="0" Grid.Row="2" Content="Add Row" 
+                     Click="addRowButton_Click" MaxWidth="150"/>
             <TextBlock Text="This is where all the output will go
                        Next line test
-                       and tabs or something idk" FontSize="10" Grid.Column="1"
+                       and tabs or something idk" FontSize="10" Grid.Column="2"
                        Grid.Row="1" Name="outputTextBlock" TextWrapping="Wrap" MaxWidth="200" />
 
 
@@ -60,9 +65,11 @@
 
             
             <TextBlock Grid.Column="0" Grid.Row="0" Text="File" FontSize="30" Margin="5,0,5,0"/>
+            
             <TextBlock Grid.Column="1" Grid.Row="0" Text="Graph" FontSize="30" Margin="5,0,5,0"/>
-            <Button Grid.Column="2" Grid.Row="0" Content="Statistics" FontSize="20" Margin="5,0,5,0"
-                    x:Name="StatsButton" Click="StatsButton_Click"/>
+            
+            <ComboBox Grid.Column="2" Grid.Row="0" FontSize="20" Margin="5,0,5,0"
+                    x:Name="StatsButton"/>
             
         </Grid>
 
