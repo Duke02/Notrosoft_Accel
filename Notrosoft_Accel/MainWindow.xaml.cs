@@ -49,11 +49,8 @@ namespace Notrosoft_Accel
             // Column constructor
             for (int i = 0; i < colNum; i++)
             {
-                
                 // Instantiate a new DataColumn with a string type to be put into the DataTable.
                 DataColumn newColumn = new DataColumn((i).ToString(), typeof(string));
-
-                
                 // Add the new column to the list of columns in the DataTable.
                 dataTable.Columns.Add(newColumn);
             }
@@ -135,7 +132,7 @@ namespace Notrosoft_Accel
             rowNum++;
             List<string> emptyCol = new List<string>();
             // Add an additional empty column to each row in the list.
-            for (int i = 0; i < rowNum; i++)
+            for (int i = 0; i < colNum; i++)
             {
                 emptyCol.Add("");
             }

@@ -8,12 +8,15 @@
         mc:Ignorable="d"
         Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded">
 
-    
-        <Grid>
-
-         <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="0,70,0,0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+    <ScrollViewer>
+        
+            
+                
+         <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch"
+               Margin="0,0,0,0" ScrollViewer.CanContentScroll="True" 
+               ScrollViewer.HorizontalScrollBarVisibility="Visible">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
@@ -31,10 +34,10 @@
                       IsSynchronizedWithCurrentItem="False"  Grid.Column="1" Grid.Row="1" 
                       ScrollViewer.VerticalScrollBarVisibility="Visible" 
                       ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
                       EnableRowVirtualization="False" AreRowDetailsFrozen="True" 
                       CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" 
-                      LoadingRow="Data_LoadingRow" SelectionUnit="CellOrRowHeader"
+                      LoadingRow="Data_LoadingRow" SelectionUnit="CellOrRowHeader" VerticalAlignment="Top" ClipToBounds="True" 
                       />
 
             <Button x:Name="addColumnButton" Grid.Column="2" Grid.Row="0" 
@@ -49,30 +52,7 @@
 
         </Grid>
         
-        <Grid Background="#FF2BC5E8" HorizontalAlignment="Stretch" 
-              VerticalAlignment="Top">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="45" />
-                <RowDefinition Height="30" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
+        
 
-            
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="File" FontSize="30" Margin="5,0,5,0"/>
-            
-            <TextBlock Grid.Column="1" Grid.Row="0" Text="Graph" FontSize="30" Margin="5,0,5,0"/>
-            
-            <ComboBox Grid.Column="2" Grid.Row="0" FontSize="20" Margin="5,0,5,0"
-                    x:Name="StatsButton"/>
-            
-        </Grid>
-
-    </Grid>
-    
+    </ScrollViewer>
 </Window>
