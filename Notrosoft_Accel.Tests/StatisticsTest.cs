@@ -29,7 +29,8 @@ namespace Notrosoft_Accel.Tests
                 });
 
             var expected = 1.0;
-            var actual = modeStatistic.Operate(data);
+            var actual = (double) modeStatistic.Operate(data)["mode"];
+
 
             Assert.AreEqual(expected, actual, Tolerance, "Mode Statistic does not give the correct value!");
         }
@@ -47,7 +48,7 @@ namespace Notrosoft_Accel.Tests
                 });
 
             var expected = 2.0;
-            var actual = modeStatistic.Operate(data);
+            var actual = (double) modeStatistic.Operate(data)["mode"];
 
             Assert.AreEqual(expected, actual, Tolerance, "Mode Statistic does not give the correct value!");
         }
@@ -77,7 +78,7 @@ namespace Notrosoft_Accel.Tests
                 data.Add(GetLotsOfNumbers(i));
 
             var expected = 1.0;
-            var actual = modeStatistic.Operate(data);
+            var actual = (double) modeStatistic.Operate(data)["mode"];
 
             Assert.AreEqual(expected, actual, Tolerance, "Mode Statistic does not give the correct value!");
         }
@@ -94,7 +95,7 @@ namespace Notrosoft_Accel.Tests
                 });
 
             var expected = 6.0 / 10.0;
-            var actual = meanStatistic.Operate(data);
+            var actual = (double) meanStatistic.Operate(data)["mean"];
 
             Assert.AreEqual(expected, actual, Tolerance, "Mean Statistic does not give the correct value!");
         }
@@ -107,7 +108,7 @@ namespace Notrosoft_Accel.Tests
             for (var i = 0; i < 25; i++) data.Add(GetLotsOfNumbers(i));
 
             var expected = 195.4;
-            var actual = meanStatistic.Operate(data);
+            var actual = (double) meanStatistic.Operate(data)["mean"];
 
             Assert.AreEqual(expected, actual, Tolerance, "Mean Statistic does not give the correct value!");
         }
@@ -125,7 +126,7 @@ namespace Notrosoft_Accel.Tests
             // 1X, 1X, 1X, 1X, 1X, 1X, 2X, 2, 2X, 3X, 3X, 3X, 4X, 4X, 4X
 
             var expected = 2.0;
-            var actual = medianStatistic.Operate(data);
+            var actual = (double) medianStatistic.Operate(data)["median"];
 
             Assert.AreEqual(expected, actual, Tolerance);
         }
@@ -143,7 +144,7 @@ namespace Notrosoft_Accel.Tests
             // 1X, 1X, 2X, 2X, 2X, 2, 3, 3X, 4X, 4X, 5X, 5X
 
             var expected = 2.5;
-            var actual = medianStatistic.Operate(data);
+            var actual = (double) medianStatistic.Operate(data)["median"];
 
             Assert.AreEqual(expected, actual, Tolerance);
         }
@@ -157,7 +158,7 @@ namespace Notrosoft_Accel.Tests
             // 1X, 1X, 2X, 2X, 2X, 2, 3, 3X, 4X, 4X, 5X, 5X
 
             var expected = 163;
-            var actual = medianStatistic.Operate(data);
+            var actual = (double) medianStatistic.Operate(data)["median"];
 
             Assert.AreEqual(expected, actual, Tolerance);
         }
@@ -165,12 +166,12 @@ namespace Notrosoft_Accel.Tests
         [TestMethod]
         public void Statistics_Variance_LotsOfNumbers()
         {
-            var medianStatistic = new VarianceStatistic();
+            var varianceStatistic = new VarianceStatistic();
             var data = new List<List<double>>();
             for (var i = 0; i < 25; i++) data.Add(GetLotsOfNumbers(i));
 
             var expected = 22278.24;
-            var actual = medianStatistic.Operate(data);
+            var actual = (double) varianceStatistic.Operate(data)["variance"];
 
             Assert.AreEqual(expected, actual, Tolerance);
         }
@@ -190,7 +191,7 @@ namespace Notrosoft_Accel.Tests
             Console.WriteLine(data.SelectMany(val => val).Count());
 
             var expected = 0.666666667;
-            var actual = varianceStatistic.Operate(data);
+            var actual = (double) varianceStatistic.Operate(data)["variance"];
 
             Assert.AreEqual(expected, actual, Tolerance);
         }
@@ -208,7 +209,7 @@ namespace Notrosoft_Accel.Tests
                 });
 
             var expected = 0.816496581;
-            var actual = stddevStatistic.Operate(data);
+            var actual = (double) stddevStatistic.Operate(data)["Standard Deviation"];
 
             Assert.AreEqual(expected, actual, Tolerance);
         }
@@ -221,7 +222,7 @@ namespace Notrosoft_Accel.Tests
             for (var i = 0; i < 25; i++) data.Add(GetLotsOfNumbers(i));
 
             var expected = 149.2589696;
-            var actual = stddevStatistic.Operate(data);
+            var actual = (double) stddevStatistic.Operate(data)["Standard Deviation"];
 
             Assert.AreEqual(expected, actual, Tolerance);
         }
@@ -238,7 +239,7 @@ namespace Notrosoft_Accel.Tests
                 });
 
             var expected = 0.816496581;
-            var actual = cvStatistic.Operate(data);
+            var actual = (double) cvStatistic.Operate(data)["cv"];
 
             Assert.AreEqual(expected, actual, Tolerance);
         }
@@ -251,7 +252,7 @@ namespace Notrosoft_Accel.Tests
             for (var i = 0; i < 25; i++) data.Add(GetLotsOfNumbers(i));
 
             var expected = 0.763863713;
-            var actual = cvStatistic.Operate(data);
+            var actual = (double) cvStatistic.Operate(data)["cv"];
 
             Assert.AreEqual(expected, actual, Tolerance);
         }

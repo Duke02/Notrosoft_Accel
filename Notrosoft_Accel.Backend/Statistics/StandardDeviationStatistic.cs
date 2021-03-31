@@ -29,7 +29,7 @@ namespace Notrosoft_Accel.Backend.Statistics
 
             return new Dictionary<string, object>
             {
-                {"stdev", stddev}
+                {"Standard Deviation", stddev}
             };
         }
     }
