@@ -14,7 +14,7 @@ namespace Notrosoft_Accel.Tests
 
             var data = TestHelperFunctions.GetEmpty1dData();
 
-            Assert.ThrowsException<InvalidOperationException>(() => modeStatistic.Operate(data));
+            Assert.ThrowsException<InvalidOperationException>(() => modeStatistic.OperateOrdinalData(data));
         }
 
         [TestMethod]
@@ -25,7 +25,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1d();
 
             var expected = 0;
-            var actual = (double) modeStatistic.Operate(data)["mode"];
+            var actual = (double) modeStatistic.OperateOrdinalData(data)["mode"];
 
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
@@ -40,7 +40,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 1.0;
-            var actual = (double) modeStatistic.Operate(data)["mode"];
+            var actual = (double) modeStatistic.OperateOrdinalData(data)["mode"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
                 "Mode Statistic does not give the correct value!");
@@ -53,7 +53,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1d();
 
             var expected = 0.9375;
-            var actual = (double) meanStatistic.Operate(data)["mean"];
+            var actual = (double) meanStatistic.OperateOrdinalData(data)["mean"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
                 "Mean Statistic does not give the correct value!");
@@ -66,7 +66,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 150.3292683;
-            var actual = (double) meanStatistic.Operate(data)["mean"];
+            var actual = (double) meanStatistic.OperateOrdinalData(data)["mean"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
                 "Mean Statistic does not give the correct value!");
@@ -78,7 +78,7 @@ namespace Notrosoft_Accel.Tests
             var meanStatistic = new MeanStatistic();
             var data = TestHelperFunctions.GetEmpty1dData();
 
-            Assert.ThrowsException<InvalidOperationException>(() => meanStatistic.Operate(data));
+            Assert.ThrowsException<InvalidOperationException>(() => meanStatistic.OperateOrdinalData(data));
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace Notrosoft_Accel.Tests
             var medianStatistic = new MedianStatistic();
             var data = TestHelperFunctions.GetEmpty1dData();
 
-            Assert.ThrowsException<InvalidOperationException>(() => medianStatistic.Operate(data));
+            Assert.ThrowsException<InvalidOperationException>(() => medianStatistic.OperateOrdinalData(data));
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1dOdd();
 
             var expected = 1.0;
-            var actual = (double) medianStatistic.Operate(data)["median"];
+            var actual = (double) medianStatistic.OperateOrdinalData(data)["median"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -109,7 +109,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1dEven();
 
             var expected = 1.0;
-            var actual = (double) medianStatistic.Operate(data)["median"];
+            var actual = (double) medianStatistic.OperateOrdinalData(data)["median"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -121,7 +121,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 124;
-            var actual = (double) medianStatistic.Operate(data)["median"];
+            var actual = (double) medianStatistic.OperateOrdinalData(data)["median"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -133,7 +133,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 13514.36719;
-            var actual = (double) varianceStatistic.Operate(data)["variance"];
+            var actual = (double) varianceStatistic.OperateOrdinalData(data)["variance"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -145,7 +145,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1d();
 
             var expected = 0.68359375;
-            var actual = (double) varianceStatistic.Operate(data)["variance"];
+            var actual = (double) varianceStatistic.OperateOrdinalData(data)["variance"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -156,7 +156,7 @@ namespace Notrosoft_Accel.Tests
             var varianceStat = new VarianceStatistic();
             var data = TestHelperFunctions.GetEmpty1dData();
 
-            Assert.ThrowsException<InvalidOperationException>(() => varianceStat.Operate(data));
+            Assert.ThrowsException<InvalidOperationException>(() => varianceStat.OperateOrdinalData(data));
         }
 
         [TestMethod]
@@ -165,7 +165,7 @@ namespace Notrosoft_Accel.Tests
             var stddevStat = new StandardDeviationStatistic();
             var data = TestHelperFunctions.GetEmpty1dData();
 
-            Assert.ThrowsException<InvalidOperationException>(() => stddevStat.Operate(data));
+            Assert.ThrowsException<InvalidOperationException>(() => stddevStat.OperateOrdinalData(data));
         }
 
         [TestMethod]
@@ -175,7 +175,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1d();
 
             var expected = 0.8267972847;
-            var actual = (double) stddevStatistic.Operate(data)["Standard Deviation"];
+            var actual = (double) stddevStatistic.OperateOrdinalData(data)["Standard Deviation"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -187,7 +187,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 116.2513105;
-            var actual = (double) stddevStatistic.Operate(data)["Standard Deviation"];
+            var actual = (double) stddevStatistic.OperateOrdinalData(data)["Standard Deviation"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -199,7 +199,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1d();
 
             var expected = 0.8819171037;
-            var actual = (double) cvStatistic.Operate(data)["cv"];
+            var actual = (double) cvStatistic.OperateOrdinalData(data)["cv"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -211,7 +211,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 0.7733112242;
-            var actual = (double) cvStatistic.Operate(data)["cv"];
+            var actual = (double) cvStatistic.OperateOrdinalData(data)["cv"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -222,7 +222,7 @@ namespace Notrosoft_Accel.Tests
             var cvStat = new CoefficientOfVarianceStatistic();
             var data = TestHelperFunctions.GetEmpty1dData();
 
-            Assert.ThrowsException<InvalidOperationException>(() => cvStat.Operate(data));
+            Assert.ThrowsException<InvalidOperationException>(() => cvStat.OperateOrdinalData(data));
         }
 
         [TestMethod]
@@ -237,7 +237,7 @@ namespace Notrosoft_Accel.Tests
             const double expectedPValue = 0.7374313133;
             const bool expectedShouldReject = false;
 
-            var actualOutput = binDistStat.Operate(data, hypothesis, probSuccess);
+            var actualOutput = binDistStat.OperateOrdinalData(data, hypothesis, probSuccess);
 
             var actualPValue = (double) actualOutput["P-Value"];
             var actualShouldReject = (bool) actualOutput["Reject Null Hypothesis?"];
@@ -259,7 +259,7 @@ namespace Notrosoft_Accel.Tests
             const double expectedPValue = 0.00152243884;
             const bool expectedShouldReject = true;
 
-            var actualOutput = binDistStat.Operate(data, hypothesis, probSuccess);
+            var actualOutput = binDistStat.OperateOrdinalData(data, hypothesis, probSuccess);
 
             var actualPValue = (double) actualOutput["P-Value"];
             var actualShouldReject = (bool) actualOutput["Reject Null Hypothesis?"];
@@ -283,7 +283,7 @@ namespace Notrosoft_Accel.Tests
             const double expectedPValue = 0.00152243884;
             const bool expectedShouldReject = false;
 
-            var actualOutput = binDistStat.Operate(data, hypothesis, probSuccess, confidence);
+            var actualOutput = binDistStat.OperateOrdinalData(data, hypothesis, probSuccess, confidence);
 
             var actualPValue = (double) actualOutput["P-Value"];
             var actualShouldReject = (bool) actualOutput["Reject Null Hypothesis?"];
@@ -304,7 +304,7 @@ namespace Notrosoft_Accel.Tests
             const double confidence = .999;
 
             Assert.ThrowsException<InvalidOperationException>(() =>
-                binDistStat.Operate(data, hypothesis, probSuccess, confidence));
+                binDistStat.OperateOrdinalData(data, hypothesis, probSuccess, confidence));
         }
     }
 }

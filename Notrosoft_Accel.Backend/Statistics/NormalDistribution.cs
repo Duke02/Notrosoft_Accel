@@ -7,7 +7,8 @@ namespace Notrosoft_Accel.Backend.Statistics
 {
     public class NormalDistribution : IStatistic
     {
-        public Dictionary<string, object> Operate(IEnumerable<IEnumerable<double>> values, params object[] parameters)
+        public Dictionary<string, object> OperateOrdinalData(IEnumerable<IEnumerable<double>> values,
+            params object[] parameters)
         {
             var flattenedValues = Utilities.Flatten(values).ToArray();
 
@@ -24,6 +25,18 @@ namespace Notrosoft_Accel.Backend.Statistics
                 {"mean", mean},
                 {"variance", variance}
             };
+        }
+
+        public Dictionary<string, object> OperateFrequencyData(Dictionary<object, int> values,
+            params object[] parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,
+            Dictionary<string, Range> intervalDefinitions, params object[] parameters)
+        {
+            throw new NotImplementedException();
         }
     }
 }

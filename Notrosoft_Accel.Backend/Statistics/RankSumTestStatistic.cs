@@ -8,7 +8,8 @@ namespace Notrosoft_Accel.Backend.Statistics
     {
         private const double Tolerance = .0001;
 
-        public Dictionary<string, object> Operate(IEnumerable<IEnumerable<double>> values, params object[] parameters)
+        public Dictionary<string, object> OperateOrdinalData(IEnumerable<IEnumerable<double>> values,
+            params object[] parameters)
         {
             var concreteValues = values.ToArray();
             if (concreteValues.Length != 2)
@@ -26,6 +27,18 @@ namespace Notrosoft_Accel.Backend.Statistics
             {
                 {"ranksum", mannWhitneyUStat}
             };
+        }
+
+        public Dictionary<string, object> OperateFrequencyData(Dictionary<object, int> values,
+            params object[] parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,
+            Dictionary<string, Range> intervalDefinitions, params object[] parameters)
+        {
+            throw new NotImplementedException();
         }
 
         private double InnerFunction(double x, double y)

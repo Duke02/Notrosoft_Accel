@@ -15,7 +15,8 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// </summary>
         /// <param name="values">The 2D data to use in the calculations.</param>
         /// <returns>The mathematical mean of the inputted data.</returns>
-        public Dictionary<string, object> Operate(IEnumerable<IEnumerable<double>> values, params object[] param)
+        public Dictionary<string, object> OperateOrdinalData(IEnumerable<IEnumerable<double>> values,
+            params object[] param)
         {
             // Flatten the 2D inputted container into a 1D container.
             var flattenedValues = Utilities.Flatten(values).ToArray();
@@ -29,6 +30,18 @@ namespace Notrosoft_Accel.Backend.Statistics
             {
                 {"mean", flattenedValues.Average()}
             };
+        }
+
+        public Dictionary<string, object> OperateFrequencyData(Dictionary<object, int> values,
+            params object[] parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,
+            Dictionary<string, Range> intervalDefinitions, params object[] parameters)
+        {
+            throw new NotImplementedException();
         }
     }
 }

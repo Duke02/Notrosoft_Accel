@@ -15,7 +15,8 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// </summary>
         /// <param name="values">The 2 dimensional data to calculate the median from.</param>
         /// <returns>The median of the data.</returns>
-        public Dictionary<string, object> Operate(IEnumerable<IEnumerable<double>> values, params object[] param)
+        public Dictionary<string, object> OperateOrdinalData(IEnumerable<IEnumerable<double>> values,
+            params object[] param)
         {
             // Flattens the 2D input into a 1d enumerable.
             var flattenedInput = Utilities.Flatten(values).ToArray();
@@ -55,6 +56,18 @@ namespace Notrosoft_Accel.Backend.Statistics
                     "median", median
                 }
             };
+        }
+
+        public Dictionary<string, object> OperateFrequencyData(Dictionary<object, int> values,
+            params object[] parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,
+            Dictionary<string, Range> intervalDefinitions, params object[] parameters)
+        {
+            throw new NotImplementedException();
         }
     }
 }
