@@ -46,7 +46,8 @@ namespace Notrosoft_Accel
                     case StatisticType.Mean:
                         var mean = new MeanStatistic();
                         keyValues = mean.Operate(_doubles, param);
-                        returnStr += "Mean:";
+                        keyValues.TryGetValue("mean", out object r);
+                        returnStr += "Mean:" + r.ToString();
                         break;
 
                     case StatisticType.Median:
