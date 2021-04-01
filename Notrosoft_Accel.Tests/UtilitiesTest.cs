@@ -20,6 +20,15 @@ namespace Notrosoft_Accel.Tests
         }
 
         [TestMethod]
+        public void Utilities_Combination_BadInput()
+        {
+            const int top = 2;
+            const int bottom = 13;
+
+            Assert.ThrowsException<InvalidOperationException>(() => Utilities.Combination(top, bottom));
+        }
+
+        [TestMethod]
         public void Utilities_Factorial()
         {
             const int n = 5;
@@ -72,6 +81,27 @@ namespace Notrosoft_Accel.Tests
             const double expected = 19356.21264;
             var actual = Utilities.GetCovariance(x, y);
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
+        }
+
+        [TestMethod]
+        public void Utilities_Covariance_EmptyData()
+        {
+            var data = TestHelperFunctions.GetEmpty2dData();
+            var x = data[0];
+            var y = data[1];
+
+            Assert.ThrowsException<InvalidOperationException>(() => Utilities.GetCovariance(x, y));
+        }
+
+        [TestMethod]
+        public void Utilities_Covariance_UnequalLengths()
+        {
+            var data = TestHelperFunctions.GetIrregularLength2dData();
+
+            var x = data[0];
+            var y = data[1];
+
+            Assert.ThrowsException<InvalidOperationException>(() => Utilities.GetCovariance(x, y));
         }
     }
 }
