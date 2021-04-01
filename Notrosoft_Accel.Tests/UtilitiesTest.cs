@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Notrosoft_Accel.Infrastructure;
 
@@ -102,6 +103,23 @@ namespace Notrosoft_Accel.Tests
             var y = data[1];
 
             Assert.ThrowsException<InvalidOperationException>(() => Utilities.GetCovariance(x, y));
+        }
+
+        public void Utilities_Flatten_2d()
+        {
+            var data = TestHelperFunctions.GetSmallData2d();
+
+            IEnumerable<double> expected = new List<double>
+            {
+                0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0,
+                3.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 2.0, 0.0, 1.0, 2.0, 0.0,
+                1.0,
+                3.0
+            };
+
+            var actual = Utilities.Flatten(data);
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }
