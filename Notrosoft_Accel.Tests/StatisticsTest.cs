@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Notrosoft_Accel.Backend.Statistics;
 
@@ -9,48 +7,19 @@ namespace Notrosoft_Accel.Tests
     [TestClass]
     public class StatisticsTest
     {
-        private const double Tolerance = 0.001;
-
-        private List<double> GetLotsOfNumbers(int currIndex)
-        {
-            return Enumerable.Range(1, (currIndex + 1) * (currIndex + 1)).Select(x => (double) x).ToList();
-        }
-
         [TestMethod]
         public void Statistics_Mode_Test1()
         {
             var modeStatistic = new ModeStatistic();
 
-            var data = new List<List<double>>();
-            for (var i = 0; i < 5; i++)
-                data.Add(new List<double>
-                {
-                    1, 1, 2, 3, 4
-                });
+            var data = TestHelperFunctions.GetSmallData1d();
 
-            var expected = 1.0;
+            var expected = 0;
             var actual = (double) modeStatistic.Operate(data)["mode"];
 
 
-            Assert.AreEqual(expected, actual, Tolerance, "Mode Statistic does not give the correct value!");
-        }
-
-        [TestMethod]
-        public void Statistics_Mode_Test2()
-        {
-            var modeStatistic = new ModeStatistic();
-
-            var data = new List<List<double>>();
-            for (var i = 0; i < 5; i++)
-                data.Add(new List<double>
-                {
-                    1, 2, 2, 3, 4
-                });
-
-            var expected = 2.0;
-            var actual = (double) modeStatistic.Operate(data)["mode"];
-
-            Assert.AreEqual(expected, actual, Tolerance, "Mode Statistic does not give the correct value!");
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
+                "Mode Statistic does not give the correct value!");
         }
 
         [TestMethod]
@@ -58,10 +27,7 @@ namespace Notrosoft_Accel.Tests
         {
             var modeStatistic = new ModeStatistic();
 
-            var data = new List<List<double>>
-            {
-                new()
-            };
+            var data = TestHelperFunctions.GetEmptyData();
 
             Assert.ThrowsException<InvalidOperationException>(() => modeStatistic.Operate(data));
         }
@@ -71,190 +37,274 @@ namespace Notrosoft_Accel.Tests
         {
             var modeStatistic = new ModeStatistic();
 
-            var data = new List<List<double>>();
-            for (var i = 0; i < 25; i++)
-                // Makes it 5525 items long.
-                // But only 625 distinct items.
-                data.Add(GetLotsOfNumbers(i));
+            var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 1.0;
             var actual = (double) modeStatistic.Operate(data)["mode"];
 
-            Assert.AreEqual(expected, actual, Tolerance, "Mode Statistic does not give the correct value!");
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
+                "Mode Statistic does not give the correct value!");
         }
 
         [TestMethod]
         public void Statistics_Mean_Test()
         {
             var meanStatistic = new MeanStatistic();
-            var data = new List<List<double>>();
-            for (var i = 0; i < 2; i++)
-                data.Add(new List<double>
-                {
-                    1, 0, 1, 1, 0
-                });
+            var data = TestHelperFunctions.GetSmallData1d();
 
-            var expected = 6.0 / 10.0;
+            var expected = 0.9375;
             var actual = (double) meanStatistic.Operate(data)["mean"];
 
-            Assert.AreEqual(expected, actual, Tolerance, "Mean Statistic does not give the correct value!");
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
+                "Mean Statistic does not give the correct value!");
         }
 
         [TestMethod]
         public void Statistics_Mean_LotsOfNumbers()
         {
             var meanStatistic = new MeanStatistic();
-            var data = new List<List<double>>();
-            for (var i = 0; i < 25; i++) data.Add(GetLotsOfNumbers(i));
+            var data = TestHelperFunctions.GetLargeData1d();
 
-            var expected = 195.4;
+            var expected = 150.3292683;
             var actual = (double) meanStatistic.Operate(data)["mean"];
 
-            Assert.AreEqual(expected, actual, Tolerance, "Mean Statistic does not give the correct value!");
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
+                "Mean Statistic does not give the correct value!");
+        }
+
+        [TestMethod]
+        public void Statistics_Mean_ExceptionTest()
+        {
+            var meanStatistic = new MeanStatistic();
+            var data = TestHelperFunctions.GetEmptyData();
+
+            Assert.ThrowsException<InvalidOperationException>(() => meanStatistic.Operate(data));
+        }
+
+        [TestMethod]
+        public void Statistics_Median_ExceptionTest()
+        {
+            var medianStatistic = new MedianStatistic();
+            var data = TestHelperFunctions.GetEmptyData();
+
+            Assert.ThrowsException<InvalidOperationException>(() => medianStatistic.Operate(data));
         }
 
         [TestMethod]
         public void Statistics_Median_TestOdd()
         {
             var medianStatistic = new MedianStatistic();
-            var data = new List<List<double>>();
-            for (var i = 0; i < 3; i++)
-                data.Add(new List<double>
-                {
-                    1, 1, 2, 3, 4
-                });
-            // 1X, 1X, 1X, 1X, 1X, 1X, 2X, 2, 2X, 3X, 3X, 3X, 4X, 4X, 4X
+            var data = TestHelperFunctions.GetSmallData1dOdd();
 
-            var expected = 2.0;
+            var expected = 1.0;
             var actual = (double) medianStatistic.Operate(data)["median"];
 
-            Assert.AreEqual(expected, actual, Tolerance);
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
 
         [TestMethod]
         public void Statistics_Median_TestEven()
         {
             var medianStatistic = new MedianStatistic();
-            var data = new List<List<double>>();
-            for (var i = 0; i < 2; i++)
-                data.Add(new List<double>
-                {
-                    1, 2, 2, 3, 4, 5
-                });
-            // 1X, 1X, 2X, 2X, 2X, 2, 3, 3X, 4X, 4X, 5X, 5X
+            var data = TestHelperFunctions.GetSmallData1dEven();
 
-            var expected = 2.5;
+            var expected = 1.0;
             var actual = (double) medianStatistic.Operate(data)["median"];
 
-            Assert.AreEqual(expected, actual, Tolerance);
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
 
         [TestMethod]
         public void Statistics_Median_LotsOfNumbers()
         {
             var medianStatistic = new MedianStatistic();
-            var data = new List<List<double>>();
-            for (var i = 0; i < 25; i++) data.Add(GetLotsOfNumbers(i));
-            // 1X, 1X, 2X, 2X, 2X, 2, 3, 3X, 4X, 4X, 5X, 5X
+            var data = TestHelperFunctions.GetLargeData1d();
 
-            var expected = 163;
+            var expected = 124;
             var actual = (double) medianStatistic.Operate(data)["median"];
 
-            Assert.AreEqual(expected, actual, Tolerance);
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
 
         [TestMethod]
         public void Statistics_Variance_LotsOfNumbers()
         {
             var varianceStatistic = new VarianceStatistic();
-            var data = new List<List<double>>();
-            for (var i = 0; i < 25; i++) data.Add(GetLotsOfNumbers(i));
+            var data = TestHelperFunctions.GetLargeData1d();
 
-            var expected = 22278.24;
+            var expected = 13514.36719;
             var actual = (double) varianceStatistic.Operate(data)["variance"];
 
-            Assert.AreEqual(expected, actual, Tolerance);
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
 
         [TestMethod]
         public void Statistics_Variance()
         {
             var varianceStatistic = new VarianceStatistic();
-            var data = new List<List<double>>();
+            var data = TestHelperFunctions.GetSmallData1d();
 
-            for (var i = 0; i < 5; i++)
-                data.Add(new List<double>
-                {
-                    0, 1, 2
-                });
-
-            Console.WriteLine(data.SelectMany(val => val).Count());
-
-            var expected = 0.666666667;
+            var expected = 0.68359375;
             var actual = (double) varianceStatistic.Operate(data)["variance"];
 
-            Assert.AreEqual(expected, actual, Tolerance);
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_Variance_ExceptionTest()
+        {
+            var varianceStat = new VarianceStatistic();
+            var data = TestHelperFunctions.GetEmptyData();
+
+            Assert.ThrowsException<InvalidOperationException>(() => varianceStat.Operate(data));
+        }
+
+        [TestMethod]
+        public void Statistics_StandardDeviation_ExceptionTest()
+        {
+            var stddevStat = new StandardDeviationStatistic();
+            var data = TestHelperFunctions.GetEmptyData();
+
+            Assert.ThrowsException<InvalidOperationException>(() => stddevStat.Operate(data));
         }
 
         [TestMethod]
         public void Statistics_StandardDeviation()
         {
             var stddevStatistic = new StandardDeviationStatistic();
-            var data = new List<List<double>>();
+            var data = TestHelperFunctions.GetSmallData1d();
 
-            for (var i = 0; i < 5; i++)
-                data.Add(new List<double>
-                {
-                    0, 1, 2
-                });
-
-            var expected = 0.816496581;
+            var expected = 0.8267972847;
             var actual = (double) stddevStatistic.Operate(data)["Standard Deviation"];
 
-            Assert.AreEqual(expected, actual, Tolerance);
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
 
         [TestMethod]
         public void Statistics_StandardDeviation_LotsOfNumbers()
         {
             var stddevStatistic = new StandardDeviationStatistic();
-            var data = new List<List<double>>();
-            for (var i = 0; i < 25; i++) data.Add(GetLotsOfNumbers(i));
+            var data = TestHelperFunctions.GetLargeData1d();
 
-            var expected = 149.2589696;
+            var expected = 116.2513105;
             var actual = (double) stddevStatistic.Operate(data)["Standard Deviation"];
 
-            Assert.AreEqual(expected, actual, Tolerance);
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
 
         [TestMethod]
         public void Statistics_CoeffVariation()
         {
             var cvStatistic = new CoefficientOfVarianceStatistic();
-            var data = new List<List<double>>();
-            for (var i = 0; i < 5; i++)
-                data.Add(new List<double>
-                {
-                    0, 1, 2
-                });
+            var data = TestHelperFunctions.GetSmallData1d();
 
-            var expected = 0.816496581;
+            var expected = 0.8819171037;
             var actual = (double) cvStatistic.Operate(data)["cv"];
 
-            Assert.AreEqual(expected, actual, Tolerance);
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
 
         [TestMethod]
         public void Statistics_CoeffVariation_LotsOfNumbers()
         {
             var cvStatistic = new CoefficientOfVarianceStatistic();
-            var data = new List<List<double>>();
-            for (var i = 0; i < 25; i++) data.Add(GetLotsOfNumbers(i));
+            var data = TestHelperFunctions.GetLargeData1d();
 
-            var expected = 0.763863713;
+            var expected = 0.7733112242;
             var actual = (double) cvStatistic.Operate(data)["cv"];
 
-            Assert.AreEqual(expected, actual, Tolerance);
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_CoeffVariation_ExceptionTest()
+        {
+            var cvStat = new CoefficientOfVarianceStatistic();
+            var data = TestHelperFunctions.GetEmptyData();
+
+            Assert.ThrowsException<InvalidOperationException>(() => cvStat.Operate(data));
+        }
+
+        [TestMethod]
+        public void Statistics_BinDist_FailRejectNullHypothesis()
+        {
+            var binDistStat = new BinomialDistributionStatistic();
+            var data = TestHelperFunctions.GetSmallData1d();
+
+            const double hypothesis = 1;
+            const double probSuccess = 1.0 / 3.0;
+
+            const double expectedPValue = 0.7374313133;
+            const bool expectedShouldReject = false;
+
+            var actualOutput = binDistStat.Operate(data, hypothesis, probSuccess);
+
+            var actualPValue = (double) actualOutput["P-Value"];
+            var actualShouldReject = (bool) actualOutput["Reject Null Hypothesis?"];
+
+            Assert.AreEqual(expectedPValue, actualPValue, TestHelperFunctions.Tolerance, "P Value is not the same!");
+            Assert.AreEqual(expectedShouldReject, actualShouldReject,
+                "Could not agree on rejecting the null hypothesis!");
+        }
+
+        [TestMethod]
+        public void Statistics_BinDist_RejectNullHypothesis()
+        {
+            var binDistStat = new BinomialDistributionStatistic();
+            var data = TestHelperFunctions.GetSmallData1d();
+
+            const double hypothesis = 0;
+            const double probSuccess = 1.0 / 3.0;
+
+            const double expectedPValue = 0.00152243884;
+            const bool expectedShouldReject = true;
+
+            var actualOutput = binDistStat.Operate(data, hypothesis, probSuccess);
+
+            var actualPValue = (double) actualOutput["P-Value"];
+            var actualShouldReject = (bool) actualOutput["Reject Null Hypothesis?"];
+
+            Assert.AreEqual(expectedPValue, actualPValue, TestHelperFunctions.Tolerance, "P Value is not the same!");
+            Assert.AreEqual(expectedShouldReject, actualShouldReject,
+                "Could not agree on rejecting the null hypothesis!");
+        }
+
+        [TestMethod]
+        public void Statistics_BinDist_CustomConfidence()
+        {
+            var binDistStat = new BinomialDistributionStatistic();
+            var data = TestHelperFunctions.GetSmallData1d();
+
+            const double hypothesis = 0;
+            const double probSuccess = 1.0 / 3.0;
+            const double confidence = .999;
+
+
+            const double expectedPValue = 0.00152243884;
+            const bool expectedShouldReject = false;
+
+            var actualOutput = binDistStat.Operate(data, hypothesis, probSuccess, confidence);
+
+            var actualPValue = (double) actualOutput["P-Value"];
+            var actualShouldReject = (bool) actualOutput["Reject Null Hypothesis?"];
+
+            Assert.AreEqual(expectedPValue, actualPValue, TestHelperFunctions.Tolerance, "P Value is not the same!");
+            Assert.AreEqual(expectedShouldReject, actualShouldReject,
+                "Could not agree on rejecting the null hypothesis!");
+        }
+
+        [TestMethod]
+        public void Statistics_BinDist_Empty()
+        {
+            var binDistStat = new BinomialDistributionStatistic();
+            var data = TestHelperFunctions.GetEmptyData();
+
+            const double hypothesis = 0;
+            const double probSuccess = 1.0 / 3.0;
+            const double confidence = .999;
+
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                binDistStat.Operate(data, hypothesis, probSuccess, confidence));
         }
     }
 }
