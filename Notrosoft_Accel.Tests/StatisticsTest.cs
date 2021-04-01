@@ -8,6 +8,16 @@ namespace Notrosoft_Accel.Tests
     public class StatisticsTest
     {
         [TestMethod]
+        public void Statistics_Mode_ExceptionTest()
+        {
+            var modeStatistic = new ModeStatistic();
+
+            var data = TestHelperFunctions.GetEmptyData();
+
+            Assert.ThrowsException<InvalidOperationException>(() => modeStatistic.Operate(data));
+        }
+
+        [TestMethod]
         public void Statistics_Mode_Test1()
         {
             var modeStatistic = new ModeStatistic();
@@ -20,16 +30,6 @@ namespace Notrosoft_Accel.Tests
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
                 "Mode Statistic does not give the correct value!");
-        }
-
-        [TestMethod]
-        public void Statistics_Mode_ExceptionTest()
-        {
-            var modeStatistic = new ModeStatistic();
-
-            var data = TestHelperFunctions.GetEmptyData();
-
-            Assert.ThrowsException<InvalidOperationException>(() => modeStatistic.Operate(data));
         }
 
         [TestMethod]
