@@ -16,14 +16,20 @@ namespace Notrosoft_Accel.Backend.Statistics
                 throw new InvalidOperationException("Input data needs to have values in it to operate!");
 
             var hypothesis = (double) parameters[0];
+            var probOfSuccess = (double) parameters[1];
+
+            var confidence = parameters.Length > 2 ? (double) parameters[2] : .95;
 
             var n = flattenedValues.Length;
-            var k = flattenedValues.Count(v => v < hypothesis);
+            var numSuccesses = flattenedValues.Count(v => v < hypothesis);
 
-            var p = Enumerable.Range(0, k).Sum(i => Utilities.BinomialProbability(n, i, hypothesis));
+            var pValue = Enumerable.Range(0, numSuccesses + 1)
+                .Sum(i => Utilities.BinomialProbability(n, i, probOfSuccess));
+            var shouldRejectNullHypothesis = Utilities.ShouldRejectNullHypothesis(pValue, confidence);
             return new Dictionary<string, object>
             {
-                {"prob", p}
+                {"P-Value", pValue},
+                {"Reject Null Hypothesis?", shouldRejectNullHypothesis}
             };
         }
     }
