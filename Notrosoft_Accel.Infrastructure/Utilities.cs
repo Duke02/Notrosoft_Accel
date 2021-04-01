@@ -15,7 +15,7 @@ namespace Notrosoft_Accel.Infrastructure
         ///     The max input that the <see cref="Factorial" /> function can take. It's 1 more than the actual limit, so use i
         ///     < MaxFactorialInput.
         /// </summary>
-        private const int MaxFactorialInput = 171;
+        public const int MaxFactorialInput = 171;
 
         private static double[] _factorials;
 
@@ -50,25 +50,29 @@ namespace Notrosoft_Accel.Infrastructure
         }
 
         /// <summary>
-        ///     Gets the covariance between the two inputted data collections.
+        ///     Gets the sample covariance between the two inputted data collections.
         /// </summary>
         /// <param name="xValues">The first data collection.</param>
         /// <param name="yValues">The second data collection.</param>
         /// <returns>The scalar covariance value of the inputted data.</returns>
         public static double GetCovariance(IEnumerable<double> xValues, IEnumerable<double> yValues)
         {
-            // Covariance = SumOf(x_i * y_i) - 1 / n * SumOf(x_i) * SumOf(y_i)
-            // x_i = ith element of x
-            // y_i = ith element of y
-            // n = count of elements in x (must be same as count of elements in y)
-            var yValuesArray = yValues.ToArray();
-            var xValuesArray = xValues.ToArray();
-            var xyProducts = xValuesArray.Zip(yValuesArray).Select(xy => xy.Item1 * xy.Item2);
-            var sumOfX = xValuesArray.Sum();
-            var sumOfY = yValuesArray.Sum();
-            double n = xValuesArray.Length;
+            var yValsArray = yValues.ToArray();
+            var xValsArray = xValues.ToArray();
 
-            return xyProducts.Sum() - 1 / n * sumOfX * sumOfY;
+            if (xValsArray.Length != yValsArray.Length)
+                throw new InvalidOperationException("X and Y values must be the same length to compute covariance!");
+            if (xValsArray.Length == 0 || yValsArray.Length == 0)
+                throw new InvalidOperationException("X and Y values must have data to compute covariance!");
+
+            var xMean = xValsArray.Average();
+            var xDiffFromMean = xValsArray.Select(x => x - xMean).ToArray();
+
+            var yMean = yValsArray.Average();
+            var yDiffFromMean = yValsArray.Select(y => y - yMean).ToArray();
+
+            var numerator = xDiffFromMean.Zip(yDiffFromMean).Sum(xyDiff => xyDiff.First * xyDiff.Second);
+            return numerator / (xValsArray.Length - 1);
         }
 
         public static double Factorial(int n)
@@ -114,6 +118,11 @@ namespace Notrosoft_Accel.Infrastructure
         public static Dictionary<string, int> ConvertToFrequencyValues(IEnumerable<double> flattenedValues)
         {
             throw new NotImplementedException();
+        }
+
+        public static bool ShouldRejectNullHypothesis(double pValue, double confidence = 0.95)
+        {
+            return pValue < 1 - confidence;
         }
     }
 }
