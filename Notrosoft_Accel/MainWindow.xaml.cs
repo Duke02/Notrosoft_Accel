@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Windows;
-using System.Collections.ObjectModel;
+using Notrosoft_Accel.Infrastructure;
 
 namespace Notrosoft_Accel
 {
@@ -12,11 +12,13 @@ namespace Notrosoft_Accel
     public partial class MainWindow : Window
     {
         static Interlayer interlayer = new Interlayer();
-        public static int colNum = 20;  // Number of Columns present in the data structure.
-        public static int rowNum = 20;  // Number of Rows present in the data structure.
+        static int colNum = 200;  // Number of Columns present in the data structure.
+        static int rowNum = 50;  // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new List<List<string>>();   // The data structure.
         public static DataTable dataTable = new DataTable();  // DataTable sits between the dataList of the backend and DataGrid of the GUI.
-        private int[] currCell = { 0, 0 };
+        public static List<StatisticType> statisticTypes = new List<StatisticType>();
+
+        
         public MainWindow()
         {
             // The List<String> representing the default column List of size colNum.
@@ -32,6 +34,7 @@ namespace Notrosoft_Accel
                 dataList.Add(colConstruct);
             }
 
+            
             InitializeComponent();
             Console.WriteLine("Hello World!");
         }
@@ -41,10 +44,6 @@ namespace Notrosoft_Accel
         {
             // Set the dataTable to a new object.
             dataTable = new DataTable();
-
-            // Column header constructor.
-            char currentNameCharacter = 'A';                // The character that determines the name of the column.
-            String newColName = ("" + currentNameCharacter);// The constructed first name (should simply by "A").
 
             // Column constructor
             for (int i = 0; i < colNum; i++)
@@ -68,7 +67,7 @@ namespace Notrosoft_Accel
                 dataTable.Rows.Add(newRow);
             }
             
-            // Bind the DataGrid to the constructed dataTable through.
+            // Bind the DataGrid to the constructed dataTable.
             Data.ItemsSource = dataTable.DefaultView;
         }
 
@@ -103,17 +102,12 @@ namespace Notrosoft_Accel
             dataGridTable();
         }
 
-        
         // Defines the Row headers
         private void Data_LoadingRow(object sender, System.Windows.Controls.DataGridRowEventArgs e)
         {
             string header = ' ' + e.Row.GetIndex().ToString();
             e.Row.Header = header;
         }
-
-        
-
-       
 
         // Adding rows handler.
         private void addRowButton_Click(object sender, RoutedEventArgs e)

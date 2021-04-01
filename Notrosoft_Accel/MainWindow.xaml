@@ -6,15 +6,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notrosoft_Accel"
         mc:Ignorable="d"
-        Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded">
+        Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded" ScrollViewer.CanContentScroll="True">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"
-                  CanContentScroll="True" Padding="0,0,50,50" Grid.IsSharedSizeScope="True" ClipToBounds="True" BorderThickness="0,0,0,3" >
-        
-        <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="0,0,10,10" CanHorizontallyScroll="True" CanVerticallyScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
@@ -22,39 +23,48 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition MinWidth="50" MaxWidth="200"/>
-                <ColumnDefinition Width="1" />
+                <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Row="1" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" CanHorizontallyScroll="True" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True">
-               
-                <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False" 
-                      CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50" 
-                      GridLinesVisibility="All" HeadersVisibility="All" Cursor="IBeam" ScrollViewer.CanContentScroll="True"
-                      ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                      ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-                      VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"
-                      EnableRowVirtualization="False"
-                      CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" 
-                      LoadingRow="Data_LoadingRow" SelectionUnit="CellOrRowHeader" VerticalAlignment="Top" ClipToBounds="True" 
-                      />
 
-            </StackPanel>
+                <StackPanel x:Name="statPanel" Grid.Row="2" Grid.Column="0">
+                    <CheckBox Content="Mean"></CheckBox>
+                    <CheckBox Content="Median"></CheckBox>
+                    <CheckBox Content="Mode"></CheckBox>
+                    <CheckBox Content="StandardDeviation"></CheckBox>
+                    <CheckBox Content="Variance"></CheckBox>
+                    <CheckBox Content="CoefficientOfVariance"></CheckBox>
+                    <CheckBox Content="Percentile"></CheckBox>
+                    <CheckBox Content="ProbabilityDistribution"></CheckBox>
+                </StackPanel>
+               
+            <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False" 
+                  CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50" 
+                  GridLinesVisibility="All" HeadersVisibility="All" Cursor="IBeam" 
+                  ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.RowSpan="3"
+                  ScrollViewer.HorizontalScrollBarVisibility="Visible" 
+                  EnableRowVirtualization="False" Grid.Row="1" Grid.Column="1"
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" 
+                  LoadingRow="Data_LoadingRow" SelectionUnit="CellOrRowHeader" VerticalAlignment="Top" Grid.IsSharedSizeScope="True" ClipToBounds="True" HorizontalAlignment="Left" Padding="0,0,0,10" 
+            />
+
+            
             
             <Button x:Name="addColumnButton" Grid.Column="2" Grid.Row="0" 
-                        Content="Add Column" Click="addColumnButton_Click" MaxWidth="200" />
+                    Content="Add Column" Click="addColumnButton_Click" MaxWidth="200" />
             
-            <Button x:Name="addRowButton" Grid.Column="0" Grid.Row="2" Content="Add Row" 
-                     Click="addRowButton_Click" MaxWidth="150"/>
+            <Button x:Name="addRowButton" Grid.Column="1" Grid.Row="4" Content="Add Row" 
+                    Click="addRowButton_Click" MaxWidth="150" HorizontalContentAlignment="Center" 
+                    HorizontalAlignment="Left"/>
             
             <TextBlock Text="This is where all the output will go
-                       Next line test
-                       and tabs or something idk" FontSize="10" Grid.Column="0"
-                       Grid.Row="1" Name="outputTextBlock" TextWrapping="Wrap" MaxWidth="200" />
+                    Next line test
+                    and tabs or something idk" FontSize="10" Grid.Column="0"
+                    Grid.Row="1" Name="outputTextBlock" TextWrapping="Wrap" MaxWidth="200" />
 
 
         </Grid>
-        
-        
 
+
+        </StackPanel>
     </ScrollViewer>
 </Window>
