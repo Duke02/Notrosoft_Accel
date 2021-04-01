@@ -6,7 +6,7 @@ namespace Notrosoft_Accel.Tests
     {
         public const double Tolerance = 0.001;
 
-        public static List<List<double>> GetEmptyData()
+        public static List<List<double>> GetEmpty1dData()
         {
             return new()
             {

@@ -12,7 +12,7 @@ namespace Notrosoft_Accel.Tests
         {
             var modeStatistic = new ModeStatistic();
 
-            var data = TestHelperFunctions.GetEmptyData();
+            var data = TestHelperFunctions.GetEmpty1dData();
 
             Assert.ThrowsException<InvalidOperationException>(() => modeStatistic.Operate(data));
         }
@@ -76,7 +76,7 @@ namespace Notrosoft_Accel.Tests
         public void Statistics_Mean_ExceptionTest()
         {
             var meanStatistic = new MeanStatistic();
-            var data = TestHelperFunctions.GetEmptyData();
+            var data = TestHelperFunctions.GetEmpty1dData();
 
             Assert.ThrowsException<InvalidOperationException>(() => meanStatistic.Operate(data));
         }
@@ -85,7 +85,7 @@ namespace Notrosoft_Accel.Tests
         public void Statistics_Median_ExceptionTest()
         {
             var medianStatistic = new MedianStatistic();
-            var data = TestHelperFunctions.GetEmptyData();
+            var data = TestHelperFunctions.GetEmpty1dData();
 
             Assert.ThrowsException<InvalidOperationException>(() => medianStatistic.Operate(data));
         }
@@ -154,7 +154,7 @@ namespace Notrosoft_Accel.Tests
         public void Statistics_Variance_ExceptionTest()
         {
             var varianceStat = new VarianceStatistic();
-            var data = TestHelperFunctions.GetEmptyData();
+            var data = TestHelperFunctions.GetEmpty1dData();
 
             Assert.ThrowsException<InvalidOperationException>(() => varianceStat.Operate(data));
         }
@@ -163,7 +163,7 @@ namespace Notrosoft_Accel.Tests
         public void Statistics_StandardDeviation_ExceptionTest()
         {
             var stddevStat = new StandardDeviationStatistic();
-            var data = TestHelperFunctions.GetEmptyData();
+            var data = TestHelperFunctions.GetEmpty1dData();
 
             Assert.ThrowsException<InvalidOperationException>(() => stddevStat.Operate(data));
         }
@@ -220,7 +220,7 @@ namespace Notrosoft_Accel.Tests
         public void Statistics_CoeffVariation_ExceptionTest()
         {
             var cvStat = new CoefficientOfVarianceStatistic();
-            var data = TestHelperFunctions.GetEmptyData();
+            var data = TestHelperFunctions.GetEmpty1dData();
 
             Assert.ThrowsException<InvalidOperationException>(() => cvStat.Operate(data));
         }
@@ -297,7 +297,7 @@ namespace Notrosoft_Accel.Tests
         public void Statistics_BinDist_Empty()
         {
             var binDistStat = new BinomialDistributionStatistic();
-            var data = TestHelperFunctions.GetEmptyData();
+            var data = TestHelperFunctions.GetEmpty1dData();
 
             const double hypothesis = 0;
             const double probSuccess = 1.0 / 3.0;
