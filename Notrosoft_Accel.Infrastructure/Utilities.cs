@@ -115,9 +115,30 @@ namespace Notrosoft_Accel.Infrastructure
             return Combination(n, k) * Math.Pow(p, k) * Math.Pow(1 - p, n - k);
         }
 
-        public static Dictionary<string, int> ConvertToFrequencyValues(IEnumerable<double> flattenedValues)
+        public static Dictionary<object, int> ConvertToFrequencyValues(IEnumerable<object> flattenedValues)
         {
-            throw new NotImplementedException();
+            var concreteValues = flattenedValues as object[] ?? flattenedValues.ToArray();
+            return concreteValues.ToDictionary(k => k,
+                v => concreteValues.Count(cv => cv == v));
+        }
+
+        public static Dictionary<object, int> ConvertFromIntervalDataToFrequencyValues(
+            Dictionary<string, IEnumerable<double>> intervalData)
+        {
+            return intervalData.ToDictionary(kv => kv.Key as object,
+                kv => kv.Value.Count());
+        }
+
+        public static Dictionary<string, IEnumerable<double>> ConvertToIntervalData(IEnumerable<double> flattenedValues,
+            Dictionary<string, Range> intervalDefinitions)
+        {
+            return intervalDefinitions.ToDictionary(kv => kv.Key,
+                kv => flattenedValues.Where(v => IsWithinRange(v, kv.Value)));
+        }
+
+        public static bool IsWithinRange(double val, Range range)
+        {
+            return val >= range.Start.Value && val <= range.End.Value;
         }
 
         public static bool ShouldRejectNullHypothesis(double pValue, double confidence = 0.95)
