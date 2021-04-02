@@ -6,45 +6,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notrosoft_Accel"
         mc:Ignorable="d"
-        Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded" ScrollViewer.CanContentScroll="True">
+        Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded" ScrollViewer.VerticalScrollBarVisibility="Disabled">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="0,0,10,10" CanHorizontallyScroll="True" CanVerticallyScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel Margin="0,0,10,10" CanHorizontallyScroll="False" CanVerticallyScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled">
             
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="3*" />
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
 
-                <StackPanel x:Name="statPanel" Grid.Row="2" Grid.Column="0">
-                    <CheckBox Content="Mean"></CheckBox>
-                    <CheckBox Content="Median"></CheckBox>
-                    <CheckBox Content="Mode"></CheckBox>
-                    <CheckBox Content="StandardDeviation"></CheckBox>
-                    <CheckBox Content="Variance"></CheckBox>
-                    <CheckBox Content="CoefficientOfVariance"></CheckBox>
-                    <CheckBox Content="Percentile"></CheckBox>
-                    <CheckBox Content="ProbabilityDistribution"></CheckBox>
+                <StackPanel x:Name="statPanel" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" ClipToBounds="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" CanHorizontallyScroll="True" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True">
+                    <CheckBox Content="Mean" VerticalAlignment="Top"></CheckBox>
+                    <CheckBox Content="Median" VerticalAlignment="Top"></CheckBox>
+                    <CheckBox Content="Mode" VerticalAlignment="Top"></CheckBox>
+                    <CheckBox Content="StandardDeviation" VerticalAlignment="Top"></CheckBox>
+                    <CheckBox Content="Variance" VerticalAlignment="Top"></CheckBox>
+                    <CheckBox Content="CoefficientOfVariance" VerticalAlignment="Top"></CheckBox>
+                    <CheckBox Content="Percentile" VerticalAlignment="Top"></CheckBox>
+                    <CheckBox Content="ProbabilityDistribution" VerticalAlignment="Top"></CheckBox>
                 </StackPanel>
                
             <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False" 
                   CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50" 
-                  GridLinesVisibility="All" HeadersVisibility="All" Cursor="IBeam" 
+                  GridLinesVisibility="All" HeadersVisibility="All"  
                   ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.RowSpan="3"
                   ScrollViewer.HorizontalScrollBarVisibility="Visible" 
                   EnableRowVirtualization="False" Grid.Row="1" Grid.Column="1"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" 
-                  LoadingRow="Data_LoadingRow" SelectionUnit="CellOrRowHeader" VerticalAlignment="Top" Grid.IsSharedSizeScope="True" ClipToBounds="True" HorizontalAlignment="Left" Padding="0,0,0,10" 
+                  LoadingRow="Data_LoadingRow" SelectionUnit="CellOrRowHeader" VerticalAlignment="Top" ClipToBounds="True" HorizontalAlignment="Left" 
+                  Padding="0,0,0,10" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" RowDetailsVisibilityMode="Visible" 
             />
 
             
