@@ -12,16 +12,18 @@ namespace Notrosoft_Accel
     class FileInput
     {
         private List<List<string>> data;
-        public List<List<string>> ReadFile() {
-            string filePath = Console.ReadLine();
+        public List<List<string>> ReadFile(string file) {
             data = new List<List<string>>();
-            using (var reader = new StreamReader(filePath))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            string[] allData = File.ReadAllLines(file);
+            foreach (string line in allData)
             {
-                while (csv.Read()) {
-                    var records = csv.GetRecords<string>().ToList();
-                    data.Add(records);
+                var temp = new List<string>();
+                string[] words = line.Split(", ");
+                for (int i = 0; i < words.Length; i++)
+                {
+                    temp.Add(words[i]);
                 }
+                data.Add(temp);
             }
             return data;
         }
