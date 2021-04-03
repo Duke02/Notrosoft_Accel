@@ -117,6 +117,11 @@ namespace Notrosoft_Accel.Infrastructure
             return Combination(n, k) * Math.Pow(p, k) * Math.Pow(1 - p, n - k);
         }
 
+        /// <summary>
+        ///     Converts the flattened ordinal data to Frequency data.
+        /// </summary>
+        /// <param name="flattenedValues">The flattened ordinal data to convert</param>
+        /// <returns>The converted frequency data.</returns>
         public static Dictionary<object, int> ConvertToFrequencyValues(IEnumerable<object> flattenedValues)
         {
             var concreteValues = flattenedValues as object[] ?? flattenedValues.ToArray();
@@ -124,6 +129,11 @@ namespace Notrosoft_Accel.Infrastructure
                 v => concreteValues.Count(cv => cv == v));
         }
 
+        /// <summary>
+        ///     Converts the interval data to frequency data.
+        /// </summary>
+        /// <param name="intervalData">The interval data to convert.</param>
+        /// <returns>The converted frequency data.</returns>
         public static Dictionary<object, int> ConvertFromIntervalDataToFrequencyValues(
             Dictionary<string, IEnumerable<double>> intervalData)
         {
@@ -131,6 +141,12 @@ namespace Notrosoft_Accel.Infrastructure
                 kv => kv.Value.Count());
         }
 
+        /// <summary>
+        ///     Converts the flattened ordinal values to interval data with the given range definitions.
+        /// </summary>
+        /// <param name="flattenedValues">The ordinal data to convert.</param>
+        /// <param name="intervalDefinitions">The definitions of the intervals.</param>
+        /// <returns>The converted interval data.</returns>
         public static Dictionary<string, IEnumerable<double>> ConvertToIntervalData(IEnumerable<double> flattenedValues,
             Dictionary<string, Range> intervalDefinitions)
         {
@@ -138,11 +154,34 @@ namespace Notrosoft_Accel.Infrastructure
                 kv => flattenedValues.Where(v => IsWithinRange(v, kv.Value)));
         }
 
+        /// <summary>
+        ///     Converts the interval data to flattened ordinal data.
+        /// </summary>
+        /// <param name="intervalData">The interval data to convert.</param>
+        /// <returns>The converted ordinal data as a 1d container.</returns>
+        public static IEnumerable<double> ConvertFromIntervalDataToOrdinalData(
+            Dictionary<string, IEnumerable<double>> intervalData)
+        {
+            return intervalData.SelectMany(kv => kv.Value);
+        }
+
+        /// <summary>
+        ///     Determines if the given value is within the provided range.
+        /// </summary>
+        /// <param name="val">The value to check if it's within range.</param>
+        /// <param name="range">The range that contains the bounds to check against.</param>
+        /// <returns>True if the value is within the bounds of range, False otherwise.</returns>
         public static bool IsWithinRange(double val, Range range)
         {
             return val >= range.Start.Value && val <= range.End.Value;
         }
 
+        /// <summary>
+        ///     Checks if the null hypothesis should be rejected or if it is failed to be rejected.
+        /// </summary>
+        /// <param name="pValue">The p value that was computed previously and is to be used to check against the confidence.</param>
+        /// <param name="confidence">The confidence of the check.</param>
+        /// <returns>True if the null hypothesis is to be rejected, False if it is failed to be rejected.</returns>
         public static bool ShouldRejectNullHypothesis(double pValue, double confidence = 0.95)
         {
             return pValue < 1 - confidence;

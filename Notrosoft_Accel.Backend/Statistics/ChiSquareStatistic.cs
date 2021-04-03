@@ -32,7 +32,6 @@ namespace Notrosoft_Accel.Backend.Statistics
 
             var chiSquareStat = sum * totalN;
 
-
             return new Dictionary<string, object>
             {
                 {"chi-square", chiSquareStat}
