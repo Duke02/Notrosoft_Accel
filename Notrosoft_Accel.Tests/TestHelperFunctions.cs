@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Notrosoft_Accel.Infrastructure;
 
 namespace Notrosoft_Accel.Tests
 {
@@ -68,6 +69,16 @@ namespace Notrosoft_Accel.Tests
                 {
                     0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0
                 }
+            };
+        }
+
+        public static Dictionary<string, Bounds<double>> GetSmallDataIntervalDefinitions()
+        {
+            return new()
+            {
+                {"zero", new Bounds<double>(-.99, .99)},
+                {"one", new Bounds<double>(.99, 1.99)},
+                {"two", new Bounds<double>(1.99, 2.99)}
             };
         }
 

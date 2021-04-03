@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Notrosoft_Accel.Infrastructure;
 
 namespace Notrosoft_Accel.Backend.Statistics
 {
@@ -36,7 +37,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,
-            Dictionary<string, Range> intervalDefinitions, params object[] parameters)
+            Dictionary<string, Bounds<double>> intervalDefinitions, params object[] parameters)
         {
             throw new NotImplementedException();
         }

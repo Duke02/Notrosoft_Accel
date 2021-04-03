@@ -145,5 +145,55 @@ namespace Notrosoft_Accel.Tests
 
             TestHelperFunctions.AssertDictionariesAreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void Utilities_ConvertToIntervalData()
+        {
+            var data = Utilities.Flatten(TestHelperFunctions.GetSmallData1d());
+
+            var intervalDefinitions = TestHelperFunctions.GetSmallDataIntervalDefinitions();
+
+            var actual = Utilities.ConvertToIntervalData(data, intervalDefinitions);
+
+            var expected = new Dictionary<string, IEnumerable<double>>
+            {
+                {
+                    "one", new List<double>
+                    {
+                        1.0, 1.0, 1.0, 1.0, 1.0
+                    }
+                },
+                {
+                    "zero", new List<double>
+                    {
+                        0, 0, 0, 0, 0, 0
+                    }
+                },
+                {
+                    "two", new List<double>
+                    {
+                        2, 2, 2, 2, 2
+                    }
+                }
+            };
+
+
+            Assert.IsTrue(actual.Count == expected.Count,
+                $"The actual length ({actual.Count}) and expected length ({expected.Count}) are different!");
+
+            foreach (var (expectedKey, expectedValue) in expected)
+            {
+                Assert.IsTrue(actual.ContainsKey(expectedKey),
+                    $"Actual data does not contain expected key {expectedKey}");
+                TestHelperFunctions.AssertListsAreEqual(expectedValue.ToList(), actual[expectedKey].ToList());
+            }
+
+            foreach (var (actualKey, actualValue) in actual)
+            {
+                Assert.IsTrue(expected.ContainsKey(actualKey),
+                    $"Expected data does not contain actual key {actualKey}");
+                TestHelperFunctions.AssertListsAreEqual(expected[actualKey].ToList(), actualValue.ToList());
+            }
+        }
     }
 }

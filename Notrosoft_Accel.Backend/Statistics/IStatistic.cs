@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Notrosoft_Accel.Infrastructure;
 
 namespace Notrosoft_Accel.Backend.Statistics
 {
@@ -20,6 +20,6 @@ namespace Notrosoft_Accel.Backend.Statistics
             params object[] parameters);
 
         public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,
-            Dictionary<string, Range> intervalDefinitions, params object[] parameters);
+            Dictionary<string, Bounds<double>> intervalDefinitions, params object[] parameters);
     }
 }

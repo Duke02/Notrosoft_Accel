@@ -148,10 +148,10 @@ namespace Notrosoft_Accel.Infrastructure
         /// <param name="intervalDefinitions">The definitions of the intervals.</param>
         /// <returns>The converted interval data.</returns>
         public static Dictionary<string, IEnumerable<double>> ConvertToIntervalData(IEnumerable<double> flattenedValues,
-            Dictionary<string, Range> intervalDefinitions)
+            Dictionary<string, Bounds<double>> intervalDefinitions)
         {
             return intervalDefinitions.ToDictionary(kv => kv.Key,
-                kv => flattenedValues.Where(v => IsWithinRange(v, kv.Value)));
+                kv => flattenedValues.Where(v => kv.Value.IsWithinBounds(v)));
         }
 
         /// <summary>
@@ -166,17 +166,6 @@ namespace Notrosoft_Accel.Infrastructure
         }
 
         /// <summary>
-        ///     Determines if the given value is within the provided range.
-        /// </summary>
-        /// <param name="val">The value to check if it's within range.</param>
-        /// <param name="range">The range that contains the bounds to check against.</param>
-        /// <returns>True if the value is within the bounds of range, False otherwise.</returns>
-        public static bool IsWithinRange(double val, Range range)
-        {
-            return val >= range.Start.Value && val <= range.End.Value;
-        }
-
-        /// <summary>
         ///     Checks if the null hypothesis should be rejected or if it is failed to be rejected.
         /// </summary>
         /// <param name="pValue">The p value that was computed previously and is to be used to check against the confidence.</param>
@@ -185,69 +174,6 @@ namespace Notrosoft_Accel.Infrastructure
         public static bool ShouldRejectNullHypothesis(double pValue, double confidence = 0.95)
         {
             return pValue < 1 - confidence;
-        }
-
-        public static Func<double, double> GetChiSquarePdf(int degreesOfFreedom)
-        {
-            return value =>
-            {
-                if (value <= 0) return 0;
-
-                var numerator = Math.Pow(value, degreesOfFreedom / 2.0 - 1) * Math.Exp(-value / 2.0);
-                var denominator = Math.Pow(2, degreesOfFreedom / 2.0) * GammaFunction(degreesOfFreedom / 2.0);
-                return numerator / denominator;
-            };
-        }
-
-        public static Func<double, double> GetChiSquareCdf(int degreesOfFreedom)
-        {
-            if (degreesOfFreedom == 2) return value => 1 - Math.Exp(-value / 2.0);
-
-            throw new NotImplementedException();
-        }
-
-        public static double GammaFunction(double x)
-        {
-            if (Math.Abs(x) < Tolerance) throw new InvalidOperationException("Input to Gamma function can't be 0!");
-
-            // Special cases come from: https://en.wikipedia.org/wiki/Particular_values_of_the_gamma_function
-            // And https://en.wikipedia.org/wiki/Gamma_function
-            // If x == 1
-            if (Math.Abs(x - 1) < Tolerance) return 1;
-
-            // If x == 1/2
-            if (Math.Abs(x - .5) < Tolerance) return Math.Sqrt(Math.PI);
-
-            // If it's a positive integer.
-            if (x > 0 && Math.Abs((int) x - x) < Tolerance) return Factorial((int) x - 1);
-
-            // If x is in the format of #.5 and is not 0
-            if (Math.Abs(x) > Tolerance && 0.5 + Math.Abs((int) x - x) < Tolerance)
-            {
-                var sqrtPi = Math.Sqrt(Math.PI);
-
-                switch (x)
-                {
-                    case > 0:
-                    {
-                        // Gamma(1/2 + n)
-                        var n = (int) (x - .5);
-                        var numerator = Factorial(2 * n);
-                        var denominator = Math.Pow(4, n) * Factorial(n);
-                        return sqrtPi * numerator / denominator;
-                    }
-                    case < 0:
-                    {
-                        // Gamma(1/2 - n)
-                        var n = (int) (.5 - x);
-                        var numerator = Math.Pow(-4, n) * Factorial(n);
-                        var denominator = Factorial(2 * n);
-                        return sqrtPi * numerator / denominator;
-                    }
-                }
-            }
-
-            throw new NotImplementedException("Gamma function has met a case that is not implemented yet.");
         }
     }
 }
