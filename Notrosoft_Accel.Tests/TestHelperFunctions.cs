@@ -855,7 +855,10 @@ namespace Notrosoft_Accel.Tests
         public static void AssertListsAreEqual<T>(List<T> expected, List<T> actual)
         {
             AssertsListsAreSameLength(expected, actual);
-            Assert.IsTrue(expected.SequenceEqual(actual));
+
+            foreach (var expectedValue in expected) Assert.IsTrue(actual.Contains(expectedValue));
+
+            foreach (var actualValue in actual) Assert.IsTrue(expected.Contains(actualValue));
         }
 
         public static void AssertsListsAreSameLength<T, TT>(List<T> expected, List<TT> actual)

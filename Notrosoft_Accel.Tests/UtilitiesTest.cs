@@ -195,5 +195,40 @@ namespace Notrosoft_Accel.Tests
                 TestHelperFunctions.AssertListsAreEqual(expected[actualKey].ToList(), actualValue.ToList());
             }
         }
+
+        [TestMethod]
+        public void Utilties_ConvertFromIntervalDataToFrequencyData()
+        {
+            var data = TestHelperFunctions.GetSmallData1d();
+            var intervalDefinitions = TestHelperFunctions.GetSmallDataIntervalDefinitions();
+
+            var intervalData = Utilities.ConvertToIntervalData(Utilities.Flatten(data), intervalDefinitions);
+            var actual = Utilities.ConvertFromIntervalDataToFrequencyValues(intervalData)
+                .ToDictionary(kv => kv.Key.ToString()!, kv => kv.Value)!;
+
+
+            var expected = new Dictionary<string, int>
+            {
+                {"zero", 6},
+                {"one", 5},
+                {"two", 5}
+            };
+
+            TestHelperFunctions.AssertDictionariesAreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Utilities_ConvertFromIntervalToOrdinalData()
+        {
+            var data = TestHelperFunctions.GetSmallData1d();
+            var intervalDefinitions = TestHelperFunctions.GetSmallDataIntervalDefinitions();
+
+            var intervalData = Utilities.ConvertToIntervalData(Utilities.Flatten(data), intervalDefinitions);
+            var actual = Utilities.ConvertFromIntervalDataToOrdinalData(intervalData).ToList();
+
+            var expected = Utilities.Flatten(data).ToList();
+
+            TestHelperFunctions.AssertListsAreEqual(expected, actual);
+        }
     }
 }
