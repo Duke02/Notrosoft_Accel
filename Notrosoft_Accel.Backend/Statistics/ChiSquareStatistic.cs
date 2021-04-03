@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Notrosoft_Accel.Infrastructure;
 
 namespace Notrosoft_Accel.Backend.Statistics
@@ -22,8 +23,20 @@ namespace Notrosoft_Accel.Backend.Statistics
                 throw new InvalidOperationException(
                     "Input P Values must be the same length as the number of categories in the input data.");
 
+            // Assumes that each category should be the same probability.
+            double totalN = values.Sum(kv => kv.Value);
+            var testProportion = values.Count / totalN;
 
-            throw new NotImplementedException();
+            var sum = values.Sum(observed =>
+                Math.Pow(observed.Value / totalN - testProportion, 2) / testProportion);
+
+            var chiSquareStat = sum * totalN;
+
+
+            return new Dictionary<string, object>
+            {
+                {"chi-square", chiSquareStat}
+            };
         }
 
         public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,

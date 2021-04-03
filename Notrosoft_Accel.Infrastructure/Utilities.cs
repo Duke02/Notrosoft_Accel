@@ -17,6 +17,8 @@ namespace Notrosoft_Accel.Infrastructure
         /// </summary>
         public const int MaxFactorialInput = 171;
 
+        private const double Tolerance = 0.001;
+
         private static double[] _factorials;
 
         /// <summary>
@@ -144,6 +146,69 @@ namespace Notrosoft_Accel.Infrastructure
         public static bool ShouldRejectNullHypothesis(double pValue, double confidence = 0.95)
         {
             return pValue < 1 - confidence;
+        }
+
+        public static Func<double, double> GetChiSquarePdf(int degreesOfFreedom)
+        {
+            return value =>
+            {
+                if (value <= 0) return 0;
+
+                var numerator = Math.Pow(value, degreesOfFreedom / 2.0 - 1) * Math.Exp(-value / 2.0);
+                var denominator = Math.Pow(2, degreesOfFreedom / 2.0) * GammaFunction(degreesOfFreedom / 2.0);
+                return numerator / denominator;
+            };
+        }
+
+        public static Func<double, double> GetChiSquareCdf(int degreesOfFreedom)
+        {
+            if (degreesOfFreedom == 2) return value => 1 - Math.Exp(-value / 2.0);
+
+            throw new NotImplementedException();
+        }
+
+        public static double GammaFunction(double x)
+        {
+            if (Math.Abs(x) < Tolerance) throw new InvalidOperationException("Input to Gamma function can't be 0!");
+
+            // Special cases come from: https://en.wikipedia.org/wiki/Particular_values_of_the_gamma_function
+            // And https://en.wikipedia.org/wiki/Gamma_function
+            // If x == 1
+            if (Math.Abs(x - 1) < Tolerance) return 1;
+
+            // If x == 1/2
+            if (Math.Abs(x - .5) < Tolerance) return Math.Sqrt(Math.PI);
+
+            // If it's a positive integer.
+            if (x > 0 && Math.Abs((int) x - x) < Tolerance) return Factorial((int) x - 1);
+
+            // If x is in the format of #.5 and is not 0
+            if (Math.Abs(x) > Tolerance && 0.5 + Math.Abs((int) x - x) < Tolerance)
+            {
+                var sqrtPi = Math.Sqrt(Math.PI);
+
+                switch (x)
+                {
+                    case > 0:
+                    {
+                        // Gamma(1/2 + n)
+                        var n = (int) (x - .5);
+                        var numerator = Factorial(2 * n);
+                        var denominator = Math.Pow(4, n) * Factorial(n);
+                        return sqrtPi * numerator / denominator;
+                    }
+                    case < 0:
+                    {
+                        // Gamma(1/2 - n)
+                        var n = (int) (.5 - x);
+                        var numerator = Math.Pow(-4, n) * Factorial(n);
+                        var denominator = Factorial(2 * n);
+                        return sqrtPi * numerator / denominator;
+                    }
+                }
+            }
+
+            throw new NotImplementedException("Gamma function has met a case that is not implemented yet.");
         }
     }
 }
