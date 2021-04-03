@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Notrosoft_Accel.Tests
 {
@@ -828,6 +831,70 @@ namespace Notrosoft_Accel.Tests
             {
                 x, y
             };
+        }
+
+        public static List<string> GetStringData()
+        {
+            return new()
+            {
+                "cat", "cat", "rat", "dog", "dog", "doggo", "cat", "rat", "meow", "cow", "parrot", "johnson"
+            };
+        }
+
+        public static void AssertListsAreEqual<T>(List<T> expected, List<T> actual)
+        {
+            AssertsListsAreSameLength(expected, actual);
+            Assert.IsTrue(expected.SequenceEqual(actual));
+        }
+
+        public static void AssertsListsAreSameLength<T, TT>(List<T> expected, List<TT> actual)
+        {
+            Assert.AreEqual(expected.Count, actual.Count);
+        }
+
+        public static void AssertDictionariesAreEqual<TK, TV>(Dictionary<TK, TV> expected, Dictionary<TK, TV> actual)
+            where TK : notnull
+        {
+            if (expected == null) throw new ArgumentNullException(nameof(expected));
+            AssertsDictionariesAreSameLength(expected, actual, "The dictionaries don't have the same length!");
+
+            bool KeyChecker((KeyValuePair<TK, TV> expected, KeyValuePair<TK, TV> actual) ea)
+            {
+                var ((expectedKey, _), (actualKey, _)) = ea;
+                Console.WriteLine($"Expected Key: {expectedKey} | Actual Key: {actualKey}");
+                return expected.ContainsKey(expectedKey) && actual.ContainsKey(actualKey);
+            }
+
+            AssertAllTrue(expected.Zip(actual), KeyChecker, "The dictionaries don't have the same keys.");
+
+            bool ValueChecker((KeyValuePair<TK, TV> expected, KeyValuePair<TK, TV> actual) ea)
+            {
+                var ((expectedKey, expectedValue), (actualKey, actualValue)) = ea;
+
+                Console.WriteLine(
+                    $"Expected: K {expectedKey}, V {expectedValue} | Actual: K {actualKey} V {actualValue}");
+
+                return expectedValue!.Equals(actual[expectedKey]) &&
+                       actualValue!.Equals(expected[actualKey]);
+            }
+
+            AssertAllTrue(expected.Zip(actual), ValueChecker, "Checking for equal values for the same keys failed.");
+        }
+
+        public static void AssertAllTrue<T>(IEnumerable<T> tested, Func<T, bool> function, string message = "")
+        {
+            Assert.IsTrue(tested.All(function), message);
+        }
+
+        public static void AssertAllTrue(IEnumerable<bool> tested, string message = "")
+        {
+            AssertAllTrue(tested, b => b, message);
+        }
+
+        public static void AssertsDictionariesAreSameLength<TK1, TV1, TK2, TV2>(Dictionary<TK1, TV1> expected,
+            Dictionary<TK2, TV2> actual, string message = "") where TK1 : notnull
+        {
+            Assert.AreEqual(expected.Count, actual.Count, message);
         }
     }
 }

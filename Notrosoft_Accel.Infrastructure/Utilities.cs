@@ -125,7 +125,7 @@ namespace Notrosoft_Accel.Infrastructure
         public static Dictionary<object, int> ConvertToFrequencyValues(IEnumerable<object> flattenedValues)
         {
             var concreteValues = flattenedValues as object[] ?? flattenedValues.ToArray();
-            return concreteValues.ToDictionary(k => k,
+            return concreteValues.Distinct().ToDictionary(k => k,
                 v => concreteValues.Count(cv => cv == v));
         }
 

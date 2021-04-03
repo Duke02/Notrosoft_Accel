@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Notrosoft_Accel.Infrastructure;
 
@@ -105,11 +106,12 @@ namespace Notrosoft_Accel.Tests
             Assert.ThrowsException<InvalidOperationException>(() => Utilities.GetCovariance(x, y));
         }
 
+        [TestMethod]
         public void Utilities_Flatten_2d()
         {
             var data = TestHelperFunctions.GetSmallData2d();
 
-            IEnumerable<double> expected = new List<double>
+            var expected = new List<double>
             {
                 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0,
                 3.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 2.0, 0.0, 1.0, 2.0, 0.0,
@@ -117,9 +119,31 @@ namespace Notrosoft_Accel.Tests
                 3.0
             };
 
-            var actual = Utilities.Flatten(data);
+            var actual = Utilities.Flatten(data).ToList();
+            TestHelperFunctions.AssertListsAreEqual(expected, actual);
+        }
 
-            Assert.AreEqual(expected, actual);
+        [TestMethod]
+        public void Utilities_ConvertToFrequencyValues()
+        {
+            var data = TestHelperFunctions.GetStringData();
+
+            var expected = new Dictionary<string, int>
+            {
+                {"cat", 3},
+                {"rat", 2},
+                {"dog", 2},
+                {"doggo", 1},
+                {"meow", 1},
+                {"cow", 1},
+                {"parrot", 1},
+                {"johnson", 1}
+            };
+
+            Dictionary<string, int> actual = Utilities.ConvertToFrequencyValues(data)
+                .ToDictionary(kv => kv.Key.ToString(), kv => kv.Value)!;
+
+            TestHelperFunctions.AssertDictionariesAreEqual(expected, actual);
         }
     }
 }
