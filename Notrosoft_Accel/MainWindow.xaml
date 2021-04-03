@@ -30,20 +30,20 @@
                             ScrollViewer.HorizontalScrollBarVisibility="Visible" CanHorizontallyScroll="True" CanVerticallyScroll="True" 
                             ScrollViewer.CanContentScroll="True">
                     <CheckBox x:Name="MeanButton" Content="Mean" VerticalAlignment="Top" Checked="MeanButton_Checked" Unchecked="MeanButton_Unchecked"/>
-                    <CheckBox Content="Median" VerticalAlignment="Top" />
-                    <CheckBox Content="Mode" VerticalAlignment="Top"/>
-                    <CheckBox Content="StandardDeviation" VerticalAlignment="Top"/>
-                    <CheckBox Content="Variance" VerticalAlignment="Top"/>
-                    <CheckBox Content="CoefficientOfVariance" VerticalAlignment="Top"/>
-                    <CheckBox Content="Percentile" VerticalAlignment="Top"/>
-                    <CheckBox Content="ProbabilityDistribution" VerticalAlignment="Top"/>
-                    <CheckBox Content="BinomialDistribution" VerticalAlignment="Top"/>
-                    <CheckBox Content="LeastSquaresLine" VerticalAlignment="Top"/>
-                    <CheckBox Content="ChiSquare" VerticalAlignment="Top"/>
-                    <CheckBox Content="CorrelationCoefficient" VerticalAlignment="Top"/>
-                    <CheckBox Content="SignTest" VerticalAlignment="Top"/>
-                    <CheckBox Content="RankSumTest" VerticalAlignment="Top"/>
-                    <CheckBox Content="SpearmanRankCorrelationCoefficient" VerticalAlignment="Top"></CheckBox>
+                    <CheckBox x:Name="MedianButton" Content="Median" VerticalAlignment="Top" Checked="MedianButton_Checked" Unchecked="MedianButton_Unchecked"/>
+                    <CheckBox x:Name="Mode" Content="Mode" VerticalAlignment="Top" Checked="ModeButton_Checked" Unchecked="ModeButton_Unchecked"/>
+                    <CheckBox x:Name="StandardDeviation" Content="StandardDeviation" VerticalAlignment="Top" Checked="StandardDeviationButton_Checked" Unchecked="StandardDeviationButton_Unchecked"/>
+                    <CheckBox x:Name="Variance" Content="Variance" VerticalAlignment="Top" Checked="VarianceButton_Checked" Unchecked="VarianceButton_Unchecked"/>
+                    <CheckBox x:Name="CoefficientOfVariance" Content="CoefficientOfVariance" VerticalAlignment="Top" Checked="CoefficientOfVarianceButton_Checked" Unchecked="CoefficientOfVarianceButton_Unchecked"/>
+                    <CheckBox x:Name="Percentile" Content="Percentile" VerticalAlignment="Top" Checked="PercentileButton_Checked" Unchecked="PercentileButton_Unchecked"/>
+                    <CheckBox x:Name="ProbabilityDistribution" Content="ProbabilityDistribution" VerticalAlignment="Top" Checked="ProbabilityDistributionButton_Checked" Unchecked="ProbabilityDistributionButton_Unchecked"/>
+                    <CheckBox x:Name="BinomialDistribution" Content="BinomialDistribution" VerticalAlignment="Top" Checked="BinomialDistributionButton_Checked" Unchecked="BinomialDistributionButton_Unchecked"/>
+                    <CheckBox x:Name="LeastSquaresLine" Content="LeastSquaresLine" VerticalAlignment="Top" Checked="LeastSquaresLineButton_Checked" Unchecked="LeastSquaresLineButton_Unchecked"/>
+                    <CheckBox x:Name="ChiSquare" Content="ChiSquare" VerticalAlignment="Top" Checked="ChiSquareButton_Checked" Unchecked="ChiSquareButton_Unchecked"/>
+                    <CheckBox x:Name="CorrelationCoefficient" Content="CorrelationCoefficient" VerticalAlignment="Top" Checked="CorrelationCoefficientButton_Checked" Unchecked="CorrelationCoefficientButton_Unchecked"/>
+                    <CheckBox x:Name="SignTest" Content="SignTest" VerticalAlignment="Top" Checked="SignTestButton_Checked" Unchecked="SignTestButton_Unchecked"/>
+                    <CheckBox x:Name="RankSumTest" Content="RankSumTest" VerticalAlignment="Top" Checked="RankSumTestButton_Checked" Unchecked="RankSumTestButton_Unchecked"/>
+                    <CheckBox x:Name="SpearmanRankCorrelationCoefficient" Content="SpearmanRankCorrelationCoefficient" VerticalAlignment="Top" Checked="SpearmanRankCorrelationCoefficientButton_Checked" Unchecked="SpearmanRankCorrelationCoefficientButton_Unchecked"></CheckBox>
                     <Button x:Name="doStatsButton" Content="Perform Statistics" Click="doStatsButton_Click"/>
                 </StackPanel>
                

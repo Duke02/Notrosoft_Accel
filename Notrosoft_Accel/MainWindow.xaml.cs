@@ -159,5 +159,144 @@ namespace Notrosoft_Accel
         {
             statisticTypes.Remove(StatisticType.Mean);
         }
+
+        private void MedianButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.Median);
+        }
+
+        private void MedianButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.Median);
+        }
+
+        private void ModeButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.Mode);
+        }
+
+        private void ModeButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.Mode);
+        }
+
+        private void StandardDeviationButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.StandardDeviation);
+        }
+
+        private void StandardDeviationButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.StandardDeviation);
+        }
+
+        private void VarianceButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.Variance);
+        }
+
+        private void VarianceButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.Variance);
+        }
+
+        private void CoefficientOfVarianceButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.CoefficientOfVariance);
+        }
+
+        private void CoefficientOfVarianceButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.CoefficientOfVariance);
+        }
+
+        private void PercentileButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.Percentile);
+        }
+
+        private void PercentileButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.Percentile);
+        }
+        private void ProbabilityDistributionButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.ProbabilityDistribution);
+        }
+
+        private void ProbabilityDistributionButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.ProbabilityDistribution);
+        }
+
+        private void BinomialDistributionButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.BinomialDistribution);
+        }
+
+        private void BinomialDistributionButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.BinomialDistribution);
+        }
+
+        private void LeastSquaresLineButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.LeastSquaresLine);
+        }
+
+        private void LeastSquaresLineButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.LeastSquaresLine);
+        }
+
+        private void ChiSquareButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.ChiSquare);
+        }
+
+        private void ChiSquareButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.ChiSquare);
+        }
+
+        private void CorrelationCoefficientButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.CorrelationCoefficient);
+        }
+
+        private void CorrelationCoefficientButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.CorrelationCoefficient);
+        }
+
+        private void SignTestButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.SignTest);
+        }
+
+        private void SignTestButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.SignTest);
+        }
+
+        private void RankSumTestButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.RankSumTest);
+        }
+
+        private void RankSumTestButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.RankSumTest);
+        }
+
+        private void SpearmanRankCorrelationCoefficientButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.SpearmanRankCorrelationCoefficient);
+        }
+
+        private void SpearmanRankCorrelationCoefficientButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.SpearmanRankCorrelationCoefficient);
+        }
     }
 }
