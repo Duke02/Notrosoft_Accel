@@ -36,6 +36,8 @@ namespace Notrosoft_Accel
 
             
             InitializeComponent();
+
+            outputTextBlock.Text = "Testing 1, 2, 3";
             Console.WriteLine("Hello World!");
         }
 
@@ -136,6 +138,26 @@ namespace Notrosoft_Accel
             dataGridTable();
         }
 
-        
+        private void doStatsButton_Click(object sender, RoutedEventArgs e)
+        {
+            List<List<string>> try1 = new List<List<string>>();
+            List<string> test = new List<string> { "1", "3", "5", "7" };
+            try1.Add(test);
+            try1.Add(test);
+            outputTextBlock.Text = interlayer.doStatistics(try1, statisticTypes.ToArray(), null);
+        }
+
+        // ------------------------ CHECKBOX HANDLERS ------------------------
+        // -------------------------------------------------------------------
+
+        private void MeanButton_Checked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Add(StatisticType.Mean);
+        }
+
+        private void MeanButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            statisticTypes.Remove(StatisticType.Mean);
+        }
     }
 }
