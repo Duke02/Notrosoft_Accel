@@ -12,11 +12,12 @@ namespace Notrosoft_Accel.Backend.Statistics
         ///     Base method that all statistics are to override to use for their statistics.
         /// </summary>
         /// <param name="values">The input values to calculate the statistic from.</param>
+        /// <param name="parameters"></param>
         /// <returns>The statistic for the child class.</returns>
-        public Dictionary<string, object> OperateOrdinalData(IEnumerable<IEnumerable<double>> values,
+        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
             params object[] parameters);
 
-        public Dictionary<string, object> OperateFrequencyData(Dictionary<object, int> values,
+        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
             params object[] parameters);
 
         public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,

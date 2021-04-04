@@ -10,7 +10,7 @@ namespace Notrosoft_Accel.Tests
     {
         public const double Tolerance = 0.001;
 
-        public static List<List<double>> GetEmpty1dData()
+        public static OrdinalData GetEmpty1dData()
         {
             return new()
             {
@@ -18,7 +18,7 @@ namespace Notrosoft_Accel.Tests
             };
         }
 
-        public static List<List<double>> GetEmpty2dData()
+        public static OrdinalData GetEmpty2dData()
         {
             return new()
             {
@@ -27,7 +27,7 @@ namespace Notrosoft_Accel.Tests
             };
         }
 
-        public static List<List<double>> Get3DData()
+        public static OrdinalData Get3DData()
         {
             return new()
             {
@@ -46,7 +46,7 @@ namespace Notrosoft_Accel.Tests
             };
         }
 
-        public static List<List<double>> GetIrregularLength2dData()
+        public static OrdinalData GetIrregularLength2dData()
         {
             return new()
             {
@@ -61,7 +61,7 @@ namespace Notrosoft_Accel.Tests
             };
         }
 
-        public static List<List<double>> GetSmallData1d()
+        public static OrdinalData GetSmallData1d()
         {
             return new()
             {
@@ -72,7 +72,7 @@ namespace Notrosoft_Accel.Tests
             };
         }
 
-        public static Dictionary<string, Bounds<double>> GetSmallDataIntervalDefinitions()
+        public static IntervalDefinitions GetSmallDataIntervalDefinitions()
         {
             return new()
             {
@@ -82,7 +82,7 @@ namespace Notrosoft_Accel.Tests
             };
         }
 
-        public static List<List<double>> GetSmallData1dOdd()
+        public static OrdinalData GetSmallData1dOdd()
         {
             var data = GetSmallData1d();
             if (data[0].Count % 2 == 0) data[0].Add(0.0);
@@ -90,7 +90,7 @@ namespace Notrosoft_Accel.Tests
             return data;
         }
 
-        public static List<List<double>> GetSmallData1dEven()
+        public static OrdinalData GetSmallData1dEven()
         {
             var data = GetSmallData1d();
             if (data[0].Count % 2 == 1) data[0].Add(0.0);
@@ -98,7 +98,7 @@ namespace Notrosoft_Accel.Tests
             return data;
         }
 
-        public static List<List<double>> GetSmallData2d()
+        public static OrdinalData GetSmallData2d()
         {
             var x = new List<double>
             {
@@ -110,13 +110,13 @@ namespace Notrosoft_Accel.Tests
                 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0,
                 3.0
             };
-            return new List<List<double>>
+            return new OrdinalData
             {
                 x, y
             };
         }
 
-        public static List<List<double>> GetLargeData1d()
+        public static OrdinalData GetLargeData1d()
         {
             return new()
             {
@@ -301,7 +301,7 @@ namespace Notrosoft_Accel.Tests
             };
         }
 
-        public static List<List<double>> GetLargeData2d()
+        public static OrdinalData GetLargeData2d()
         {
             var x = new List<double>
             {
@@ -838,7 +838,7 @@ namespace Notrosoft_Accel.Tests
                 111.0, 113.0, 115.0, 117.0, 119.0
             };
 
-            return new List<List<double>>
+            return new OrdinalData
             {
                 x, y
             };

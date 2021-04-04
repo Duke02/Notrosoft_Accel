@@ -122,11 +122,11 @@ namespace Notrosoft_Accel.Infrastructure
         /// </summary>
         /// <param name="flattenedValues">The flattened ordinal data to convert</param>
         /// <returns>The converted frequency data.</returns>
-        public static Dictionary<object, int> ConvertToFrequencyValues(IEnumerable<object> flattenedValues)
+        public static FrequencyData<T> ConvertToFrequencyValues<T>(IEnumerable<T> flattenedValues)
         {
-            var concreteValues = flattenedValues as object[] ?? flattenedValues.ToArray();
-            return concreteValues.Distinct().ToDictionary(k => k,
-                v => concreteValues.Count(cv => cv == v));
+            var concreteValues = flattenedValues as T[] ?? flattenedValues.ToArray();
+            return (FrequencyData<T>) concreteValues.Distinct().ToDictionary(k => k,
+                v => concreteValues.Count(cv => Equals(cv, v)));
         }
 
         /// <summary>
@@ -134,10 +134,10 @@ namespace Notrosoft_Accel.Infrastructure
         /// </summary>
         /// <param name="intervalData">The interval data to convert.</param>
         /// <returns>The converted frequency data.</returns>
-        public static Dictionary<object, int> ConvertFromIntervalDataToFrequencyValues(
-            Dictionary<string, IEnumerable<double>> intervalData)
+        public static FrequencyData<T> ConvertFromIntervalDataToFrequencyValues<T>(IntervalData intervalData)
+            where T : class
         {
-            return intervalData.ToDictionary(kv => kv.Key as object,
+            return (FrequencyData<T>) intervalData.ToDictionary(kv => kv.Key as T,
                 kv => kv.Value.Count());
         }
 
@@ -147,10 +147,10 @@ namespace Notrosoft_Accel.Infrastructure
         /// <param name="flattenedValues">The ordinal data to convert.</param>
         /// <param name="intervalDefinitions">The definitions of the intervals.</param>
         /// <returns>The converted interval data.</returns>
-        public static Dictionary<string, IEnumerable<double>> ConvertToIntervalData(IEnumerable<double> flattenedValues,
-            Dictionary<string, Bounds<double>> intervalDefinitions)
+        public static IntervalData ConvertToIntervalData(IEnumerable<double> flattenedValues,
+            IntervalDefinitions intervalDefinitions)
         {
-            return intervalDefinitions.ToDictionary(kv => kv.Key,
+            return (IntervalData) intervalDefinitions.ToDictionary(kv => kv.Key,
                 kv => flattenedValues.Where(v => kv.Value.IsWithinBounds(v)));
         }
 
@@ -159,8 +159,7 @@ namespace Notrosoft_Accel.Infrastructure
         /// </summary>
         /// <param name="intervalData">The interval data to convert.</param>
         /// <returns>The converted ordinal data as a 1d container.</returns>
-        public static IEnumerable<double> ConvertFromIntervalDataToOrdinalData(
-            Dictionary<string, IEnumerable<double>> intervalData)
+        public static IEnumerable<double> ConvertFromIntervalDataToOrdinalData(IntervalData intervalData)
         {
             return intervalData.SelectMany(kv => kv.Value);
         }
