@@ -1,31 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CsvHelper;
 using System.IO;
-using System.Globalization;
+using System.Linq;
 
 namespace Notrosoft_Accel
 {
-    class FileInput
+    internal class FileInput
     {
-        private List<List<string>> data;
-        public List<List<string>> ReadFile(string file) {
-            data = new List<List<string>>();
-            string[] allData = File.ReadAllLines(file);
-            foreach (string line in allData)
-            {
-                var temp = new List<string>();
-                string[] words = line.Split(", ");
-                for (int i = 0; i < words.Length; i++)
-                {
-                    temp.Add(words[i]);
-                }
-                data.Add(temp);
-            }
-            return data;
+        public List<List<string>> ReadFile(string file)
+        {
+            if (string.IsNullOrWhiteSpace(file)) throw new InvalidOperationException("File path must be filled in!");
+
+            if (!File.Exists(file))
+                throw new InvalidOperationException("Cannot import from a file that doesn't exist!");
+
+            return File.ReadAllLines(file)
+                .Select(line => line.Split(",").ToList())
+                .ToList();
         }
     }
 }
