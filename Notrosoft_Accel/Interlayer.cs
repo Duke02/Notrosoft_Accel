@@ -29,51 +29,53 @@ namespace Notrosoft_Accel
             // String used for when a Statistical method is not implemented quite yet.
             var NaS = "Statistic method has not been added yet";
 
+            var data = (OrdinalData) _doubles;
+
             foreach (var stat in stats)
             {
                 switch (stat)
                 {
                     case StatisticType.Mean:
                         var mean = new MeanStatistic();
-                        keyValues = mean.OperateOrdinalData(_doubles, param);
+                        keyValues = mean.OperateOrdinalData(data, param);
                         keyValues.TryGetValue("mean", out var r);
                         returnStr += "Mean:" + r;
                         break;
 
                     case StatisticType.Median:
                         var median = new MedianStatistic();
-                        keyValues = median.OperateOrdinalData(_doubles, param);
+                        keyValues = median.OperateOrdinalData(data, param);
                         returnStr += "Median:";
                         break;
 
                     case StatisticType.Mode:
                         var mode = new ModeStatistic();
-                        keyValues = mode.OperateOrdinalData(_doubles, param);
+                        keyValues = mode.OperateOrdinalData(data, param);
                         returnStr += "Mode:";
                         break;
 
                     case StatisticType.StandardDeviation:
                         var sDev = new StandardDeviationStatistic();
-                        keyValues = sDev.OperateOrdinalData(_doubles, param);
+                        keyValues = sDev.OperateOrdinalData(data, param);
                         returnStr += "Standard Deviation:";
                         break;
 
                     case StatisticType.Variance:
                         var variance = new VarianceStatistic();
-                        keyValues = variance.OperateOrdinalData(_doubles, param);
+                        keyValues = variance.OperateOrdinalData(data, param);
                         returnStr += "Variance:";
                         break;
 
                     case StatisticType.CoefficientOfVariance:
                         var coeffVar = new CoefficientOfVarianceStatistic();
-                        keyValues = coeffVar.OperateOrdinalData(_doubles, param);
+                        keyValues = coeffVar.OperateOrdinalData(data, param);
                         returnStr += "Coefficient of Variance:";
                         break;
 
                     case StatisticType.Percentile:
                         // Need parameter between 0 and 1 for percentile
                         var percentile = new PercentileStatistic();
-                        keyValues = percentile.OperateOrdinalData(_doubles, param);
+                        keyValues = percentile.OperateOrdinalData(data, param);
                         returnStr += "Percentile:";
                         break;
 
@@ -85,47 +87,47 @@ namespace Notrosoft_Accel
                     case StatisticType.BinomialDistribution:
                         // Outputs something.TBD
                         var binDis = new BinomialDistributionStatistic();
-                        keyValues = binDis.OperateOrdinalData(_doubles, param);
+                        keyValues = binDis.OperateOrdinalData(data, param);
                         returnStr += "Binomial Distribution:";
                         break;
 
                     case StatisticType.LeastSquaresLine:
                         // /outputs slope and intercept
                         var leastSqr = new LeastSquareLineStatistic();
-                        keyValues = leastSqr.OperateOrdinalData(_doubles, param);
+                        keyValues = leastSqr.OperateOrdinalData(data, param);
                         returnStr += "Least Square Line:";
                         break;
 
                     case StatisticType.ChiSquare:
                         // TODO: Learn.
                         var chiSqr = new ChiSquareStatistic();
-                        keyValues = chiSqr.OperateOrdinalData(_doubles, param);
+                        keyValues = chiSqr.OperateOrdinalData(data, param);
                         returnStr += "Chi Square:";
                         break;
 
                     case StatisticType.CorrelationCoefficient:
                         var corrCoe = new CorrelationCoefficientStatistic();
-                        keyValues = corrCoe.OperateOrdinalData(_doubles, param);
+                        keyValues = corrCoe.OperateOrdinalData(data, param);
                         returnStr += "Correlation Coefficient:";
                         break;
 
                     case StatisticType.SignTest:
                         // Complicated.
                         var sign = new SignTestStatistic();
-                        keyValues = sign.OperateOrdinalData(_doubles, param);
+                        keyValues = sign.OperateOrdinalData(data, param);
                         returnStr += "Sign Test:";
                         break;
 
                     case StatisticType.RankSumTest:
                         // Complicated.
                         var rankSum = new RankSumTestStatistic();
-                        keyValues = rankSum.OperateOrdinalData(_doubles, param);
+                        keyValues = rankSum.OperateOrdinalData(data, param);
                         returnStr += "Rank Sum:";
                         break;
 
                     case StatisticType.SpearmanRankCorrelationCoefficient:
                         var spearman = new SpearmanRankCorrelationStatistic();
-                        keyValues = spearman.OperateOrdinalData(_doubles, param);
+                        keyValues = spearman.OperateOrdinalData(data, param);
                         returnStr += "Spearman Rank Correlation:";
                         break;
 

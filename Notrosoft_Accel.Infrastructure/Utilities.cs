@@ -125,8 +125,8 @@ namespace Notrosoft_Accel.Infrastructure
         public static FrequencyData<T> ConvertToFrequencyValues<T>(IEnumerable<T> flattenedValues)
         {
             var concreteValues = flattenedValues as T[] ?? flattenedValues.ToArray();
-            return (FrequencyData<T>) concreteValues.Distinct().ToDictionary(k => k,
-                v => concreteValues.Count(cv => Equals(cv, v)));
+            return new FrequencyData<T>(concreteValues.Distinct().ToDictionary(k => k,
+                v => concreteValues.Count(cv => Equals(cv, v))));
         }
 
         /// <summary>
@@ -137,8 +137,8 @@ namespace Notrosoft_Accel.Infrastructure
         public static FrequencyData<T> ConvertFromIntervalDataToFrequencyValues<T>(IntervalData intervalData)
             where T : class
         {
-            return (FrequencyData<T>) intervalData.ToDictionary(kv => kv.Key as T,
-                kv => kv.Value.Count());
+            return new(intervalData.ToDictionary(kv => kv.Key as T,
+                kv => kv.Value.Count()));
         }
 
         /// <summary>
@@ -150,8 +150,8 @@ namespace Notrosoft_Accel.Infrastructure
         public static IntervalData ConvertToIntervalData(IEnumerable<double> flattenedValues,
             IntervalDefinitions intervalDefinitions)
         {
-            return (IntervalData) intervalDefinitions.ToDictionary(kv => kv.Key,
-                kv => flattenedValues.Where(v => kv.Value.IsWithinBounds(v)));
+            return new(intervalDefinitions.ToDictionary(kv => kv.Key,
+                kv => flattenedValues.Where(v => kv.Value.IsWithinBounds(v))));
         }
 
         /// <summary>

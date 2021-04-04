@@ -28,9 +28,9 @@ namespace Notrosoft_Accel.Backend.Statistics
             if (values.Count == 0)
                 throw new InvalidOperationException("Chi Square Statistic must be given data in order to operate.");
 
-            if (parameters.Length != values.Count)
-                throw new InvalidOperationException(
-                    "Input P Values must be the same length as the number of categories in the input data.");
+            // if (parameters.Length != values.Count)
+            //     throw new InvalidOperationException(
+            //         "Input P Values must be the same length as the number of categories in the input data.");
 
             // Assumes that each category should be the same probability.
             double totalN = values.Sum(kv => kv.Value);

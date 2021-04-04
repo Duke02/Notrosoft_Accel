@@ -203,9 +203,9 @@ namespace Notrosoft_Accel.Tests
             var intervalDefinitions = TestHelperFunctions.GetSmallDataIntervalDefinitions();
 
             var intervalData = Utilities.ConvertToIntervalData(Utilities.Flatten(data), intervalDefinitions);
-            var actual = (FrequencyData<string>) Utilities
+            var actual = new FrequencyData<string>(Utilities
                 .ConvertFromIntervalDataToFrequencyValues<string>(intervalData)
-                .ToDictionary(kv => kv.Key.ToString()!, kv => kv.Value)!;
+                .ToDictionary(kv => kv.Key.ToString()!, kv => kv.Value)!);
 
 
             var expected = new Dictionary<string, int>
