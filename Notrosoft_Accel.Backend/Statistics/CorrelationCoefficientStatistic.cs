@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Notrosoft_Accel.Infrastructure;
 
 namespace Notrosoft_Accel.Backend.Statistics
 {
     public class CorrelationCoefficientStatistic : IStatistic
     {
-        public Dictionary<string, object> OperateOrdinalData(IEnumerable<IEnumerable<double>> values,
+        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
             params object[] parameters)
         {
             var concreteValues = values.ToArray();
@@ -32,14 +31,14 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData(Dictionary<object, int> values,
-            params object[] parameters)
+        public Dictionary<string, object> OperateIntervalData(OrdinalData values,
+            IntervalDefinitions intervalDefinitions, params object[] parameters)
         {
             throw new NotImplementedException();
         }
 
-        public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,
-            Dictionary<string, Bounds<double>> intervalDefinitions, params object[] parameters)
+        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
+            params object[] parameters)
         {
             throw new NotImplementedException();
         }

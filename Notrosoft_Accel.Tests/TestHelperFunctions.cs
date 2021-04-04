@@ -10,26 +10,19 @@ namespace Notrosoft_Accel.Tests
     {
         public const double Tolerance = 0.001;
 
-        public static List<List<double>> GetEmpty1dData()
+        public static OrdinalData GetEmpty1dData()
         {
-            return new()
-            {
-                new List<double>()
-            };
+            return new(new List<List<double>>());
         }
 
-        public static List<List<double>> GetEmpty2dData()
+        public static OrdinalData GetEmpty2dData()
         {
-            return new()
-            {
-                new List<double>(),
-                new List<double>()
-            };
+            return new(new List<List<double>> {new(), new()});
         }
 
-        public static List<List<double>> Get3DData()
+        public static OrdinalData Get3DData()
         {
-            return new()
+            return new(new List<IEnumerable<double>>
             {
                 new List<double>
                 {
@@ -43,36 +36,36 @@ namespace Notrosoft_Accel.Tests
                 {
                     1, 2, 3
                 }
-            };
+            });
         }
 
-        public static List<List<double>> GetIrregularLength2dData()
+        public static OrdinalData GetIrregularLength2dData()
         {
-            return new()
+            return new(new List<List<double>>
             {
-                new List<double>
+                new()
                 {
                     1, 2, 3
                 },
-                new List<double>
+                new()
                 {
                     1, 2
                 }
-            };
+            });
         }
 
-        public static List<List<double>> GetSmallData1d()
+        public static OrdinalData GetSmallData1d()
         {
-            return new()
+            return new(new List<List<double>>
             {
-                new List<double>
+                new()
                 {
                     0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 2.0, 0.0
                 }
-            };
+            });
         }
 
-        public static Dictionary<string, Bounds<double>> GetSmallDataIntervalDefinitions()
+        public static IntervalDefinitions GetSmallDataIntervalDefinitions()
         {
             return new()
             {
@@ -82,7 +75,7 @@ namespace Notrosoft_Accel.Tests
             };
         }
 
-        public static List<List<double>> GetSmallData1dOdd()
+        public static OrdinalData GetSmallData1dOdd()
         {
             var data = GetSmallData1d();
             if (data[0].Count % 2 == 0) data[0].Add(0.0);
@@ -90,7 +83,7 @@ namespace Notrosoft_Accel.Tests
             return data;
         }
 
-        public static List<List<double>> GetSmallData1dEven()
+        public static OrdinalData GetSmallData1dEven()
         {
             var data = GetSmallData1d();
             if (data[0].Count % 2 == 1) data[0].Add(0.0);
@@ -98,7 +91,7 @@ namespace Notrosoft_Accel.Tests
             return data;
         }
 
-        public static List<List<double>> GetSmallData2d()
+        public static OrdinalData GetSmallData2d()
         {
             var x = new List<double>
             {
@@ -110,17 +103,14 @@ namespace Notrosoft_Accel.Tests
                 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 1.0, 3.0, 5.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0,
                 3.0
             };
-            return new List<List<double>>
-            {
-                x, y
-            };
+            return new OrdinalData(new List<List<double>> {x, y});
         }
 
-        public static List<List<double>> GetLargeData1d()
+        public static OrdinalData GetLargeData1d()
         {
-            return new()
+            return new(new List<List<double>>
             {
-                new List<double>
+                new()
                 {
                     1, 1, 2, 3, 4, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1,
                     2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 1, 2, 3, 4,
@@ -298,10 +288,10 @@ namespace Notrosoft_Accel.Tests
                     18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
                     43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59
                 }
-            };
+            });
         }
 
-        public static List<List<double>> GetLargeData2d()
+        public static OrdinalData GetLargeData2d()
         {
             var x = new List<double>
             {
@@ -838,10 +828,10 @@ namespace Notrosoft_Accel.Tests
                 111.0, 113.0, 115.0, 117.0, 119.0
             };
 
-            return new List<List<double>>
+            return new OrdinalData(new List<List<double>>
             {
                 x, y
-            };
+            });
         }
 
         public static List<string> GetStringData()

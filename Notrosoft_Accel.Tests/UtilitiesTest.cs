@@ -197,14 +197,15 @@ namespace Notrosoft_Accel.Tests
         }
 
         [TestMethod]
-        public void Utilties_ConvertFromIntervalDataToFrequencyData()
+        public void Utilities_ConvertFromIntervalDataToFrequencyData()
         {
             var data = TestHelperFunctions.GetSmallData1d();
             var intervalDefinitions = TestHelperFunctions.GetSmallDataIntervalDefinitions();
 
             var intervalData = Utilities.ConvertToIntervalData(Utilities.Flatten(data), intervalDefinitions);
-            var actual = Utilities.ConvertFromIntervalDataToFrequencyValues(intervalData)
-                .ToDictionary(kv => kv.Key.ToString()!, kv => kv.Value)!;
+            var actual = new FrequencyData<string>(Utilities
+                .ConvertFromIntervalDataToFrequencyValues<string>(intervalData)
+                .ToDictionary(kv => kv.Key.ToString()!, kv => kv.Value)!);
 
 
             var expected = new Dictionary<string, int>

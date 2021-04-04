@@ -14,8 +14,9 @@ namespace Notrosoft_Accel.Backend.Statistics
         ///     Calculates the mode (most common number) of the inputted data.
         /// </summary>
         /// <param name="values">A 2D data collection of numbers.</param>
+        /// <param name="param"></param>
         /// <returns>The most common number of the inputted data.</returns>
-        public Dictionary<string, object> OperateOrdinalData(IEnumerable<IEnumerable<double>> values,
+        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
             params object[] param)
         {
             // Flatten the 2d list of lists into a 1d list.
@@ -42,14 +43,14 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData(Dictionary<object, int> values,
-            params object[] parameters)
+        public Dictionary<string, object> OperateIntervalData(OrdinalData values,
+            IntervalDefinitions intervalDefinitions, params object[] parameters)
         {
             throw new NotImplementedException();
         }
 
-        public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,
-            Dictionary<string, Bounds<double>> intervalDefinitions, params object[] parameters)
+        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
+            params object[] parameters)
         {
             throw new NotImplementedException();
         }
