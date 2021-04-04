@@ -1,74 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using Microsoft.Win32;
 using Notrosoft_Accel.Infrastructure;
 
 namespace Notrosoft_Accel
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        static Interlayer interlayer = new Interlayer();
-        static int colNum = 200;  // Number of Columns present in the data structure.
-        static int rowNum = 50;  // Number of Rows present in the data structure.
-        public static List<List<string>> dataList = new List<List<string>>();   // The data structure.
-        public static DataTable dataTable = new DataTable();  // DataTable sits between the dataList of the backend and DataGrid of the GUI.
-        public static List<StatisticType> statisticTypes = new List<StatisticType>();
+        private static readonly Interlayer interlayer = new();
+        private static int colNum = 200; // Number of Columns present in the data structure.
+        private static int rowNum = 50; // Number of Rows present in the data structure.
+        public static List<List<string>> dataList = new(); // The data structure.
 
-        
+        public static DataTable
+            dataTable = new(); // DataTable sits between the dataList of the backend and DataGrid of the GUI.
+
+        public static List<StatisticType> statisticTypes = new();
+        private readonly FileInput _fileImporter;
+
+        private readonly GraphingWrapper _grapher;
+
+
         public MainWindow()
         {
             // The List<String> representing the default column List of size colNum.
-            List<string> colConstruct = new List<string>();
+            var colConstruct = new List<string>();
 
-            for (int i = 0; i < colNum; i++)
-            {
-                colConstruct.Add("");
-            }
+            for (var i = 0; i < colNum; i++) colConstruct.Add("");
+
             // Construct the rows as the empty column structure.
-            for (int i = 0; i < rowNum; i++)
-            {
-                dataList.Add(colConstruct);
-            }
+            for (var i = 0; i < rowNum; i++) dataList.Add(colConstruct);
 
-            
+
             InitializeComponent();
 
             outputTextBlock.Text = "Testing 1, 2, 3";
-            Console.WriteLine("Hello World!");
+            _grapher = new GraphingWrapper();
+
+            _fileImporter = new FileInput();
         }
 
         // Constructs a dataTable object and binds it to the DataGrid's ItemsSource.
-        void dataGridTable()
+        private void dataGridTable()
         {
             // Set the dataTable to a new object.
             dataTable = new DataTable();
 
             // Column constructor
-            for (int i = 0; i < colNum; i++)
+            for (var i = 0; i < colNum; i++)
             {
                 // Instantiate a new DataColumn with a string type to be put into the DataTable.
-                DataColumn newColumn = new DataColumn((i).ToString(), typeof(string));
+                var newColumn = new DataColumn(i.ToString(), typeof(string));
                 // Add the new column to the list of columns in the DataTable.
                 dataTable.Columns.Add(newColumn);
             }
-            
+
             // Creates a row object with the number of columns defined in the above loop.
-            for (int i = 0; i < rowNum; i++)
+            for (var i = 0; i < rowNum; i++)
             {
                 // Instantiate a new row.
-                DataRow newRow = dataTable.NewRow();
+                var newRow = dataTable.NewRow();
                 // Set the respective data of the DataTable to the dataList's. 
-                for (int j = 0; j < colNum; j++)
-                {
-                    newRow[j] = dataList[i][j];
-                }                
+                for (var j = 0; j < colNum; j++) newRow[j] = dataList[i][j];
+
                 dataTable.Rows.Add(newRow);
             }
-            
+
             // Bind the DataGrid to the constructed dataTable.
             Data.ItemsSource = dataTable.DefaultView;
         }
@@ -83,31 +86,28 @@ namespace Notrosoft_Accel
         private void addColumnButton_Click(object sender, RoutedEventArgs e)
         {
             // Copies all data input to the dataTable back to the dataList for permanence.
-            for (int i = 0; i < rowNum; i++)
+            for (var i = 0; i < rowNum; i++)
             {
-                List<string> updatedRow = new List<string>();
-                for (int j = 0; j < colNum; j++)
-                {
-                    updatedRow.Add(dataTable.Rows[i][j].ToString());
-                }
+                var updatedRow = new List<string>();
+                for (var j = 0; j < colNum; j++) updatedRow.Add(dataTable.Rows[i][j].ToString());
+
                 dataList[i] = updatedRow;
             }
+
             // Inrease the column number.
             colNum++;
 
             // Add an additional empty column to each row in the list.
-            for (int i = 0; i < rowNum; i++)
-            {
-                dataList[i].Add("");
-            }
+            for (var i = 0; i < rowNum; i++) dataList[i].Add("");
+
             // Redo the dataTable to DataGrid binding.
             dataGridTable();
         }
 
         // Defines the Row headers
-        private void Data_LoadingRow(object sender, System.Windows.Controls.DataGridRowEventArgs e)
+        private void Data_LoadingRow(object sender, DataGridRowEventArgs e)
         {
-            string header = ' ' + e.Row.GetIndex().ToString();
+            var header = ' ' + e.Row.GetIndex().ToString();
             e.Row.Header = header;
         }
 
@@ -115,23 +115,19 @@ namespace Notrosoft_Accel
         private void addRowButton_Click(object sender, RoutedEventArgs e)
         {
             // Copies all data input to the dataTable back to the dataList for permanence.
-            for (int i = 0; i < rowNum; i++)
+            for (var i = 0; i < rowNum; i++)
             {
-                List<string> updatedRow = new List<string>();
-                for (int j = 0; j < colNum; j++)
-                {
-                    updatedRow.Add(dataTable.Rows[i][j].ToString());
-                }
+                var updatedRow = new List<string>();
+                for (var j = 0; j < colNum; j++) updatedRow.Add(dataTable.Rows[i][j].ToString());
+
                 dataList[i] = updatedRow;
             }
+
             // Inrease the column number.
             rowNum++;
-            List<string> emptyCol = new List<string>();
+            var emptyCol = new List<string>();
             // Add an additional empty column to each row in the list.
-            for (int i = 0; i < colNum; i++)
-            {
-                emptyCol.Add("");
-            }
+            for (var i = 0; i < colNum; i++) emptyCol.Add("");
 
             dataList.Add(emptyCol);
             // Redo the dataTable to DataGrid binding.
@@ -140,8 +136,8 @@ namespace Notrosoft_Accel
 
         private void doStatsButton_Click(object sender, RoutedEventArgs e)
         {
-            List<List<string>> try1 = new List<List<string>>();
-            List<string> test = new List<string> { "1", "3", "5", "6", "6", "7.2" ,"0.225", "2.4"};
+            var try1 = new List<List<string>>();
+            var test = new List<string> {"1", "3", "5", "6", "6", "7.2", "0.225", "2.4"};
             try1.Add(test);
             try1.Add(test);
             outputTextBlock.Text = interlayer.doStatistics(try1, statisticTypes.ToArray(), null);
@@ -219,6 +215,7 @@ namespace Notrosoft_Accel
         {
             statisticTypes.Remove(StatisticType.Percentile);
         }
+
         private void ProbabilityDistributionButton_Checked(object sender, RoutedEventArgs e)
         {
             statisticTypes.Add(StatisticType.ProbabilityDistribution);
@@ -297,6 +294,53 @@ namespace Notrosoft_Accel
         private void SpearmanRankCorrelationCoefficientButton_Unchecked(object sender, RoutedEventArgs e)
         {
             statisticTypes.Remove(StatisticType.SpearmanRankCorrelationCoefficient);
+        }
+
+        private void GraphButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var data = new FrequencyData<string>(new Dictionary<string, int>
+            {
+                {"Cats", 30},
+                {"Dogs", 45},
+                {"Parrots", 12}
+            });
+
+            var savePieChartToDialog = new SaveFileDialog
+            {
+                Filter = "JPeg Image|*.jpg",
+                Title = "Save graph to..."
+            };
+
+            savePieChartToDialog.ShowDialog(this);
+
+            if (!string.IsNullOrWhiteSpace(savePieChartToDialog.FileName))
+                _grapher.PlotPieChart(data, savePieChartToDialog.FileName);
+            else
+                MessageBox.Show("Cannot save graph to an empty file location!");
+        }
+
+        private void Data_OnSelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+        }
+
+        private void ImportFile_OnClick(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = "CSV|*.csv",
+                Title = "Import CSV..."
+            };
+
+            openFileDialog.ShowDialog(this);
+
+            if (string.IsNullOrWhiteSpace(openFileDialog.FileName) || !File.Exists(openFileDialog.FileName))
+            {
+                MessageBox.Show("Cannot find file!");
+            }
+            else
+            {
+                var newData = _fileImporter.ReadFile(openFileDialog.FileName);
+            }
         }
     }
 }
