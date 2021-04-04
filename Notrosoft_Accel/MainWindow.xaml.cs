@@ -141,7 +141,7 @@ namespace Notrosoft_Accel
         private void doStatsButton_Click(object sender, RoutedEventArgs e)
         {
             List<List<string>> try1 = new List<List<string>>();
-            List<string> test = new List<string> { "1", "3", "5", "7" };
+            List<string> test = new List<string> { "1", "3", "5", "6", "6", "7.2" ,"0.225", "2.4"};
             try1.Add(test);
             try1.Add(test);
             outputTextBlock.Text = interlayer.doStatistics(try1, statisticTypes.ToArray(), null);

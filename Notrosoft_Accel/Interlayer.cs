@@ -6,22 +6,38 @@ namespace Notrosoft_Accel
 {
     internal class Interlayer
     {
-        private readonly List<List<double>> _doubles = new();
+        private static List<List<double>> _doubles = new();
         private List<List<string>> _strings = new();
 
         public string doStatistics(List<List<string>> input, StatisticType[] stats, params object[] param)
         {
-            // Ensure List is horizontal, not vertical.
-            if (input.Count < input[0].Count)
-                for (var i = 0; i < input[0].Count; i++)
-                for (var j = 0; j < input.Count; j++)
-                    _strings[i][j] = input[j][i];
+            List<string> s = new List<string>();
+            // Ensure List is always presented in the same manner
+            if (input.Count > input[0].Count)
+            {
+                for (var i = 0; i < input.Count; i++)
+                {
+                    s.Clear();
+                    for (var j = 0; j < input[0].Count; j++)
+                    { 
+                        s.Add(input[i][j]);
+                    }
+                    _strings.Add(s);
+                } 
+            }
             else _strings = input;
-
+            
+            List<double> row = new List<double>();
             // Assign values for _doubles and _ints
             for (var i = 0; i < _strings.Count; i++)
-            for (var j = 0; j < _strings[0].Count; j++)
-                _doubles[i][j] = double.Parse(_strings[i][j]);
+            {
+                row.Clear();
+                for (var j = 0; j < _strings[0].Count; j++)
+                {
+                    row.Add(double.Parse(_strings[i][j]));
+                }
+                _doubles.Add(row);
+            }
             // Set the return variable for statistic operations.
             var keyValues = new Dictionary<string, object>();
             // String constructed based off the statistic performed.
@@ -36,26 +52,29 @@ namespace Notrosoft_Accel
                     case StatisticType.Mean:
                         var mean = new MeanStatistic();
                         keyValues = mean.OperateOrdinalData(_doubles, param);
-                        keyValues.TryGetValue("mean", out var r);
-                        returnStr += "Mean:" + r;
+                        keyValues.TryGetValue("mean", out var meanr);
+                        returnStr += "Mean: " + meanr;
                         break;
 
                     case StatisticType.Median:
                         var median = new MedianStatistic();
                         keyValues = median.OperateOrdinalData(_doubles, param);
-                        returnStr += "Median:";
+                        keyValues.TryGetValue("median", out var medr);
+                        returnStr += "Median: " + medr;
                         break;
 
                     case StatisticType.Mode:
                         var mode = new ModeStatistic();
                         keyValues = mode.OperateOrdinalData(_doubles, param);
-                        returnStr += "Mode:";
+                        keyValues.TryGetValue("mode", out var moder);
+                        returnStr += "Mode: " + moder;
                         break;
 
                     case StatisticType.StandardDeviation:
                         var sDev = new StandardDeviationStatistic();
                         keyValues = sDev.OperateOrdinalData(_doubles, param);
-                        returnStr += "Standard Deviation:";
+                        keyValues.TryGetValue("Standard Deviation", out var SDr);
+                        returnStr += "Standard Deviation: " + SDr;
                         break;
 
                     case StatisticType.Variance:
@@ -83,7 +102,7 @@ namespace Notrosoft_Accel
                         break;
 
                     case StatisticType.BinomialDistribution:
-                        // Outputs something.TBD
+                        // hypothesis, probOfSuccess, confidence (optional)
                         var binDis = new BinomialDistributionStatistic();
                         keyValues = binDis.OperateOrdinalData(_doubles, param);
                         returnStr += "Binomial Distribution:";
@@ -97,7 +116,6 @@ namespace Notrosoft_Accel
                         break;
 
                     case StatisticType.ChiSquare:
-                        // TODO: Learn.
                         var chiSqr = new ChiSquareStatistic();
                         keyValues = chiSqr.OperateOrdinalData(_doubles, param);
                         returnStr += "Chi Square:";
@@ -110,14 +128,14 @@ namespace Notrosoft_Accel
                         break;
 
                     case StatisticType.SignTest:
-                        // Complicated.
+                        // comparisonType, valueToCompareAgainst
                         var sign = new SignTestStatistic();
                         keyValues = sign.OperateOrdinalData(_doubles, param);
                         returnStr += "Sign Test:";
                         break;
 
                     case StatisticType.RankSumTest:
-                        // Complicated.
+                        
                         var rankSum = new RankSumTestStatistic();
                         keyValues = rankSum.OperateOrdinalData(_doubles, param);
                         returnStr += "Rank Sum:";
