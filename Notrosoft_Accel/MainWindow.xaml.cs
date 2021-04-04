@@ -134,6 +134,54 @@ namespace Notrosoft_Accel
             dataGridTable();
         }
 
+        private void GraphButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var data = new FrequencyData<string>(new Dictionary<string, int>
+            {
+                {"Cats", 30},
+                {"Dogs", 45},
+                {"Parrots", 12}
+            });
+
+            var savePieChartToDialog = new SaveFileDialog
+            {
+                Filter = "JPeg Image|*.jpg",
+                Title = "Save graph to..."
+            };
+
+            savePieChartToDialog.ShowDialog(this);
+
+            if (!string.IsNullOrWhiteSpace(savePieChartToDialog.FileName))
+                _grapher.PlotPieChart(data, savePieChartToDialog.FileName);
+            else
+                MessageBox.Show("Cannot save graph to an empty file location!");
+        }
+
+        private void Data_OnSelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+        }
+
+        private void ImportFile_OnClick(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = "CSV|*.csv",
+                Title = "Import CSV..."
+            };
+
+            openFileDialog.ShowDialog(this);
+
+            if (string.IsNullOrWhiteSpace(openFileDialog.FileName) || !File.Exists(openFileDialog.FileName))
+            {
+                MessageBox.Show("Cannot find file!");
+            }
+            else
+            {
+                var newData = _fileImporter.ReadFile(openFileDialog.FileName);
+                // TODO: Overwrite the data in the table with this new stuff.
+            }
+        }
+
         private void doStatsButton_Click(object sender, RoutedEventArgs e)
         {
             var try1 = new List<List<string>>();
@@ -294,53 +342,6 @@ namespace Notrosoft_Accel
         private void SpearmanRankCorrelationCoefficientButton_Unchecked(object sender, RoutedEventArgs e)
         {
             statisticTypes.Remove(StatisticType.SpearmanRankCorrelationCoefficient);
-        }
-
-        private void GraphButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var data = new FrequencyData<string>(new Dictionary<string, int>
-            {
-                {"Cats", 30},
-                {"Dogs", 45},
-                {"Parrots", 12}
-            });
-
-            var savePieChartToDialog = new SaveFileDialog
-            {
-                Filter = "JPeg Image|*.jpg",
-                Title = "Save graph to..."
-            };
-
-            savePieChartToDialog.ShowDialog(this);
-
-            if (!string.IsNullOrWhiteSpace(savePieChartToDialog.FileName))
-                _grapher.PlotPieChart(data, savePieChartToDialog.FileName);
-            else
-                MessageBox.Show("Cannot save graph to an empty file location!");
-        }
-
-        private void Data_OnSelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
-        {
-        }
-
-        private void ImportFile_OnClick(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = "CSV|*.csv",
-                Title = "Import CSV..."
-            };
-
-            openFileDialog.ShowDialog(this);
-
-            if (string.IsNullOrWhiteSpace(openFileDialog.FileName) || !File.Exists(openFileDialog.FileName))
-            {
-                MessageBox.Show("Cannot find file!");
-            }
-            else
-            {
-                var newData = _fileImporter.ReadFile(openFileDialog.FileName);
-            }
         }
     }
 }
