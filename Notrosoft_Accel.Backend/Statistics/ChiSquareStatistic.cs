@@ -13,15 +13,16 @@ namespace Notrosoft_Accel.Backend.Statistics
             throw new InvalidOperationException("Chi Square Statistic cannot operate on Ordinal Data!");
         }
 
-        public Dictionary<string, object> OperateIntervalData(IEnumerable<IEnumerable<double>> values,
-            Dictionary<string, Bounds<double>> intervalDefinitions, params object[] parameters)
+        public Dictionary<string, object> OperateIntervalData(OrdinalData values,
+            IntervalDefinitions intervalDefinitions, params object[] parameters)
         {
             var intervalData = Utilities.ConvertToIntervalData(Utilities.Flatten(values),
                 intervalDefinitions);
-            return OperateFrequencyData(Utilities.ConvertFromIntervalDataToFrequencyValues(intervalData), parameters);
+            return OperateFrequencyData(Utilities.ConvertFromIntervalDataToFrequencyValues<string>(intervalData),
+                parameters);
         }
 
-        public Dictionary<string, object> OperateFrequencyData(FrequencyData<T> values,
+        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
             params object[] parameters)
         {
             if (values.Count == 0)
