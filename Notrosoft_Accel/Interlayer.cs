@@ -149,7 +149,7 @@ namespace Notrosoft_Accel
                         break;
                 }
 
-                returnStr += "\n";
+                returnStr += "\n\n";
             }
 
             return returnStr;

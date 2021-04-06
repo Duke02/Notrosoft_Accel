@@ -14,7 +14,7 @@ namespace Notrosoft_Accel
     public partial class MainWindow : Window
     {
         private static readonly Interlayer interlayer = new();
-        private static int colNum = 200; // Number of Columns present in the data structure.
+        private static int colNum = 100; // Number of Columns present in the data structure.
         private static int rowNum = 40; // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new(); // The data structure.
 
