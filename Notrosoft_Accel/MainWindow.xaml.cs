@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -15,7 +17,7 @@ namespace Notrosoft_Accel
     {
         private static readonly Interlayer interlayer = new();
         private static int colNum = 200; // Number of Columns present in the data structure.
-        private static int rowNum = 40; // Number of Rows present in the data structure.
+        private static int rowNum = 20; // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new(); // The data structure.
 
         public static DataTable
@@ -62,12 +64,12 @@ namespace Notrosoft_Accel
             }
 
             // Creates a row object with the number of columns defined in the above loop.
-            for (var i = 0; i < rowNum; i++)
+            for (var row = 0; row < rowNum; row++)
             {
                 // Instantiate a new row.
                 var newRow = dataTable.NewRow();
                 // Set the respective data of the DataTable to the dataList's. 
-                for (var j = 0; j < colNum; j++) newRow[j] = dataList[i][j];
+                for (var col = 0; col < colNum; col++) newRow[col] = dataList[row][col];
 
                 dataTable.Rows.Add(newRow);
             }
@@ -169,7 +171,9 @@ namespace Notrosoft_Accel
                 Title = "Import CSV..."
             };
 
-            openFileDialog.ShowDialog(this);
+            var wasOpened = openFileDialog.ShowDialog(this) ?? false;
+
+            if (!wasOpened) return;
 
             if (string.IsNullOrWhiteSpace(openFileDialog.FileName) || !File.Exists(openFileDialog.FileName))
             {
@@ -178,7 +182,29 @@ namespace Notrosoft_Accel
             else
             {
                 var newData = _fileImporter.ReadFile(openFileDialog.FileName);
-                // TODO: Overwrite the data in the table with this new stuff.
+
+                var newColsNeeded = newData.Max(r => r.Count);
+                var newRowsNeeded = newData.Count;
+
+                var rowsNeeded = Math.Max(newRowsNeeded, rowNum);
+                var colsNeeded = Math.Max(newColsNeeded, colNum);
+
+                // Pad the newData to fit the previous size of the data table.
+                for (var row = newRowsNeeded; row < rowsNeeded; row++) newData.Add(new List<string>());
+
+                for (var row = 0; row < rowsNeeded; row++)
+                {
+                    var newColsNeededForRow = colsNeeded - newData[row].Count;
+                    for (var col = 0; col < newColsNeededForRow; col++) newData[row].Add(string.Empty);
+                }
+
+                colNum = colsNeeded;
+                rowNum = rowsNeeded;
+
+                dataList = newData;
+
+                // Redo the dataTable to DataGrid binding.
+                dataGridTable();
             }
         }
 
@@ -187,9 +213,8 @@ namespace Notrosoft_Accel
             var sel = Data.SelectedCells;
             var try1 = new List<List<string>>();
             int lastC = int.MaxValue, thisC;
-            int i = -1;
-            foreach (DataGridCellInfo cellInfo in sel)
-            {
+            var i = -1;
+            foreach (var cellInfo in sel)
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
                 {
@@ -199,19 +224,19 @@ namespace Notrosoft_Accel
                         i++;
                         try1.Add(new List<string>());
                     }
+
                     lastC = thisC;
-                    
+
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
-                    object[] obj = row.Row.ItemArray;
+                    var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1[i].Add(obj[thisC].ToString());
                 }
-            }
-            
+
             outputTextBlock.Text = interlayer.doStatistics(try1, statisticTypes.ToArray(), null);
         }
 
