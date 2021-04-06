@@ -15,7 +15,7 @@ namespace Notrosoft_Accel
     {
         private static readonly Interlayer interlayer = new();
         private static int colNum = 200; // Number of Columns present in the data structure.
-        private static int rowNum = 50; // Number of Rows present in the data structure.
+        private static int rowNum = 40; // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new(); // The data structure.
 
         public static DataTable
@@ -184,11 +184,27 @@ namespace Notrosoft_Accel
 
         private void doStatsButton_Click(object sender, RoutedEventArgs e)
         {
-            var try1 = new List<List<string>>();
-            var test = new List<string> {"1", "3", "5", "6", "6", "7.2", "0.225", "2.4"};
-            try1.Add(test);
-            try1.Add(test);
-            outputTextBlock.Text = interlayer.doStatistics(try1, statisticTypes.ToArray(), null);
+            var sel = Data.SelectedCells;
+            var try1 = new List<string>();
+            
+            foreach (DataGridCellInfo cellInfo in sel)
+            {
+                // Ensures cell information is valid. If not then don't try and do anything with it
+                if (cellInfo.IsValid)
+                {
+                    // Get's the current cell's information (specifically for Column info)
+                    var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
+                    // Get's the current row's information
+                    var row = (DataRowView)cont.DataContext;
+                    // Get the current row's data as an item array
+                    object[] obj = row.Row.ItemArray;
+                    // Add the item of the current row at the current column's index and add it to the outbound list.
+                    try1.Add(obj[cellInfo.Column.DisplayIndex].ToString());
+                }
+            }
+            var test = new List<List<string>>();
+            test.Add(try1);
+            outputTextBlock.Text = interlayer.doStatistics(test, statisticTypes.ToArray(), null);
         }
 
         // ------------------------ CHECKBOX HANDLERS ------------------------

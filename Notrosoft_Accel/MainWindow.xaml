@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded">
+        Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded" Background="#FFC2FFCB" BorderBrush="#FF555555">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="0,0,10,10" CanHorizontallyScroll="False" CanVerticallyScroll="False"
@@ -76,7 +76,7 @@
                           ScrollViewer.HorizontalScrollBarVisibility="Visible"
                           EnableRowVirtualization="False" Grid.Row="1" Grid.Column="1"
                           CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
-                          LoadingRow="Data_LoadingRow" SelectionUnit="CellOrRowHeader" VerticalAlignment="Top"
+                          LoadingRow="Data_LoadingRow" SelectionUnit="Cell" VerticalAlignment="Top"
                           ClipToBounds="True" HorizontalAlignment="Left"
                           Padding="0,0,0,10" HorizontalScrollBarVisibility="Visible"
                           VerticalScrollBarVisibility="Visible" RowDetailsVisibilityMode="Visible"
@@ -85,7 +85,7 @@
 
                 <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" />
 
-                <Button x:Name="ImportFile" Grid.Column="1" Content="Import File..." Click="ImportFile_OnClick" />
+                <Button x:Name="ImportFile" Grid.Column="1" Content="Import File..." Click="ImportFile_OnClick" HorizontalAlignment="Left" />
 
                 <Button x:Name="addColumnButton" Grid.Column="2" Grid.Row="0"
                         Content="Add Column" Click="addColumnButton_Click" MaxWidth="200" />
