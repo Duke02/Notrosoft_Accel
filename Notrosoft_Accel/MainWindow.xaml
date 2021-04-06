@@ -67,6 +67,7 @@
                               VerticalAlignment="Top" Checked="SpearmanRankCorrelationCoefficientButton_Checked"
                               Unchecked="SpearmanRankCorrelationCoefficientButton_Unchecked" />
                     <Button x:Name="doStatsButton" Content="Perform Statistics" Click="doStatsButton_Click" />
+                    <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" VerticalAlignment="Top" />
                 </StackPanel>
 
                 <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False"
@@ -80,10 +81,10 @@
                           ClipToBounds="True" HorizontalAlignment="Left"
                           Padding="0,0,0,10" HorizontalScrollBarVisibility="Visible"
                           VerticalScrollBarVisibility="Visible" RowDetailsVisibilityMode="Visible"
-                          SelectedCellsChanged="Data_OnSelectedCellsChanged" />
+                          SelectedCellsChanged="Data_OnSelectedCellsChanged" HorizontalContentAlignment="Right" />
 
 
-                <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" />
+                
 
                 <Button x:Name="ImportFile" Grid.Column="1" Content="Import File..." Click="ImportFile_OnClick" HorizontalAlignment="Left" />
 
@@ -94,8 +95,9 @@
                         Click="addRowButton_Click" MaxWidth="150" HorizontalContentAlignment="Center"
                         HorizontalAlignment="Left" />
 
-                <TextBlock Text="{Binding Path=Text}" FontSize="10" Grid.Column="0"
-                           Grid.Row="1" Name="outputTextBlock" TextWrapping="Wrap" MaxWidth="200" />
+                <TextBlock Text="Statistics Output" Grid.Column="0" Grid.Row="0" FontSize="20"/>
+                <TextBox Text="{Binding Path=Text}" FontSize="10" Grid.Column="0"
+                           Grid.Row="1" Name="outputTextBlock" TextWrapping="Wrap" MaxWidth="200" IsReadOnly="True" />
 
 
             </Grid>
