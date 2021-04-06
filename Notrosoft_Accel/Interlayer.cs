@@ -6,11 +6,13 @@ namespace Notrosoft_Accel
 {
     internal class Interlayer
     {
-        private static readonly List<List<double>> _doubles = new();
+        private readonly List<List<double>> _doubles = new();
         private List<List<string>> _strings = new();
 
         public string doStatistics(List<List<string>> input, StatisticType[] stats, params object[] param)
         {
+            _doubles.Clear();
+            _strings.Clear();
             var s = new List<string>();
             // Ensure List is always presented in the same manner
             if (input.Count > input[0].Count)
@@ -22,12 +24,12 @@ namespace Notrosoft_Accel
                 }
             else _strings = input;
 
-            var row = new List<double>();
+            
             // Assign values for _doubles and _ints
             for (var i = 0; i < _strings.Count; i++)
             {
-                row.Clear();
-                for (var j = 0; j < _strings[0].Count; j++) row.Add(double.Parse(_strings[i][j]));
+                var row = new List<double>();
+                for (var j = 0; j < _strings[i].Count; j++) row.Add(double.Parse(_strings[i][j]));
                 _doubles.Add(row);
             }
 

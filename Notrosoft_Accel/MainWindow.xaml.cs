@@ -185,13 +185,22 @@ namespace Notrosoft_Accel
         private void doStatsButton_Click(object sender, RoutedEventArgs e)
         {
             var sel = Data.SelectedCells;
-            var try1 = new List<string>();
-            
+            var try1 = new List<List<string>>();
+            int lastC = int.MaxValue, thisC;
+            int i = -1;
             foreach (DataGridCellInfo cellInfo in sel)
             {
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
                 {
+                    thisC = cellInfo.Column.DisplayIndex;
+                    if (thisC < lastC)
+                    {
+                        i++;
+                        try1.Add(new List<string>());
+                    }
+                    lastC = thisC;
+                    
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
@@ -199,12 +208,11 @@ namespace Notrosoft_Accel
                     // Get the current row's data as an item array
                     object[] obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
-                    try1.Add(obj[cellInfo.Column.DisplayIndex].ToString());
+                    try1[i].Add(obj[thisC].ToString());
                 }
             }
-            var test = new List<List<string>>();
-            test.Add(try1);
-            outputTextBlock.Text = interlayer.doStatistics(test, statisticTypes.ToArray(), null);
+            
+            outputTextBlock.Text = interlayer.doStatistics(try1, statisticTypes.ToArray(), null);
         }
 
         // ------------------------ CHECKBOX HANDLERS ------------------------

@@ -22,7 +22,7 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
@@ -63,7 +63,7 @@
                               Checked="SignTestButton_Checked" Unchecked="SignTestButton_Unchecked" />
                     <CheckBox x:Name="RankSumTest" Content="RankSumTest" VerticalAlignment="Top"
                               Checked="RankSumTestButton_Checked" Unchecked="RankSumTestButton_Unchecked" />
-                    <CheckBox x:Name="SpearmanRankCorrelationCoefficient" Content="SpearmanRankCorrelationCoefficient"
+                    <CheckBox x:Name="SpearmanRankCorrelationCoefficient" Content="SpearmanRank"
                               VerticalAlignment="Top" Checked="SpearmanRankCorrelationCoefficientButton_Checked"
                               Unchecked="SpearmanRankCorrelationCoefficientButton_Unchecked" />
                     <Button x:Name="doStatsButton" Content="Perform Statistics" Click="doStatsButton_Click" />
