@@ -51,6 +51,49 @@ namespace Notrosoft_Accel.Infrastructure
             return squaredDifferences.Average();
         }
 
+        public static double GetMidpoint(IEnumerable<double> data)
+        {
+            var concreteData = data.ToArray();
+            return (concreteData.Max() + concreteData.Min()) / 2.0;
+        }
+
+        public static double GetGroupedMean(IntervalData intervalData)
+        {
+            // Get the total size of the sample.
+            var n = intervalData.Sum(kv => kv.Value.Count());
+            // Get each midpoint for the bounds of the interval.
+            var midpoints = intervalData.Definitions.ToDictionary(kv => kv.Key,
+                kv => kv.Value.GetMidpoint());
+            // Get the number of occurrences of each interval.
+            var frequencies = intervalData.Select(kv => (kv.Key, kv.Value.Count()));
+
+            // Sum up the weighted values.
+            var sum = 0.0;
+            foreach (var (intervalName, frequency) in frequencies) sum += frequency * midpoints[intervalName];
+
+            // Return the average.
+            return sum / n;
+        }
+
+        public static double GetGroupedVariance(IntervalData intervalData)
+        {
+            // https://ncalculators.com/statistics/grouped-data-standard-deviation-calculator.htm
+            var n = intervalData.Sum(kv => kv.Value.Count());
+            var squaredMidpoints = intervalData.Definitions.ToDictionary(
+                kv => kv.Key,
+                kv => Math.Pow(kv.Value.GetMidpoint(), 2.0)
+            );
+
+            var meanSquared = Math.Pow(GetGroupedMean(intervalData), 2.0);
+            var frequencies = intervalData.Select(kv => (kv.Key, kv.Value.Count()));
+
+            var sum = 0.0;
+
+            foreach (var (name, freq) in frequencies) sum += freq * squaredMidpoints[name];
+
+            return (sum - n * meanSquared) / (n - 1);
+        }
+
         /// <summary>
         ///     Gets the sample covariance between the two inputted data collections.
         /// </summary>

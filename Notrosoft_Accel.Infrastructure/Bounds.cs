@@ -1,21 +1,31 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Notrosoft_Accel.Infrastructure
 {
-    public class Bounds<T> where T : IComparable
+    public class Bounds
     {
-        public Bounds(T start, T end)
+        public Bounds(double start, double end)
         {
             Start = start;
             End = end;
         }
 
-        public T Start { get; }
-        public T End { get; }
+        public Bounds(IEnumerable<double> data) : this(data.Min(), data.Max())
+        {
+        }
 
-        public bool IsWithinBounds(T value)
+        public double Start { get; }
+        public double End { get; }
+
+        public bool IsWithinBounds(double value)
         {
             return value.CompareTo(Start) >= 0 && value.CompareTo(End) <= 0;
+        }
+
+        public double GetMidpoint()
+        {
+            return (Start - End) / 2.0;
         }
     }
 }

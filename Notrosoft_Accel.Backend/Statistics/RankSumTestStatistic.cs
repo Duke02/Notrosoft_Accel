@@ -30,16 +30,16 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(OrdinalData values,
-            IntervalDefinitions intervalDefinitions, params object[] parameters)
+        public Dictionary<string, object> OperateIntervalData(IntervalData values,
+            params object[] parameters)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException("Rank Sum Test cannot be performed on Interval Data.");
         }
 
         public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException("Rank Sum Test cannot be performed on Frequency Data.");
         }
 
         private double InnerFunction(double x, double y)

@@ -20,7 +20,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
             params object[] parameters);
 
-        public Dictionary<string, object> OperateIntervalData(OrdinalData values,
-            IntervalDefinitions intervalDefinitions, params object[] parameters);
+        public Dictionary<string, object> OperateIntervalData(IntervalData values,
+            params object[] parameters);
     }
 }

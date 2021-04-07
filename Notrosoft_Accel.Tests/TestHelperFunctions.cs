@@ -69,9 +69,9 @@ namespace Notrosoft_Accel.Tests
         {
             return new()
             {
-                {"zero", new Bounds<double>(-.99, .99)},
-                {"one", new Bounds<double>(.99, 1.99)},
-                {"two", new Bounds<double>(1.99, 2.99)}
+                {"zero", new Bounds(-.99, .99)},
+                {"one", new Bounds(.99, 1.99)},
+                {"two", new Bounds(1.99, 2.99)}
             };
         }
 
