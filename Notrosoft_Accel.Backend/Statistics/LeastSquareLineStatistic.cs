@@ -45,7 +45,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             // Took this from my CS 588 notes.
             // Basically the least square line is equal to
             // Cov(X, Y) / Var(X) + y_avg - x_Avg * Cov(X, Y) / Var(X)
-            var slope = Utilities.GetCovariance(xValues, yValues) / Utilities.GetVariance(xValues);
+            var slope = Utilities.GetCovariance(xValues, yValues) / Utilities.GetSampleVariance(xValues);
             var intercept = yAverage - slope * xAverage;
 
             // TODO: Figure out a way to return the slope and intercept.

@@ -51,6 +51,21 @@ namespace Notrosoft_Accel.Infrastructure
             return squaredDifferences.Average();
         }
 
+        public static double GetSampleVariance(IEnumerable<double> values)
+        {
+            var valuesArray = values.ToArray();
+            var average = valuesArray.Average();
+
+            var n = valuesArray.Length;
+
+            var sumSquaredDifferences = valuesArray
+                .Select(x => x - average)
+                .Select(xDiff => xDiff * xDiff)
+                .Sum();
+
+            return sumSquaredDifferences / (n - 1);
+        }
+
         public static double GetMidpoint(IEnumerable<double> data)
         {
             var concreteData = data.ToArray();

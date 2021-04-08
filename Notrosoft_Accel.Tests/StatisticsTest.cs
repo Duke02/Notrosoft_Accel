@@ -1,6 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Notrosoft_Accel.Backend.Statistics;
+using Notrosoft_Accel.Infrastructure;
 
 namespace Notrosoft_Accel.Tests
 {
@@ -305,6 +306,97 @@ namespace Notrosoft_Accel.Tests
 
             Assert.ThrowsException<InvalidOperationException>(() =>
                 binDistStat.OperateOrdinalData(data, hypothesis, probSuccess, confidence));
+        }
+
+        [TestMethod]
+        public void Statistics_CorrelationCoeff()
+        {
+            var corrCoeff = new CorrelationCoefficientStatistic();
+
+            var data = TestHelperFunctions.GetSmallData2d();
+
+            const double expected = 0.2210526794;
+
+            var actual = (double) corrCoeff.OperateOrdinalData(data)["coeff"];
+
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_LeastSquareLine()
+        {
+            var stat = new LeastSquareLineStatistic();
+
+            var data = TestHelperFunctions.GetSmallData2d();
+
+            const double expectedSlope = 0.2580645161;
+            const double expectedYIntercept = 2.032258065;
+
+            var actualOutput = stat.OperateOrdinalData(data);
+            var actualSlope = (double) actualOutput["slope"];
+            var actualYIntercept = (double) actualOutput["intercept"];
+
+            Assert.AreEqual(expectedSlope, actualSlope, TestHelperFunctions.Tolerance);
+            Assert.AreEqual(expectedYIntercept, actualYIntercept, TestHelperFunctions.Tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_NormalDist()
+        {
+            var stat = new NormalDistribution();
+
+            var data = TestHelperFunctions.GetSmallData1d();
+
+            const double expectedVariance = 0.68359375;
+            const double expectedMean = 0.9375;
+
+            var actualOutput = stat.OperateOrdinalData(data);
+
+            var actualMean = (double) actualOutput["mean"];
+            var actualVariance = (double) actualOutput["variance"];
+
+            Assert.AreEqual(expectedMean, actualMean, TestHelperFunctions.Tolerance);
+            Assert.AreEqual(expectedVariance, actualVariance, TestHelperFunctions.Tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_PercentileTest()
+        {
+            var stat = new PercentileStatistic();
+
+            var data = TestHelperFunctions.GetSmallData1d();
+
+            const double expectedTenth = 0;
+            const double expectedQuarter = 0;
+            const double expectedThirdQuarter = 2;
+            const double expectedNinety = 2;
+
+            var tenth = (double) stat.OperateOrdinalData(data, .1)["percentile"];
+            var quarter = (double) stat.OperateOrdinalData(data, .25)["percentile"];
+            var thirdQuarter = (double) stat.OperateOrdinalData(data, .75)["percentile"];
+            var ninety = (double) stat.OperateOrdinalData(data, 0.9)["percentile"];
+
+            Assert.AreEqual(expectedTenth, tenth, TestHelperFunctions.Tolerance);
+            Assert.AreEqual(expectedQuarter, quarter, TestHelperFunctions.Tolerance);
+            Assert.AreEqual(expectedThirdQuarter, thirdQuarter, TestHelperFunctions.Tolerance);
+            Assert.AreEqual(expectedNinety, ninety, TestHelperFunctions.Tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_ChiSquareTest()
+        {
+            var stat = new ChiSquareStatistic();
+
+            var baseData = TestHelperFunctions.GetSmallData1d();
+            var intervalDefinitions = TestHelperFunctions.GetSmallDataIntervalDefinitions();
+
+            var intervalData = Utilities.ConvertToIntervalData(Utilities.Flatten(baseData), intervalDefinitions);
+
+            const double expected = 5.666666666666666;
+
+            var actual = (double) stat.OperateIntervalData(intervalData)["chi-square"];
+
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
     }
 }
