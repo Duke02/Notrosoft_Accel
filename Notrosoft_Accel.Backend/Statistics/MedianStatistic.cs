@@ -62,7 +62,49 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateIntervalData(IntervalData values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            int length = values.Count();
+            var flattenedInput = new List<double>();
+            foreach (var kv in values)
+            {
+                flattenedInput.AddRange(kv.Value);
+            }
+            flattenedInput.ToArray();
+
+            // Throw an exception if there's nothing in the inputted container.
+            if (!flattenedInput.Any())
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+
+            // Sorts the input in ascending order then converts it into an array.
+            var sortedInput = flattenedInput.OrderBy(val => val).ToArray();
+
+            var count = sortedInput.Length;
+
+            double median;
+
+            // If the length is even...
+            if (count % 2 == 0)
+            {
+                // Get the elements that are around the middle 
+                var firstIndex = count / 2;
+                var secondIndex = firstIndex - 1;
+
+                // And return their midpoint.
+                median = (sortedInput[secondIndex] + sortedInput[firstIndex]) / 2.0;
+            }
+            else
+            {
+                // Just return the middle of the input.
+                var middleIndex = count / 2;
+
+                median = sortedInput[middleIndex];
+            }
+
+            return new Dictionary<string, object>
+            {
+                {
+                    "median", median
+                }
+            };
         }
 
         public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,

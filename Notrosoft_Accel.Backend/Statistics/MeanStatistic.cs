@@ -36,7 +36,25 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateIntervalData(IntervalData values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            // Flatten the 2D inputted container into a 1D container.
+            int length = values.Count();
+            var flattenedValues = new List<double>();
+            foreach(var kv in values)
+            {
+                flattenedValues.AddRange(kv.Value);
+            }
+            flattenedValues.ToArray();
+            
+
+            // Throw an exception if there's nothing in the inputted container.
+            if (!flattenedValues.Any())
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+
+            // Return the average/mean of the inputted values.
+            return new Dictionary<string, object>
+            {
+                {"mean", flattenedValues.Average()}
+            };
         }
 
         public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
