@@ -41,7 +41,7 @@ namespace Notrosoft_Accel
             var NaS = "Statistic method has not been added yet";
 
             var data = new OrdinalData(_doubles);
-
+            
             foreach (var stat in stats)
             {
                 switch (stat)
@@ -77,20 +77,23 @@ namespace Notrosoft_Accel
                     case StatisticType.Variance:
                         var variance = new VarianceStatistic();
                         keyValues = variance.OperateOrdinalData(data, param);
-                        returnStr += "Variance:";
+                        keyValues.TryGetValue("variance", out var Var);
+                        returnStr += "Variance:" + Var;
                         break;
 
                     case StatisticType.CoefficientOfVariance:
                         var coeffVar = new CoefficientOfVarianceStatistic();
                         keyValues = coeffVar.OperateOrdinalData(data, param);
-                        returnStr += "Coefficient of Variance:";
+                        keyValues.TryGetValue("cv", out var CVr);
+                        returnStr += "Coefficient of Variance:" + CVr;
                         break;
 
                     case StatisticType.Percentile:
                         // Need parameter between 0 and 1 for percentile
                         var percentile = new PercentileStatistic();
                         keyValues = percentile.OperateOrdinalData(data, param);
-                        returnStr += "Percentile:";
+                        keyValues.TryGetValue("percentile", out var Per);
+                        returnStr += "Percentile:" + Per;
                         break;
 
                     case StatisticType.ProbabilityDistribution:
@@ -102,46 +105,54 @@ namespace Notrosoft_Accel
                         // hypothesis, probOfSuccess (0-1), confidence (0-1, optional)
                         var binDis = new BinomialDistributionStatistic();
                         keyValues = binDis.OperateOrdinalData(data, param);
-                        returnStr += "Binomial Distribution:";
+                        keyValues.TryGetValue("P-Value", out var Pr);
+                        returnStr += "Binomial Distribution:" + Pr;
                         break;
 
                     case StatisticType.LeastSquaresLine:
                         // /outputs slope and intercept
                         var leastSqr = new LeastSquareLineStatistic();
                         keyValues = leastSqr.OperateOrdinalData(data, param);
-                        returnStr += "Least Square Line:";
+                        keyValues.TryGetValue("slope", out var m);
+                        keyValues.TryGetValue("intercept", out var b);
+                        returnStr += "Least Square Line: y = " + m + "x + " + b;
                         break;
 
                     case StatisticType.ChiSquare:
                         var chiSqr = new ChiSquareStatistic();
                         keyValues = chiSqr.OperateOrdinalData(data, param);
-                        returnStr += "Chi Square:";
+                        keyValues.TryGetValue("chi-square", out var ChSqr);
+                        returnStr += "Chi Square:" + ChSqr;
                         break;
 
                     case StatisticType.CorrelationCoefficient:
                         var corrCoe = new CorrelationCoefficientStatistic();
                         keyValues = corrCoe.OperateOrdinalData(data, param);
-                        returnStr += "Correlation Coefficient:";
+                        keyValues.TryGetValue("coeff", out var CCr);
+                        returnStr += "Correlation Coefficient:" + CCr;
                         break;
 
                     case StatisticType.SignTest:
                         // comparisonType, valueToCompareAgainst
                         var sign = new SignTestStatistic();
                         keyValues = sign.OperateOrdinalData(data, param);
-                        returnStr += "Sign Test:";
+                        keyValues.TryGetValue("sign-prop", out var SPr);
+                        returnStr += "Sign Test:" + SPr;
                         break;
 
                     case StatisticType.RankSumTest:
 
                         var rankSum = new RankSumTestStatistic();
                         keyValues = rankSum.OperateOrdinalData(data, param);
-                        returnStr += "Rank Sum:";
+                        keyValues.TryGetValue("ranksum", out var RSr);
+                        returnStr += "Rank Sum:" + RSr;
                         break;
 
                     case StatisticType.SpearmanRankCorrelationCoefficient:
                         var spearman = new SpearmanRankCorrelationStatistic();
                         keyValues = spearman.OperateOrdinalData(data, param);
-                        returnStr += "Spearman Rank Correlation:";
+                        keyValues.TryGetValue("spearman", out var SRCr);
+                        returnStr += "Spearman Rank Correlation:" + SRCr;
                         break;
 
                     default:
