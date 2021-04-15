@@ -243,7 +243,7 @@ namespace Notrosoft_Accel
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Data.MaxHeight = e.NewSize.Height - 100;
+            Data.MaxHeight = e.NewSize.Height - 110;
         }
         // ------------------------ CHECKBOX HANDLERS ------------------------
         // -------------------------------------------------------------------

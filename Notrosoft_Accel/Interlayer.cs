@@ -104,7 +104,7 @@ namespace Notrosoft_Accel
                         var Prmean = new MeanStatistic();
                         keyValues = Prmean.OperateOrdinalData(data, null);
                         keyValues.TryGetValue("mean", out var Prmeanr);
-                        returnStr += "Probability Distr: Deviance = " + PrSDr + " Mean: " + Prmeanr;
+                        returnStr += "Probability Distr: Deviance = " + PrSDr + " Mean = " + Prmeanr;
                         break;
 
                     case StatisticType.BinomialDistribution:
