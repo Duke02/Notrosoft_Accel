@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded" Background="#FFC2FFCB" BorderBrush="#FF555555">
+        Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded" Background="#FFC2FFCB" BorderBrush="#FF555555" SizeChanged="Window_SizeChanged">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="0,0,10,10" CanHorizontallyScroll="False" CanVerticallyScroll="False"
@@ -81,7 +81,8 @@
                           ClipToBounds="True" HorizontalAlignment="Left"
                           Padding="0,0,0,10" HorizontalScrollBarVisibility="Visible"
                           VerticalScrollBarVisibility="Visible" RowDetailsVisibilityMode="Visible"
-                          SelectedCellsChanged="Data_OnSelectedCellsChanged" HorizontalContentAlignment="Right" />
+                          SelectedCellsChanged="Data_OnSelectedCellsChanged" HorizontalContentAlignment="Right"
+                          MaxHeight="550"/>
 
 
                 
@@ -97,7 +98,7 @@
 
                 <TextBlock Text="Statistics Output" Grid.Column="0" Grid.Row="0" FontSize="20"/>
                 <TextBox Text="{Binding Path=Text}" FontSize="10" Grid.Column="0"
-                           Grid.Row="1" Name="outputTextBlock" TextWrapping="Wrap" MaxWidth="200" IsReadOnly="True" />
+                           Grid.Row="1" Name="outputTextBlock" TextWrapping="Wrap" MaxWidth="200" IsReadOnly="True" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" MaxHeight="300" />
 
 
             </Grid>

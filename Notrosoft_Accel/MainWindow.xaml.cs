@@ -17,7 +17,7 @@ namespace Notrosoft_Accel
     {
         private static readonly Interlayer interlayer = new();
         private static int colNum = 100; // Number of Columns present in the data structure.
-        private static int rowNum = 40; // Number of Rows present in the data structure.
+        private static int rowNum = 100; // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new(); // The data structure.
 
         public static DataTable
@@ -46,6 +46,7 @@ namespace Notrosoft_Accel
             _grapher = new GraphingWrapper();
 
             _fileImporter = new FileInput();
+            
         }
 
         // Constructs a dataTable object and binds it to the DataGrid's ItemsSource.
@@ -238,9 +239,12 @@ namespace Notrosoft_Accel
                 }
             }
             
-            outputTextBlock.Text = interlayer.doStatistics(try1, statisticTypes.ToArray(), null);
+            outputTextBlock.Text += interlayer.doStatistics(try1, statisticTypes.ToArray(), null) + '\n';
         }
-
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Data.MaxHeight = e.NewSize.Height - 100;
+        }
         // ------------------------ CHECKBOX HANDLERS ------------------------
         // -------------------------------------------------------------------
 
@@ -393,5 +397,7 @@ namespace Notrosoft_Accel
         {
             statisticTypes.Remove(StatisticType.SpearmanRankCorrelationCoefficient);
         }
+
+        
     }
 }
