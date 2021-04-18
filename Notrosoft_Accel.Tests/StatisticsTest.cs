@@ -398,5 +398,46 @@ namespace Notrosoft_Accel.Tests
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
+
+        [TestMethod]
+        public void Statistics_RankSumTest()
+        {
+            var stat = new RankSumTestStatistic();
+            var data = TestHelperFunctions.GetSmallData2d();
+
+            const double expected = 174.5;
+
+            var actual = (double) stat.OperateOrdinalData(data)["ranksum"];
+
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_SignTest()
+        {
+            var stat = new SignTestStatistic();
+
+            var data = TestHelperFunctions.GetSmallData2d();
+
+            const double expected = 0.0669002533;
+
+            var actual = (double) stat.OperateOrdinalData(data)["sign-prop"];
+
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
+        }
+
+        [TestMethod]
+        public void Statistics_SpearmanRankCorrTest()
+        {
+            var stat = new SpearmanRankCorrelationStatistic();
+
+            var data = TestHelperFunctions.GetSmallData2d();
+
+            const double expected = 0.3982620897;
+
+            var actual = (double) stat.OperateOrdinalData(data)["spearman"];
+
+            Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
+        }
     }
 }
