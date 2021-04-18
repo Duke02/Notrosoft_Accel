@@ -170,9 +170,16 @@ namespace Notrosoft_Accel.Infrastructure
             return Factorial(top) / Factorial(bottom) / Factorial(top - bottom);
         }
 
-        public static double BinomialProbability(int n, int k, double p)
+
+        public static double BinomialProbability(int nTotal, int nSuccesses, double probOfSuccess)
         {
-            return Combination(n, k) * Math.Pow(p, k) * Math.Pow(1 - p, n - k);
+            return Combination(nTotal, nSuccesses) * Math.Pow(probOfSuccess, nSuccesses) *
+                   Math.Pow(1 - probOfSuccess, nTotal - nSuccesses);
+        }
+
+        public static double CumulativeBinomialProbability(int nTotal, int nSuccesses, double probOfSuccess)
+        {
+            return Enumerable.Range(0, nSuccesses + 1).Sum(i => BinomialProbability(nTotal, i, probOfSuccess));
         }
 
         /// <summary>
