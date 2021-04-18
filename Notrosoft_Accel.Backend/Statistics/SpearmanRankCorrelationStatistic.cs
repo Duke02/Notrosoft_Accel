@@ -19,20 +19,18 @@ namespace Notrosoft_Accel.Backend.Statistics
             var xData = concreteValues[0].ToList();
             var yData = concreteValues[1].ToList();
 
-            var xRanks = xData.OrderBy(x => x)
-                .Select(x => xData.IndexOf(x))
+            var xRanks = Utilities.GetRanks(xData)
                 .Select(x => (double) x)
                 .ToArray();
 
-            var yRanks = yData.OrderBy(y => y)
-                .Select(y => yData.IndexOf(y))
+            var yRanks = Utilities.GetRanks(yData)
                 .Select(y => (double) y)
                 .ToArray();
 
             var numerator = Utilities.GetCovariance(xRanks, yRanks);
 
-            var stdDevXRank = Math.Sqrt(Utilities.GetVariance(xRanks));
-            var stdDevYRank = Math.Sqrt(Utilities.GetVariance(yRanks));
+            var stdDevXRank = Math.Sqrt(Utilities.GetSampleVariance(xRanks));
+            var stdDevYRank = Math.Sqrt(Utilities.GetSampleVariance(yRanks));
 
             var spearman = numerator / stdDevXRank / stdDevYRank;
 

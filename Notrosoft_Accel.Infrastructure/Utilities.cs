@@ -182,6 +182,13 @@ namespace Notrosoft_Accel.Infrastructure
             return Enumerable.Range(0, nSuccesses + 1).Sum(i => BinomialProbability(nTotal, i, probOfSuccess));
         }
 
+        public static IEnumerable<int> GetRanks(IEnumerable<double> data)
+        {
+            var concreteData = data.ToList();
+
+            return concreteData.Select(d => concreteData.Count(cd => cd < d)).ToArray();
+        }
+
         /// <summary>
         ///     Converts the flattened ordinal data to Frequency data.
         /// </summary>
