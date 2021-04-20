@@ -19,9 +19,12 @@ namespace Notrosoft_Accel.Backend.Statistics
             if (xData.Length == 0 || yData.Length == 0)
                 throw new InvalidOperationException("Input data must contain data.");
 
+            if (xData.Length != yData.Length)
+                throw new InvalidOperationException("Input data must be the same length!");
+
             var covariance = Utilities.GetCovariance(xData, yData);
-            var stddevX = Math.Sqrt(Utilities.GetVariance(xData));
-            var stddevY = Math.Sqrt(Utilities.GetVariance(yData));
+            var stddevX = Math.Sqrt(Utilities.GetSampleVariance(xData));
+            var stddevY = Math.Sqrt(Utilities.GetSampleVariance(yData));
 
             var pearsonCorrelationCoefficient = covariance / stddevX / stddevY;
 
