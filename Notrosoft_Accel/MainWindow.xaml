@@ -25,6 +25,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
@@ -77,7 +78,7 @@
                           GridLinesVisibility="All" HeadersVisibility="All"
                           ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.RowSpan="3"
                           ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                          EnableRowVirtualization="False" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                          EnableRowVirtualization="False" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
                           CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
                           LoadingRow="Data_LoadingRow" SelectionUnit="Cell" VerticalAlignment="Top"
                           ClipToBounds="True" HorizontalAlignment="Left"
@@ -88,11 +89,11 @@
 
 
                 <Button x:Name="ImportFile" Grid.Column="1" Content="Import File..." Click="ImportFile_OnClick"
-                        HorizontalAlignment="Left" />
+                        HorizontalAlignment="Stretch" />
 
-                <Button Grid.Column="2" Content="Export Data..." Click="DataExport_Click" />
+                <Button Grid.Column="2" Content="Export Data..." HorizontalAlignment="Stretch" Click="DataExport_Click" />
 
-                <Button x:Name="addColumnButton" Grid.Column="3" Grid.Row="0"
+                <Button x:Name="addColumnButton" Grid.Column="4" Grid.Row="0"
                         Content="Add Column" Click="addColumnButton_Click" MaxWidth="200" />
 
                 <Button x:Name="addRowButton" Grid.Column="1" Grid.Row="4" Content="Add Row"
