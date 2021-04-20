@@ -65,6 +65,26 @@ namespace Notrosoft_Accel.Tests
             });
         }
 
+        public static IntervalData GetIntervalData()
+        {
+            var definitions = new IntervalDefinitions
+            {
+                {"A", new Bounds(90, double.MaxValue)},
+                {"B", new Bounds(80, 90)},
+                {"C", new Bounds(70, 80)},
+                {"D", new Bounds(60, 70)},
+                {"F", new Bounds(double.MinValue, 60)}
+            };
+
+            var data = new List<double>
+            {
+                100, 100, 100, 100, 100, 100, 96, 90, 100, 80, 100, 100, 100, 100, 100, 100, 100, 100, 100, 90, 90, 100,
+                100, 90, 100, 100, 100, 100, 95, 100, 100, 0, 70, 34, 67, 45, 48, 90, 100
+            };
+
+            return Utilities.ConvertToIntervalData(data, definitions);
+        }
+
         public static IntervalDefinitions GetSmallDataIntervalDefinitions()
         {
             return new()

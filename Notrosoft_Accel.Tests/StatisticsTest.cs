@@ -439,5 +439,15 @@ namespace Notrosoft_Accel.Tests
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
+
+        [TestMethod]
+        public void Statistics_MeanIntervalTest()
+        {
+            var stat = new MeanStatistic();
+
+            var data = TestHelperFunctions.GetIntervalData();
+
+            var actual = stat.OperateIntervalData(data)["mean"];
+        }
     }
 }
