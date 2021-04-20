@@ -31,6 +31,11 @@
                             ScrollViewer.HorizontalScrollBarVisibility="Visible" CanHorizontallyScroll="True"
                             CanVerticallyScroll="True"
                             ScrollViewer.CanContentScroll="True">
+                    <ComboBox x:Name="StatTypeBox">
+                        <ComboBoxItem Tag="Ordinal" Content="Ordinal" IsSelected="True"/>
+                        <ComboBoxItem Tag="Frequncy" Content="Frequency"/>
+                        <ComboBoxItem Tag="Interval" Content="Interval"/>
+                    </ComboBox>
                     <CheckBox x:Name="MeanButton" Content="Mean" VerticalAlignment="Top" Checked="MeanButton_Checked"
                               Unchecked="MeanButton_Unchecked"  />
                     <CheckBox x:Name="MedianButton"  Content="Median" VerticalAlignment="Top"
@@ -82,7 +87,7 @@
                           Padding="0,0,0,10" HorizontalScrollBarVisibility="Visible"
                           VerticalScrollBarVisibility="Visible" RowDetailsVisibilityMode="Visible"
                           SelectedCellsChanged="Data_OnSelectedCellsChanged" HorizontalContentAlignment="Right"
-                          MaxHeight="550"/>
+                          MaxHeight="550" CellEditEnding="Data_CellEditEnding"/>
 
 
                 

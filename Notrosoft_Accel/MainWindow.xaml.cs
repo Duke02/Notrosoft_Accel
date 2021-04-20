@@ -245,6 +245,26 @@ namespace Notrosoft_Accel
         {
             Data.MaxHeight = e.NewSize.Height - 110;
         }
+
+        // WIP to maybe make the row and column additions faster
+        private void Data_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+
+            /*outputTextBlock.Text += e.Row.GetIndex() + "|";
+            outputTextBlock.Text += e.Column.DisplayIndex + "|";
+            string qq = e.Column.GetCellContent(e.Row.Item).ToString();
+            var theOut = "";
+            if (qq.Length > 33)
+            {
+                theOut = qq.Substring(33);
+            }
+            outputTextBlock.Text += theOut;
+            int rN = e.Row.GetIndex();
+            dataTable.Rows[rN][e.Column.DisplayIndex] = theOut;
+            dataList[rN][e.Column.DisplayIndex] = theOut;
+            outputTextBlock.Text += "\n";
+            */
+        }
         // ------------------------ CHECKBOX HANDLERS ------------------------
         // -------------------------------------------------------------------
 
