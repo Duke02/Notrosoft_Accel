@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded" BorderBrush="#FF555555" SizeChanged="Window_SizeChanged">
+        Title="Notrosoft Accel" Height="600" Width="1080" Loaded="Window_Loaded" BorderBrush="#FF555555"
+        SizeChanged="Window_SizeChanged">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="0,0,10,10" CanHorizontallyScroll="False" CanVerticallyScroll="False"
@@ -23,6 +24,7 @@
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
@@ -32,39 +34,39 @@
                             CanVerticallyScroll="True"
                             ScrollViewer.CanContentScroll="True">
                     <CheckBox x:Name="MeanButton" Content="Mean" VerticalAlignment="Top" Checked="MeanButton_Checked"
-                              Unchecked="MeanButton_Unchecked"  />
-                    <CheckBox x:Name="MedianButton"  Content="Median" VerticalAlignment="Top"
+                              Unchecked="MeanButton_Unchecked" />
+                    <CheckBox x:Name="MedianButton" Content="Median" VerticalAlignment="Top"
                               Checked="MedianButton_Checked" Unchecked="MedianButton_Unchecked" />
-                    <CheckBox x:Name="Mode"  Content="Mode" VerticalAlignment="Top" Checked="ModeButton_Checked"
+                    <CheckBox x:Name="Mode" Content="Mode" VerticalAlignment="Top" Checked="ModeButton_Checked"
                               Unchecked="ModeButton_Unchecked" />
-                    <CheckBox x:Name="StandardDeviation"  Content="StandardDeviation" VerticalAlignment="Top"
+                    <CheckBox x:Name="StandardDeviation" Content="StandardDeviation" VerticalAlignment="Top"
                               Checked="StandardDeviationButton_Checked" Unchecked="StandardDeviationButton_Unchecked" />
-                    <CheckBox x:Name="Variance"  Content="Variance" VerticalAlignment="Top"
+                    <CheckBox x:Name="Variance" Content="Variance" VerticalAlignment="Top"
                               Checked="VarianceButton_Checked" Unchecked="VarianceButton_Unchecked" />
-                    <CheckBox x:Name="CoefficientOfVariance"  Content="CoefficientOfVariance" VerticalAlignment="Top"
+                    <CheckBox x:Name="CoefficientOfVariance" Content="CoefficientOfVariance" VerticalAlignment="Top"
                               Checked="CoefficientOfVarianceButton_Checked"
                               Unchecked="CoefficientOfVarianceButton_Unchecked" />
-                    <CheckBox x:Name="Percentile"  Content="Percentile" VerticalAlignment="Top"
+                    <CheckBox x:Name="Percentile" Content="Percentile" VerticalAlignment="Top"
                               Checked="PercentileButton_Checked" Unchecked="PercentileButton_Unchecked" />
-                    <CheckBox x:Name="ProbabilityDistribution"  Content="ProbabilityDistribution"
+                    <CheckBox x:Name="ProbabilityDistribution" Content="ProbabilityDistribution"
                               VerticalAlignment="Top" Checked="ProbabilityDistributionButton_Checked"
                               Unchecked="ProbabilityDistributionButton_Unchecked" />
-                    <CheckBox x:Name="BinomialDistribution"  Content="BinomialDistribution" VerticalAlignment="Top"
+                    <CheckBox x:Name="BinomialDistribution" Content="BinomialDistribution" VerticalAlignment="Top"
                               Checked="BinomialDistributionButton_Checked"
                               Unchecked="BinomialDistributionButton_Unchecked" />
-                    <CheckBox x:Name="LeastSquaresLine"  Content="LeastSquaresLine" VerticalAlignment="Top"
+                    <CheckBox x:Name="LeastSquaresLine" Content="LeastSquaresLine" VerticalAlignment="Top"
                               Checked="LeastSquaresLineButton_Checked" Unchecked="LeastSquaresLineButton_Unchecked" />
-                    <CheckBox x:Name="ChiSquare"  Content="ChiSquare" VerticalAlignment="Top"
+                    <CheckBox x:Name="ChiSquare" Content="ChiSquare" VerticalAlignment="Top"
                               Checked="ChiSquareButton_Checked" Unchecked="ChiSquareButton_Unchecked" />
                     <CheckBox x:Name="CorrelationCoefficient" Content="CorrelationCoefficient" VerticalAlignment="Top"
                               Checked="CorrelationCoefficientButton_Checked"
                               Unchecked="CorrelationCoefficientButton_Unchecked" />
-                    <CheckBox x:Name="SignTest"  Content="SignTest" VerticalAlignment="Top"
+                    <CheckBox x:Name="SignTest" Content="SignTest" VerticalAlignment="Top"
                               Checked="SignTestButton_Checked" Unchecked="SignTestButton_Unchecked" />
-                    <CheckBox x:Name="RankSumTest"  Content="RankSumTest" VerticalAlignment="Top"
+                    <CheckBox x:Name="RankSumTest" Content="RankSumTest" VerticalAlignment="Top"
                               Checked="RankSumTestButton_Checked" Unchecked="RankSumTestButton_Unchecked" />
                     <CheckBox x:Name="SpearmanRankCorrelationCoefficient" Content="SpearmanRank"
-                              VerticalAlignment="Top"  Checked="SpearmanRankCorrelationCoefficientButton_Checked"
+                              VerticalAlignment="Top" Checked="SpearmanRankCorrelationCoefficientButton_Checked"
                               Unchecked="SpearmanRankCorrelationCoefficientButton_Unchecked" />
                     <Button x:Name="doStatsButton" Content="Perform Statistics" Click="doStatsButton_Click" />
                     <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" VerticalAlignment="Top" />
@@ -75,30 +77,32 @@
                           GridLinesVisibility="All" HeadersVisibility="All"
                           ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.RowSpan="3"
                           ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                          EnableRowVirtualization="False" Grid.Row="1" Grid.Column="1"
+                          EnableRowVirtualization="False" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
                           CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
                           LoadingRow="Data_LoadingRow" SelectionUnit="Cell" VerticalAlignment="Top"
                           ClipToBounds="True" HorizontalAlignment="Left"
                           Padding="0,0,0,10" HorizontalScrollBarVisibility="Visible"
                           VerticalScrollBarVisibility="Visible" RowDetailsVisibilityMode="Visible"
                           SelectedCellsChanged="Data_OnSelectedCellsChanged" HorizontalContentAlignment="Right"
-                          MaxHeight="550"/>
+                          MaxHeight="550" />
 
 
-                
+                <Button x:Name="ImportFile" Grid.Column="1" Content="Import File..." Click="ImportFile_OnClick"
+                        HorizontalAlignment="Left" />
 
-                <Button x:Name="ImportFile" Grid.Column="1" Content="Import File..." Click="ImportFile_OnClick" HorizontalAlignment="Left" />
+                <Button Grid.Column="2" Content="Export Data..." Click="DataExport_Click" />
 
-                <Button x:Name="addColumnButton" Grid.Column="2" Grid.Row="0"
+                <Button x:Name="addColumnButton" Grid.Column="3" Grid.Row="0"
                         Content="Add Column" Click="addColumnButton_Click" MaxWidth="200" />
 
                 <Button x:Name="addRowButton" Grid.Column="1" Grid.Row="4" Content="Add Row"
                         Click="addRowButton_Click" MaxWidth="150" HorizontalContentAlignment="Center"
                         HorizontalAlignment="Left" />
 
-                <TextBlock Text="Statistics Output" Grid.Column="0" Grid.Row="0" FontSize="20"/>
+                <TextBlock Text="Statistics Output" Grid.Column="0" Grid.Row="0" FontSize="20" />
                 <TextBox Text="{Binding Path=Text}" FontSize="10" Grid.Column="0"
-                           Grid.Row="1" Name="outputTextBlock" TextWrapping="Wrap" MaxWidth="200" IsReadOnly="True" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" MaxHeight="300" />
+                         Grid.Row="1" Name="outputTextBlock" TextWrapping="Wrap" MaxWidth="200" IsReadOnly="True"
+                         ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" MaxHeight="300" />
 
 
             </Grid>
