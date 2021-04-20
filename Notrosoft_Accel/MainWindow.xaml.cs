@@ -16,14 +16,16 @@ namespace Notrosoft_Accel
     public partial class MainWindow : Window
     {
         private static readonly Interlayer interlayer = new();
-        private static int colNum = 100; // Number of Columns present in the data structure.
+        private static int colNum = 50; // Number of Columns present in the data structure.
         private static int rowNum = 100; // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new(); // The data structure.
 
         public static DataTable
             dataTable = new(); // DataTable sits between the dataList of the backend and DataGrid of the GUI.
 
-        public static List<StatisticType> statisticTypes = new();
+        public static List<StatisticType> ordinalStats = new();
+        public static List<StatisticType> intervalStats = new();
+        public static List<StatisticType> frequencyStats = new();
         private readonly FileInput _fileImporter;
 
         private readonly GraphingWrapper _grapher;
@@ -94,24 +96,22 @@ namespace Notrosoft_Accel
         // Handles the event of the user adding a column to the DataGrid.
         private void addColumnButton_Click(object sender, RoutedEventArgs e)
         {
-
-            // Copies all data input to the dataTable back to the dataList for permanence.
-            /*for (var i = 0; i < rowNum; i++)
-            {
-                var updatedRow = new List<string>();
-                for (var j = 0; j < colNum; j++) updatedRow.Add(dataTable.Rows[i][j].ToString());
-
-                dataList[i] = updatedRow;
-            }
-            */
             // Inrease the column number.
-            colNum++;
+            if (colNum >= 200)
+            {
+                colNum = 200;
+                MessageBox.Show("Only 200 columns allowed max");
+            }
+            else
+            {
+                colNum++;
 
-            // Add an additional empty column to each row in the list.
-            for (var i = 0; i < rowNum; i++) dataList[i].Add("");
+                // Add an additional empty column to each row in the list.
+                for (var i = 0; i < rowNum; i++) dataList[i].Add("");
 
-            // Redo the dataTable to DataGrid binding.
-            dataGridTable(colNum - 1, rowNum);
+                // Redo the dataTable to DataGrid binding.
+                dataGridTable(colNum - 1, rowNum);
+            }
         }
 
         // Defines the Row headers
@@ -124,15 +124,6 @@ namespace Notrosoft_Accel
         // Adding rows handler.
         private void addRowButton_Click(object sender, RoutedEventArgs e)
         {
-            // Copies all data input to the dataTable back to the dataList for permanence.
-            /*for (var i = 0; i < rowNum; i++)
-            {
-                var updatedRow = new List<string>();
-                for (var j = 0; j < colNum; j++) updatedRow.Add(dataTable.Rows[i][j].ToString());
-
-                dataList[i] = updatedRow;
-            }
-            */
             // Inrease the column number.
             rowNum++;
             var emptyCol = new List<string>();
@@ -264,6 +255,7 @@ namespace Notrosoft_Accel
 
         private void doStatsButton_Click(object sender, RoutedEventArgs e)
         {
+            
             var sel = Data.SelectedCells;
             var try1 = new List<List<string>>();
             int lastC = int.MaxValue, thisC;
@@ -290,8 +282,17 @@ namespace Notrosoft_Accel
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1[i].Add(obj[thisC].ToString());
                 }
-
-            outputTextBlock.Text += interlayer.doStatistics(try1, statisticTypes.ToArray(), null) + '\n';
+            outputTextBlock.Text += "Statistics performed at " + System.DateTime.Today + "\n";
+            // Ordinal Data
+            if (StatTypeBox.SelectedIndex == 0)
+            {
+                outputTextBlock.Text += interlayer.doStatistics(try1, ordinalStats.ToArray(), null) + '\n';
+            }
+            // Frequency Data
+            else if (StatTypeBox.SelectedIndex == 1) MessageBox.Show("Frequency Statistics not implemented yet");
+            
+            // Interval Data
+            else if (StatTypeBox.SelectedIndex == 2) MessageBox.Show("Interval Statistics not implemented yet");
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -302,16 +303,12 @@ namespace Notrosoft_Accel
         // WIP to maybe make the row and column additions faster
         private void Data_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-
-            outputTextBlock.Text += e.Row.GetIndex() + "|";
-            outputTextBlock.Text += e.Column.DisplayIndex + "|";
             string qq = e.Column.GetCellContent(e.Row.Item).ToString();
             var theOut = "";
             if (qq.Length > 33)
             {
                 theOut = qq.Substring(33);
             }
-            outputTextBlock.Text += theOut;
             int rN = e.Row.GetIndex();
             //dataTable.Rows[rN][e.Column.DisplayIndex] = theOut;
             dataList[rN][e.Column.DisplayIndex] = theOut;
@@ -322,152 +319,152 @@ namespace Notrosoft_Accel
 
         private void MeanButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.Mean);
+            ordinalStats.Add(StatisticType.Mean);
         }
 
         private void MeanButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.Mean);
+            ordinalStats.Remove(StatisticType.Mean);
         }
 
         private void MedianButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.Median);
+            ordinalStats.Add(StatisticType.Median);
         }
 
         private void MedianButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.Median);
+            ordinalStats.Remove(StatisticType.Median);
         }
 
         private void ModeButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.Mode);
+            ordinalStats.Add(StatisticType.Mode);
         }
 
         private void ModeButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.Mode);
+            ordinalStats.Remove(StatisticType.Mode);
         }
 
         private void StandardDeviationButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.StandardDeviation);
+            ordinalStats.Add(StatisticType.StandardDeviation);
         }
 
         private void StandardDeviationButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.StandardDeviation);
+            ordinalStats.Remove(StatisticType.StandardDeviation);
         }
 
         private void VarianceButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.Variance);
+            ordinalStats.Add(StatisticType.Variance);
         }
 
         private void VarianceButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.Variance);
+            ordinalStats.Remove(StatisticType.Variance);
         }
 
         private void CoefficientOfVarianceButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.CoefficientOfVariance);
+            ordinalStats.Add(StatisticType.CoefficientOfVariance);
         }
 
         private void CoefficientOfVarianceButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.CoefficientOfVariance);
+            ordinalStats.Remove(StatisticType.CoefficientOfVariance);
         }
 
         private void PercentileButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.Percentile);
+            ordinalStats.Add(StatisticType.Percentile);
         }
 
         private void PercentileButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.Percentile);
+            ordinalStats.Remove(StatisticType.Percentile);
         }
 
         private void ProbabilityDistributionButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.ProbabilityDistribution);
+            ordinalStats.Add(StatisticType.ProbabilityDistribution);
         }
 
         private void ProbabilityDistributionButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.ProbabilityDistribution);
+            ordinalStats.Remove(StatisticType.ProbabilityDistribution);
         }
 
         private void BinomialDistributionButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.BinomialDistribution);
+            ordinalStats.Add(StatisticType.BinomialDistribution);
         }
 
         private void BinomialDistributionButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.BinomialDistribution);
+            ordinalStats.Remove(StatisticType.BinomialDistribution);
         }
 
         private void LeastSquaresLineButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.LeastSquaresLine);
+            ordinalStats.Add(StatisticType.LeastSquaresLine);
         }
 
         private void LeastSquaresLineButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.LeastSquaresLine);
+            ordinalStats.Remove(StatisticType.LeastSquaresLine);
         }
 
         private void ChiSquareButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.ChiSquare);
+            ordinalStats.Add(StatisticType.ChiSquare);
         }
 
         private void ChiSquareButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.ChiSquare);
+            ordinalStats.Remove(StatisticType.ChiSquare);
         }
 
         private void CorrelationCoefficientButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.CorrelationCoefficient);
+            ordinalStats.Add(StatisticType.CorrelationCoefficient);
         }
 
         private void CorrelationCoefficientButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.CorrelationCoefficient);
+            ordinalStats.Remove(StatisticType.CorrelationCoefficient);
         }
 
         private void SignTestButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.SignTest);
+            ordinalStats.Add(StatisticType.SignTest);
         }
 
         private void SignTestButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.SignTest);
+            ordinalStats.Remove(StatisticType.SignTest);
         }
 
         private void RankSumTestButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.RankSumTest);
+            ordinalStats.Add(StatisticType.RankSumTest);
         }
 
         private void RankSumTestButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.RankSumTest);
+            ordinalStats.Remove(StatisticType.RankSumTest);
         }
 
         private void SpearmanRankCorrelationCoefficientButton_Checked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Add(StatisticType.SpearmanRankCorrelationCoefficient);
+            ordinalStats.Add(StatisticType.SpearmanRankCorrelationCoefficient);
         }
 
         private void SpearmanRankCorrelationCoefficientButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            statisticTypes.Remove(StatisticType.SpearmanRankCorrelationCoefficient);
+            ordinalStats.Remove(StatisticType.SpearmanRankCorrelationCoefficient);
         }
     }
 }
