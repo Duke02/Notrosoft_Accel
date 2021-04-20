@@ -31,14 +31,16 @@ namespace Notrosoft_Accel
 
         public MainWindow()
         {
-            // The List<String> representing the default column List of size colNum.
-            var colConstruct = new List<string>();
+            for (var i = 0; i < rowNum; i++)
+            {
+                // The List<String> representing the default column List of size colNum.
+                var colConstruct = new List<string>();
 
-            for (var i = 0; i < colNum; i++) colConstruct.Add("");
+                for (var j = 0; j < colNum; j++) colConstruct.Add("");
 
-            // Construct the rows as the empty column structure.
-            for (var i = 0; i < rowNum; i++) dataList.Add(colConstruct);
-
+                // Construct the rows as the empty column structure.
+                dataList.Add(colConstruct);
+            }
 
             InitializeComponent();
 
@@ -49,22 +51,27 @@ namespace Notrosoft_Accel
         }
 
         // Constructs a dataTable object and binds it to the DataGrid's ItemsSource.
-        private void dataGridTable()
+        private void dataGridTable(int oldC, int oldR)
         {
             // Set the dataTable to a new object.
-            dataTable = new DataTable();
+            if (oldR == rowNum)
+            {
+                dataTable = new DataTable();
+                oldR = 0;
+                oldC = 0;
+            }
 
             // Column constructor
-            for (var i = 0; i < colNum; i++)
+            for (var i = oldC; i < colNum; i++)
             {
                 // Instantiate a new DataColumn with a string type to be put into the DataTable.
                 var newColumn = new DataColumn(i.ToString(), typeof(string));
                 // Add the new column to the list of columns in the DataTable.
                 dataTable.Columns.Add(newColumn);
             }
-
+            
             // Creates a row object with the number of columns defined in the above loop.
-            for (var row = 0; row < rowNum; row++)
+            for (var row = oldR; row < rowNum; row++)
             {
                 // Instantiate a new row.
                 var newRow = dataTable.NewRow();
@@ -81,21 +88,22 @@ namespace Notrosoft_Accel
         // Ensures the DataGrid is properly bound to the DataTable on window launch.
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            dataGridTable();
+            dataGridTable(0,0);
         }
 
         // Handles the event of the user adding a column to the DataGrid.
         private void addColumnButton_Click(object sender, RoutedEventArgs e)
         {
+
             // Copies all data input to the dataTable back to the dataList for permanence.
-            for (var i = 0; i < rowNum; i++)
+            /*for (var i = 0; i < rowNum; i++)
             {
                 var updatedRow = new List<string>();
                 for (var j = 0; j < colNum; j++) updatedRow.Add(dataTable.Rows[i][j].ToString());
 
                 dataList[i] = updatedRow;
             }
-
+            */
             // Inrease the column number.
             colNum++;
 
@@ -103,7 +111,7 @@ namespace Notrosoft_Accel
             for (var i = 0; i < rowNum; i++) dataList[i].Add("");
 
             // Redo the dataTable to DataGrid binding.
-            dataGridTable();
+            dataGridTable(colNum - 1, rowNum);
         }
 
         // Defines the Row headers
@@ -117,14 +125,14 @@ namespace Notrosoft_Accel
         private void addRowButton_Click(object sender, RoutedEventArgs e)
         {
             // Copies all data input to the dataTable back to the dataList for permanence.
-            for (var i = 0; i < rowNum; i++)
+            /*for (var i = 0; i < rowNum; i++)
             {
                 var updatedRow = new List<string>();
                 for (var j = 0; j < colNum; j++) updatedRow.Add(dataTable.Rows[i][j].ToString());
 
                 dataList[i] = updatedRow;
             }
-
+            */
             // Inrease the column number.
             rowNum++;
             var emptyCol = new List<string>();
@@ -133,7 +141,7 @@ namespace Notrosoft_Accel
 
             dataList.Add(emptyCol);
             // Redo the dataTable to DataGrid binding.
-            dataGridTable();
+            dataGridTable(colNum, rowNum - 1);
         }
 
         private void GraphButton_OnClick(object sender, RoutedEventArgs e)
@@ -250,7 +258,7 @@ namespace Notrosoft_Accel
                 dataList = newData;
 
                 // Redo the dataTable to DataGrid binding.
-                dataGridTable();
+                dataGridTable(colNum, rowNum);
             }
         }
 
@@ -295,7 +303,7 @@ namespace Notrosoft_Accel
         private void Data_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
 
-            /*outputTextBlock.Text += e.Row.GetIndex() + "|";
+            outputTextBlock.Text += e.Row.GetIndex() + "|";
             outputTextBlock.Text += e.Column.DisplayIndex + "|";
             string qq = e.Column.GetCellContent(e.Row.Item).ToString();
             var theOut = "";
@@ -305,10 +313,8 @@ namespace Notrosoft_Accel
             }
             outputTextBlock.Text += theOut;
             int rN = e.Row.GetIndex();
-            dataTable.Rows[rN][e.Column.DisplayIndex] = theOut;
+            //dataTable.Rows[rN][e.Column.DisplayIndex] = theOut;
             dataList[rN][e.Column.DisplayIndex] = theOut;
-            outputTextBlock.Text += "\n";
-            */
         }
 
         // ------------------------ CHECKBOX HANDLERS ------------------------
