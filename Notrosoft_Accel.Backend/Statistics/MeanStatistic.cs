@@ -36,24 +36,14 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateIntervalData(IntervalData values,
             params object[] parameters)
         {
-            // Flatten the 2D inputted container into a 1D container.
-            int length = values.Count();
-            var flattened = new List<double>();
-            foreach(var kv in values)
-            {
-                flattened.AddRange(kv.Value);
-            }
-            var flattenedValues = flattened.ToArray();
-            
-
             // Throw an exception if there's nothing in the inputted container.
-            if (!flattenedValues.Any())
+            if (!values.Any())
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
             // Return the average/mean of the inputted values.
             return new Dictionary<string, object>
             {
-                {"mean", flattenedValues.Average()}
+                {"mean", Utilities.GetGroupedMean(values)}
             };
         }
 

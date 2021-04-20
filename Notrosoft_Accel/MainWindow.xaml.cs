@@ -46,7 +46,6 @@ namespace Notrosoft_Accel
             _grapher = new GraphingWrapper();
 
             _fileImporter = new FileInput();
-            
         }
 
         // Constructs a dataTable object and binds it to the DataGrid's ItemsSource.
@@ -164,6 +163,41 @@ namespace Notrosoft_Accel
         {
         }
 
+        private void DataExport_Click(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "CSV|*.csv",
+                Title = "Save Data..."
+            };
+
+            var gotValidPath = saveFileDialog.ShowDialog(this) ?? false;
+
+            if (!gotValidPath) return;
+
+            if (string.IsNullOrWhiteSpace(saveFileDialog.FileName))
+            {
+                MessageBox.Show("Invalid save path!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                var data = new List<string>();
+
+                for (var col = 0; col < colNum; col++)
+                    data.Add(string.Join(",", dataTable.Rows[col].ItemArray.Select(i => i.ToString())));
+
+                try
+                {
+                    File.WriteAllLines(saveFileDialog.FileName, data);
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show($"There was an error saving the spreadsheet!\n{ex.Message}", "Error saving data!",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
         private void ImportFile_OnClick(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog
@@ -178,11 +212,22 @@ namespace Notrosoft_Accel
 
             if (string.IsNullOrWhiteSpace(openFileDialog.FileName) || !File.Exists(openFileDialog.FileName))
             {
-                MessageBox.Show("Cannot find file!");
+                MessageBox.Show("Cannot find file!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                var newData = _fileImporter.ReadFile(openFileDialog.FileName);
+                var newData = new List<List<string>>();
+
+                try
+                {
+                    newData = _fileImporter.ReadFile(openFileDialog.FileName);
+                }
+                catch (IOException ioE)
+                {
+                    MessageBox.Show($"There was an error opening the file!\n{ioE.Message}", "Error opening file!",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
 
                 var newColsNeeded = newData.Max(r => r.Count);
                 var newRowsNeeded = newData.Count;
@@ -214,9 +259,8 @@ namespace Notrosoft_Accel
             var sel = Data.SelectedCells;
             var try1 = new List<List<string>>();
             int lastC = int.MaxValue, thisC;
-            int i = -1;
-            foreach (DataGridCellInfo cellInfo in sel)
-            {
+            var i = -1;
+            foreach (var cellInfo in sel)
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
                 {
@@ -226,21 +270,22 @@ namespace Notrosoft_Accel
                         i++;
                         try1.Add(new List<string>());
                     }
+
                     lastC = thisC;
-                    
+
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
-                    object[] obj = row.Row.ItemArray;
+                    var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1[i].Add(obj[thisC].ToString());
                 }
-            }
-            
+
             outputTextBlock.Text += interlayer.doStatistics(try1, statisticTypes.ToArray(), null) + '\n';
         }
+
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Data.MaxHeight = e.NewSize.Height - 110;
@@ -417,7 +462,5 @@ namespace Notrosoft_Accel
         {
             statisticTypes.Remove(StatisticType.SpearmanRankCorrelationCoefficient);
         }
-
-        
     }
 }
