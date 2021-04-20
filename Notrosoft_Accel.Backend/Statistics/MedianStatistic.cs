@@ -63,12 +63,12 @@ namespace Notrosoft_Accel.Backend.Statistics
             params object[] parameters)
         {
             int length = values.Count();
-            var flattenedInput = new List<double>();
+            var flattened = new List<double>();
             foreach (var kv in values)
             {
-                flattenedInput.AddRange(kv.Value);
+                flattened.AddRange(kv.Value);
             }
-            flattenedInput.ToArray();
+            var flattenedInput = flattened.ToArray();
 
             // Throw an exception if there's nothing in the inputted container.
             if (!flattenedInput.Any())

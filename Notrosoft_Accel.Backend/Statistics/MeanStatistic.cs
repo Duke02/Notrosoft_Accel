@@ -38,12 +38,12 @@ namespace Notrosoft_Accel.Backend.Statistics
         {
             // Flatten the 2D inputted container into a 1D container.
             int length = values.Count();
-            var flattenedValues = new List<double>();
+            var flattened = new List<double>();
             foreach(var kv in values)
             {
-                flattenedValues.AddRange(kv.Value);
+                flattened.AddRange(kv.Value);
             }
-            flattenedValues.ToArray();
+            var flattenedValues = flattened.ToArray();
             
 
             // Throw an exception if there's nothing in the inputted container.

@@ -77,7 +77,7 @@ namespace Notrosoft_Accel.Infrastructure
 
         public static double GetGroupedVariance(IntervalData intervalData)
         {
-            // https://ncalculators.com/statistics/grouped-data-standard-deviation-calculator.htm
+            // https://ncalculators.com/statistics/grouped-data-standard-deviation-calculator.html
             var n = intervalData.Sum(kv => kv.Value.Count());
             var squaredMidpoints = intervalData.Definitions.ToDictionary(
                 kv => kv.Key,
