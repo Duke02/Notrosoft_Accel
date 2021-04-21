@@ -30,6 +30,7 @@ namespace Notrosoft_Accel
 
         private readonly GraphingWrapper _grapher;
 
+        private static Dictionary<string,Bounds> intervals = new();
 
         public MainWindow()
         {
@@ -465,6 +466,75 @@ namespace Notrosoft_Accel
         private void SpearmanRankCorrelationCoefficientButton_Unchecked(object sender, RoutedEventArgs e)
         {
             ordinalStats.Remove(StatisticType.SpearmanRankCorrelationCoefficient);
+        }
+
+        // ----------------------- DATA TYPES HANDLER ------------------------
+        // -------------------------------------------------------------------
+
+        private void setInterval_Click(object sender, RoutedEventArgs e)
+        {
+            var sel = Data.SelectedCells;
+            var try1 = new List<string>();
+            int lastC = int.MaxValue, thisC;
+            int count = 0;
+            foreach (var cellInfo in sel)
+            {
+                // Ensures cell information is valid. If not then don't try and do anything with it
+                if (cellInfo.IsValid)
+                {
+                    count++;
+                    thisC = cellInfo.Column.DisplayIndex;
+
+                    lastC = thisC;
+
+                    // Get's the current cell's information (specifically for Column info)
+                    var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
+                    // Get's the current row's information
+                    var row = (DataRowView)cont.DataContext;
+                    // Get the current row's data as an item array
+                    var obj = row.Row.ItemArray;
+                    // Add the item of the current row at the current column's index and add it to the outbound list.
+                    try1.Add(obj[thisC].ToString());
+                }
+            }
+            if ((count % 3) != 0) MessageBox.Show("Interval input formatted incorrectly;\nplease have the interval name, lower numerical limit, then upper numerical limit for every interval",
+                "Format Error", MessageBoxButton.OK);
+            else
+            {
+                intervals.Clear();
+                for (int i = 0; i < (count/3); i++)
+                {
+                    double a = double.Parse(try1[(3 * i) + 1]);
+                    double b = double.Parse(try1[(3 * i) + 2]);
+                    intervals.Add(try1[(3 * i)], new Bounds(a, b));
+                }
+                if (doStatsButton.IsEnabled == false) doStatsButton.IsEnabled = true;
+            }
+            
+        }
+
+        // Interval
+        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
+        {
+            setInterval.IsEnabled = true;
+            setInterval.Visibility = Visibility.Visible;
+            doStatsButton.IsEnabled = false;
+        }
+        // Frequency
+        private void ComboBoxItem_Selected_1(object sender, RoutedEventArgs e)
+        {
+            setInterval.IsEnabled = false;
+            setInterval.Visibility = Visibility.Collapsed;
+        }
+        // Ordinal (since this is the first one active on launch; it has to check if things are null or not)
+        private void ComboBoxItem_Selected_2(object sender, RoutedEventArgs e)
+        {
+            if (doStatsButton != null) doStatsButton.IsEnabled = true;
+            if (setInterval != null)
+            {
+                setInterval.IsEnabled = false;
+                setInterval.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

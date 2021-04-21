@@ -35,9 +35,9 @@
                             CanVerticallyScroll="True"
                             ScrollViewer.CanContentScroll="True">
                     <ComboBox x:Name="StatTypeBox">
-                        <ComboBoxItem Tag="Ordinal" Content="Ordinal" IsSelected="True"/>
-                        <ComboBoxItem Tag="Frequncy" Content="Frequency"/>
-                        <ComboBoxItem Tag="Interval" Content="Interval"/>
+                        <ComboBoxItem Tag="Ordinal" Content="Ordinal" IsSelected="True" Selected="ComboBoxItem_Selected_2"/>
+                        <ComboBoxItem Tag="Frequncy" Content="Frequency" Selected="ComboBoxItem_Selected_1"/>
+                        <ComboBoxItem Tag="Interval" Content="Interval" Selected="ComboBoxItem_Selected"/>
                     </ComboBox>
                     <CheckBox x:Name="MeanButton" Content="Mean" VerticalAlignment="Top" Checked="MeanButton_Checked"
                               Unchecked="MeanButton_Unchecked" />
@@ -74,6 +74,7 @@
                     <CheckBox x:Name="SpearmanRankCorrelationCoefficient" Content="SpearmanRank"
                               VerticalAlignment="Top" Checked="SpearmanRankCorrelationCoefficientButton_Checked"
                               Unchecked="SpearmanRankCorrelationCoefficientButton_Unchecked" />
+                    <Button x:Name="setInterval" Content="Set Intervals" Click="setInterval_Click" IsEnabled="False" Visibility="Collapsed"/>
                     <Button x:Name="doStatsButton" Content="Perform Statistics" Click="doStatsButton_Click" />
                     <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" VerticalAlignment="Top" />
                 </StackPanel>
