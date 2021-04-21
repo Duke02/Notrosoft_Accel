@@ -30,7 +30,7 @@ namespace Notrosoft_Accel
 
         private readonly GraphingWrapper _grapher;
 
-        private static Dictionary<string,Bounds> intervals = new();
+        private static Dictionary<string, IEnumerable<double>> interDataDef = new();
 
         public MainWindow()
         {
@@ -287,13 +287,16 @@ namespace Notrosoft_Accel
             // Ordinal Data
             if (StatTypeBox.SelectedIndex == 0)
             {
-                outputTextBlock.Text += interlayer.doStatistics(try1, ordinalStats.ToArray(), null) + '\n';
+                outputTextBlock.Text += interlayer.doStatistics(try1, ordinalStats.ToArray(), null, null) + '\n';
             }
             // Frequency Data
             else if (StatTypeBox.SelectedIndex == 1) MessageBox.Show("Frequency Statistics not implemented yet");
-            
+
             // Interval Data
-            else if (StatTypeBox.SelectedIndex == 2) MessageBox.Show("Interval Statistics not implemented yet");
+            else if (StatTypeBox.SelectedIndex == 2)
+            {
+                outputTextBlock.Text += interlayer.doStatistics(try1, intervalStats.ToArray(), interDataDef, null) + '\n';
+            }
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -420,7 +423,7 @@ namespace Notrosoft_Accel
 
         private void ChiSquareButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.ChiSquare);
+            intervalStats.Add(StatisticType.ChiSquare);
         }
 
         private void ChiSquareButton_Unchecked(object sender, RoutedEventArgs e)
@@ -501,13 +504,15 @@ namespace Notrosoft_Accel
                 "Format Error", MessageBoxButton.OK);
             else
             {
-                intervals.Clear();
+                interDataDef.Clear();
                 for (int i = 0; i < (count/3); i++)
                 {
                     double a = double.Parse(try1[(3 * i) + 1]);
                     double b = double.Parse(try1[(3 * i) + 2]);
-                    intervals.Add(try1[(3 * i)], new Bounds(a, b));
+                    List<double> tAB = new List<double>{ a, b };
+                    interDataDef.Add(try1[(3 * i)], tAB);
                 }
+
                 if (doStatsButton.IsEnabled == false) doStatsButton.IsEnabled = true;
             }
             
