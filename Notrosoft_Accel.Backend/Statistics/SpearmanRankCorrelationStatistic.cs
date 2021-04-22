@@ -27,7 +27,7 @@ namespace Notrosoft_Accel.Backend.Statistics
                 .Select(y => (double) y)
                 .ToArray();
 
-            var numerator = Utilities.GetCovariance(xRanks, yRanks);
+            var numerator = Utilities.GetSampleCovariance(xRanks, yRanks);
 
             var stdDevXRank = Math.Sqrt(Utilities.GetSampleVariance(xRanks));
             var stdDevYRank = Math.Sqrt(Utilities.GetSampleVariance(yRanks));

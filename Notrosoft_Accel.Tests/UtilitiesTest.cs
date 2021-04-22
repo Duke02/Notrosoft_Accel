@@ -68,7 +68,7 @@ namespace Notrosoft_Accel.Tests
 
             const double expected = 0.5541125541;
 
-            var actual = Utilities.GetCovariance(x, y);
+            var actual = Utilities.GetSampleCovariance(x, y);
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -81,7 +81,7 @@ namespace Notrosoft_Accel.Tests
             var y = data[1];
 
             const double expected = 19356.21264;
-            var actual = Utilities.GetCovariance(x, y);
+            var actual = Utilities.GetSampleCovariance(x, y);
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
 
@@ -92,7 +92,7 @@ namespace Notrosoft_Accel.Tests
             var x = data[0];
             var y = data[1];
 
-            Assert.ThrowsException<InvalidOperationException>(() => Utilities.GetCovariance(x, y));
+            Assert.ThrowsException<InvalidOperationException>(() => Utilities.GetSampleCovariance(x, y));
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace Notrosoft_Accel.Tests
             var x = data[0];
             var y = data[1];
 
-            Assert.ThrowsException<InvalidOperationException>(() => Utilities.GetCovariance(x, y));
+            Assert.ThrowsException<InvalidOperationException>(() => Utilities.GetSampleCovariance(x, y));
         }
 
         [TestMethod]

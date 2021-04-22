@@ -84,6 +84,11 @@ namespace Notrosoft_Accel.Infrastructure
             return (concreteData.Max() + concreteData.Min()) / 2.0;
         }
 
+        public static IEnumerable<double> GetWeightedValues(FrequencyData<double> freqData)
+        {
+            return freqData.Select(kv => kv.Key * kv.Value);
+        }
+
         public static double GetGroupedMean(IntervalData intervalData)
         {
             // Get the total size of the sample.
@@ -100,6 +105,12 @@ namespace Notrosoft_Accel.Infrastructure
 
             // Return the average.
             return sum / n;
+        }
+
+        public static double GetGroupedMean(FrequencyData<double> frequencyData)
+        {
+            // https://www.mathsisfun.com/data/mean-frequency-table.html
+            return GetWeightedValues(frequencyData).Sum() / frequencyData.TotalSize;
         }
 
         public static double GetGroupedVariance(IntervalData intervalData)
@@ -121,13 +132,61 @@ namespace Notrosoft_Accel.Infrastructure
             return (sum - n * meanSquared) / (n - 1);
         }
 
+        public static double GetGroupedVariance(FrequencyData<double> freqData)
+        {
+            // https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch12/5214891-eng.htm Example 2
+            var mean = GetGroupedMean(freqData);
+
+            return (1.0 / freqData.TotalSize) * freqData
+                .Select(kv => (Diff: (kv.Key - mean) * (kv.Key - mean), Freq: kv.Value))
+                .Sum(kv => kv.Diff * kv.Freq);
+        }
+
+        public static double GetGroupedCovariance(IntervalData x, IntervalData y)
+        {
+            var x_N = x.TotalSize;
+            var y_N = y.TotalSize;
+
+            // TODO: They might be able to have the same total size? Not sure.
+            if (x_N != y_N || x.Count != y.Count)
+            {
+                throw new InvalidOperationException("Cannot get grouped covariance of variables of different lengths!");
+            }
+
+            var x_mean = GetGroupedMean(x);
+            var y_mean = GetGroupedMean(y);
+
+            var x_diffs = x.Frequencies.Select(kv => (kv.Value * x.Definitions[kv.Key].GetMidpoint()) - x_mean);
+            var y_diffs = y.Frequencies.Select(kv => (kv.Value * y.Definitions[kv.Key].GetMidpoint()) - y_mean);
+
+            return x_diffs.Zip(y_diffs).Sum(xy => xy.First * xy.Second) / (x_N - 1.0);
+        }
+
+        public static double GetGroupedCovariance(FrequencyData<double> x, FrequencyData<double> y)
+        {
+            if(x.Count != y.Count)
+            {
+                throw new InvalidOperationException("Cannot get grouped covariance of variables of different lengths!");
+            }
+
+            var n = x.TotalSize;
+
+            var x_mean = GetGroupedMean(x);
+            var y_mean = GetGroupedMean(y);
+
+            var x_diffs = x.Select(f => (f.Key - x_mean) * f.Value);
+            var y_diffs = y.Select(f => (f.Key - y_mean) * f.Value);
+
+            return x_diffs.Zip(y_diffs).Sum(xy => xy.First * xy.Second) / (n - 1.0);
+        }
+
         /// <summary>
         ///     Gets the sample covariance between the two inputted data collections.
         /// </summary>
         /// <param name="xValues">The first data collection.</param>
         /// <param name="yValues">The second data collection.</param>
         /// <returns>The scalar covariance value of the inputted data.</returns>
-        public static double GetCovariance(IEnumerable<double> xValues, IEnumerable<double> yValues)
+        public static double GetSampleCovariance(IEnumerable<double> xValues, IEnumerable<double> yValues)
         {
             var yValsArray = yValues.ToArray();
             var xValsArray = xValues.ToArray();
