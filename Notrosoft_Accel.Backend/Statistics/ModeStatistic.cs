@@ -72,7 +72,23 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            FrequencyData<double> flattenedValues;
+            
+            flattenedValues = Utilities.Flatten(values) as FrequencyData<double>;
+
+            if (flattenedValues.Count == 0)
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+
+            var distinctNums = flattenedValues.Distinct();
+            var countDict = distinctNums.ToDictionary(n => n, _ => 0);
+
+            foreach (var num in flattenedValues) countDict[num]++;
+
+            var mode = countDict.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+            return new Dictionary<string, object>
+            {
+                {"mode", mode}
+            };
         }
     }
 }

@@ -106,7 +106,56 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            FrequencyData<double> flattenedValues;
+
+            try
+            {
+                flattenedValues = Utilities.Flatten(values) as FrequencyData<double>;
+            }
+            catch (InvalidOperationException _)
+            {
+                throw new InvalidOperationException("Cannot perform Mean Statistic on non-numerical data!");
+            }
+
+            if (flattenedValues.Count == 0)
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+
+            List<double> flattenedData = new List<double>();
+            foreach(var (val, counts) in flattenedValues)
+            {
+                flattenedData.Add(val);
+            }
+
+            var sortedInput = flattenedData.OrderBy(val => val).ToArray();
+
+            var count = sortedInput.Length;
+
+            double median;
+
+            // If the length is even...
+            if (count % 2 == 0)
+            {
+                // Get the elements that are around the middle 
+                var firstIndex = count / 2;
+                var secondIndex = firstIndex - 1;
+
+                // And return their midpoint.
+                median = (sortedInput[secondIndex] + sortedInput[firstIndex]) / 2.0;
+            }
+            else
+            {
+                // Just return the middle of the input.
+                var middleIndex = count / 2;
+
+                median = sortedInput[middleIndex];
+            }
+
+            return new Dictionary<string, object>
+            {
+                {
+                    "median", median
+                }
+            };
         }
     }
 }

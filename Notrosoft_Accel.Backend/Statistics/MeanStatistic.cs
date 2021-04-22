@@ -65,18 +65,9 @@ namespace Notrosoft_Accel.Backend.Statistics
             if (flattenedValues.Count == 0)
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
-            var totalSize = 0;
-            var sum = 0;
-
-            foreach (var (val, count) in flattenedValues)
-            {
-                sum += (int)val * count;
-                totalSize += count;
-            }
-
             return new Dictionary<string, object>
             {
-                {"mean",  sum / totalSize }
+                {"mean",  Utilities.GetGroupedMean(flattenedValues) }
             };
         }
     }
