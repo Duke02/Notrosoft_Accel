@@ -195,6 +195,38 @@ namespace Notrosoft_Accel
             }
         }
 
+        private void StatExport_Click(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "TXT|*.txt",
+                Title = "Save Statistics..."
+            };
+
+            var gotValidPath = saveFileDialog.ShowDialog(this) ?? false;
+
+            if (!gotValidPath) return;
+
+            if (string.IsNullOrWhiteSpace(saveFileDialog.FileName))
+            {
+                MessageBox.Show("Invalid save path!", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                var data = outputTextBlock.Text;
+
+                try
+                {
+                    File.WriteAllText(saveFileDialog.FileName, data);
+                }
+                catch (IOException ex)
+                {
+                    MessageBox.Show($"There was an error saving the statistics!\n{ex.Message}", "Error saving statistics!",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
         private void ImportFile_OnClick(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog
@@ -258,6 +290,13 @@ namespace Notrosoft_Accel
             var try1 = new List<List<string>>();
             int lastC = int.MaxValue, thisC;
             var i = -1;
+
+            //If no cells are selected, does nothing
+            if(sel.Count < 1)
+            {
+                return;
+            }
+
             foreach (var cellInfo in sel)
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
@@ -280,7 +319,7 @@ namespace Notrosoft_Accel
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1[i].Add(obj[thisC].ToString());
                 }
-            outputTextBlock.Text += "Statistics performed at " + System.DateTime.Today + "\n";
+            outputTextBlock.Text += "Statistics performed at " + System.DateTime.Now + "\n";
             // Ordinal Data
             if (StatTypeBox.SelectedIndex == 0)
             {

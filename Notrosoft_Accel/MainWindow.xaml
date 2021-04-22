@@ -105,6 +105,9 @@
 
                     <Button Content="Export Data..." Width="160" VerticalAlignment="Top"
                             Click="DataExport_Click" />
+
+                    <Button Content="Export Statistics..." Width="160" VerticalAlignment="Top"
+                            Click="StatExport_Click" />
                 </WrapPanel>
                 
                 <Button x:Name="addColumnButton" Grid.Column="4" Grid.Row="0"
