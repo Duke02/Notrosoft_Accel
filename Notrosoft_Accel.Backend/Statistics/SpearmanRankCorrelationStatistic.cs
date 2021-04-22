@@ -20,11 +20,11 @@ namespace Notrosoft_Accel.Backend.Statistics
             var yData = concreteValues[1].ToList();
 
             var xRanks = Utilities.GetRanks(xData)
-                .Select(x => (double) x)
+                .Select(x => (double)x)
                 .ToArray();
 
             var yRanks = Utilities.GetRanks(yData)
-                .Select(y => (double) y)
+                .Select(y => (double)y)
                 .ToArray();
 
             var numerator = Utilities.GetSampleCovariance(xRanks, yRanks);
@@ -43,7 +43,18 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            var concreteValues = values.ToArray();
+
+            if (concreteValues.Length != 2)
+            {
+                throw new InvalidOperationException("Spearman Rank Correlation Statistic needs 2 variables to operate on.");
+            }
+
+            var x = concreteValues[0];
+            var y = concreteValues[1];
+
+            throw new NotImplementedException("Spearman Rank Correlation Coefficient is not implemented as we don't know how to rank non-ordinal data.");
+
         }
 
         public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
