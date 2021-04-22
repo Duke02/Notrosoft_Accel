@@ -73,25 +73,23 @@
                               Unchecked="SpearmanRankCorrelationCoefficientButton_Unchecked" />
                     <Button x:Name="setInterval" Content="Set Intervals" Click="setInterval_Click" IsEnabled="False" Visibility="Collapsed"/>
                     <Button x:Name="doStatsButton" Content="Perform Statistics" Click="doStatsButton_Click" />
-                    
-                </StackPanel>
-
-                
-                <StackPanel x:Name="graphButtPlane" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"  >
+                    <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" VerticalAlignment="Top" Visibility="Visible"/>
                     <Button x:Name="pieChartButton" Content="Pie Chart" Click="pieChartButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
                     <Button x:Name="horBarButton" Content="Horizontal Bar" Click="horBarButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
                     <Button x:Name="verBarButton" Content="Vertical Bar" Click="verBarButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
                     <Button x:Name="xyButton" Content="X,Y Graph" Click="xyButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
                     <Button x:Name="normalDistButton" Content="Normal Chart" Click="normalDistButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
-                    <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" VerticalAlignment="Bottom" Visibility="Visible"/>
                 </StackPanel>
+
+                
+                
                 
                 <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False"
                           CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50"
                           GridLinesVisibility="All" HeadersVisibility="All"
-                          ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.RowSpan="3"
+                          ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.RowSpan="2"
                           ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                          EnableRowVirtualization="False" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
+                          EnableRowVirtualization="False" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1"
                           CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
                           LoadingRow="Data_LoadingRow" SelectionUnit="Cell" VerticalAlignment="Top"
                           ClipToBounds="True" HorizontalAlignment="Left"
