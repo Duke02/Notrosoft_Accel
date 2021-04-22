@@ -77,6 +77,14 @@
                     <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" VerticalAlignment="Top" />
                 </StackPanel>
 
+                <StackPanel Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" >
+                    <Button x:Name="pieChartButton" Content="Pie Chart" Click="pieChartButton_Click" Visibility="Collapsed" />
+                    <Button x:Name="horBarButton" Content="Horizontal Bar" Click="horBarButton_Click" Visibility="Collapsed" />
+                    <Button x:Name="verBarButton" Content="Vertical Bar" Click="verBarButton_Click" Visibility="Collapsed" />
+                    <Button x:Name="xyButton" Content="X,Y Graph" Click="xyButton_Click" Visibility="Collapsed" />
+                    <Button x:Name="normalDistButton" Content="Normal Chart" Click="normalDistButton_Click" Visibility="Collapsed" />
+                </StackPanel>
+                
                 <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False"
                           CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50"
                           GridLinesVisibility="All" HeadersVisibility="All"

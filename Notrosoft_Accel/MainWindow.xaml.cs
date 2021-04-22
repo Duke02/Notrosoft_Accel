@@ -541,5 +541,30 @@ namespace Notrosoft_Accel
                 setInterval.Visibility = Visibility.Collapsed;
             }
         }
+
+        private void pieChartButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void horBarButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void verBarButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void xyButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void normalDistButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
