@@ -30,13 +30,47 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            var flattenedValues = Utilities.Flatten(values);
+
+            if (!flattenedValues.Any())
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+
+            var variance = Utilities.GetGroupedVariance(flattenedValues);
+            var mean = Utilities.GetGroupedMean(flattenedValues);
+
+            return new Dictionary<string, object>
+            {
+                {"mean", mean},
+                {"variance", variance}
+            };
         }
 
         public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            FrequencyData<double> flattenedValues;
+
+            try
+            {
+                flattenedValues = Utilities.Flatten(values) as FrequencyData<double>;
+            }
+            catch (InvalidOperationException _)
+            {
+                throw new InvalidOperationException("Cannot perform Mean Statistic on non-numerical data!");
+            }
+
+            if (flattenedValues.Count == 0)
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+
+            var variance = Utilities.GetGroupedVariance(flattenedValues);
+            var mean = Utilities.GetGroupedMean(flattenedValues);
+
+            // TODO: Return both values.
+            return new Dictionary<string, object>
+            {
+                {"mean", mean},
+                {"variance", variance}
+            };
         }
     }
 }
