@@ -68,7 +68,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         {
             var concreteValues = values.ToArray();
 
-            if (concreteValues.Length != 2) throw new InvalidOperationException("Input data must be a 2D array.");
+            if (concreteValues.Count != 2) throw new InvalidOperationException("Input data must be a 2D array.");
 
             var xData = concreteValues[0];
             var yData = concreteValues[1];
