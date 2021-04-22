@@ -539,6 +539,9 @@ namespace Notrosoft_Accel
             }
         }
 
+
+        // ----------------------- GRAPHING HANDLER --------------------------
+        // -------------------------------------------------------------------
         private void pieChartButton_Click(object sender, RoutedEventArgs e)
         {
             var sel = Data.SelectedCells;
