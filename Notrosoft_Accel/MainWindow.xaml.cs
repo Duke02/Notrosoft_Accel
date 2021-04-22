@@ -560,6 +560,8 @@ namespace Notrosoft_Accel
                 _grapher.PlotPieChart(data, savePieChartToDialog.FileName);
             else
                 MessageBox.Show("Cannot save graph to an empty file location!");
+            ImageViewWindow PieChart = new(savePieChartToDialog.FileName);
+            PieChart.Show();
         }
 
         private void horBarButton_Click(object sender, RoutedEventArgs e)
