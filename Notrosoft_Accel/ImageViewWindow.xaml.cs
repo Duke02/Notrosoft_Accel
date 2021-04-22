@@ -33,5 +33,15 @@ namespace Notrosoft_Accel
         {
             Graph1.Source = bmap;
         }
+
+        private void mWind_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Graph1.Height = e.NewSize.Height - 20;
+        }
+
+        private void mWind_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Graph1.Source = null;
+        }
     }
 }
