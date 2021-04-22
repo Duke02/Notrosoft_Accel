@@ -66,9 +66,16 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
-            var concreteValues = values.ToArray();
-
-            if (concreteValues.Count != 2) throw new InvalidOperationException("Input data must be a 2D array.");
+            FrequencyData<double>[] concreteValues;
+            try
+            {
+                concreteValues = values.ToArray() as FrequencyData<double>[];
+            }
+            catch (InvalidCastException _)
+            {
+                throw new InvalidOperationException("Correlation Coefficient cannot perform analysis on non-numerical data!");
+            }
+            if (concreteValues.Length != 2) throw new InvalidOperationException("Input data must be a 2D array.");
 
             var xData = concreteValues[0];
             var yData = concreteValues[1];
