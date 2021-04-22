@@ -52,7 +52,32 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            FrequencyData<double> flattenedValues;
+            try
+            {
+                flattenedValues = Utilities.Flatten(values) as FrequencyData<double>;
+            }
+            catch (InvalidOperationException _)
+            {
+                throw new InvalidOperationException("Cannot perform Mean Statistic on non-numerical data!");
+            }
+
+            if (flattenedValues.Count == 0)
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+
+            var totalSize = 0;
+            var sum = 0;
+
+            foreach (var (val, count) in flattenedValues)
+            {
+                sum += (int)val * count;
+                totalSize += count;
+            }
+
+            return new Dictionary<string, object>
+            {
+                {"mean",  sum / totalSize }
+            };
         }
     }
 }
