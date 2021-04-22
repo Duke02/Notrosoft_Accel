@@ -18,13 +18,11 @@
                     <RowDefinition Height="30" />
                     <RowDefinition MinHeight="50" MaxHeight="300" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="30" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="160" />
-                    <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="100" />
@@ -94,12 +92,14 @@
                           MaxHeight="550" CellEditEnding="Data_CellEditEnding"/>
 
 
+                <WrapPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch">
+                    <Button x:Name="ImportFile" Content="Import File..." Click="ImportFile_OnClick"
+                            Width="160" VerticalAlignment="Top" />
 
-                <Button x:Name="ImportFile" Grid.Column="1" Content="Import File..." Click="ImportFile_OnClick"
-                        HorizontalAlignment="Stretch" />
-
-                <Button Grid.Column="2" Content="Export Data..." HorizontalAlignment="Stretch" Click="DataExport_Click" />
-
+                    <Button Content="Export Data..." Width="160" VerticalAlignment="Top"
+                            Click="DataExport_Click" />
+                </WrapPanel>
+                
                 <Button x:Name="addColumnButton" Grid.Column="4" Grid.Row="0"
                         Content="Add Column" Click="addColumnButton_Click" MaxWidth="200" />
 
