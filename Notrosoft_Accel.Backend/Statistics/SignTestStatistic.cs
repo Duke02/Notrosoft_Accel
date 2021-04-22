@@ -46,7 +46,7 @@ namespace Notrosoft_Accel.Backend.Statistics
 
             var flattenedValues = Utilities.Flatten(values);
 
-            if (flattenedValues.Count== 0)
+            if (flattenedValues.Count == 0)
                 throw new InvalidOperationException(
                     "There must be input data in order to perform the sign test statistic!");
 
@@ -78,7 +78,43 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            FrequencyData<double> flattenedValues;
+            
+            try
+            {
+                flattenedValues = Utilities.Flatten(values) as FrequencyData<double>;
+            }
+            catch (InvalidCastException _)
+            {
+                throw new InvalidOperationException("Cannot operate on non-numerical data for sign test statistic!");
+            }
+
+            if (flattenedValues.Count == 0)
+                throw new InvalidOperationException(
+                    "There must be input data in order to perform the sign test statistic!");
+
+            var comparisonType = (ComparisonType)parameters[0];
+            var value = (double)parameters[1];
+
+
+            var numSuccesses = comparisonType switch
+            {
+                ComparisonType.GreaterThan => flattenedValues.Values.Count(v => v > value),
+                ComparisonType.LessThan => flattenedValues.Values.Count(v => v < value),
+                ComparisonType.EqualTo => flattenedValues.Values.Count(v => Math.Abs(v - value) < Tolerance),
+                ComparisonType.GreaterThanOrEqualTo => flattenedValues.Values.Count(v => v >= value),
+                ComparisonType.LessThanOrEqualTo => flattenedValues.Values.Count(v => v <= value),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            var p = 0.5;
+            var n = flattenedValues.TotalSize;
+            var output = Utilities.BinomialProbability(n, numSuccesses, p);
+
+            return new Dictionary<string, object>
+            {
+                {"sign-prop", output}
+            };
         }
     }
 }

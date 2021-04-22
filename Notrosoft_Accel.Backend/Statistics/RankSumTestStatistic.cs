@@ -33,13 +33,75 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            throw new InvalidOperationException("Rank Sum Test cannot be performed on Interval Data.");
+            // TODO: This might be totally wrong ngl.
+
+            var concreteValues = values.ToArray();
+
+            if (concreteValues.Length != 2)
+            {
+                throw new InvalidOperationException("Input data must be a 2D list!");
+            }
+
+            var x = concreteValues[0];
+            var y = concreteValues[1];
+
+            if (x.Count == 0 || y.Count == 0)
+            {
+                throw new InvalidOperationException("Input data must have data in it!");
+            }
+
+            //  x.Frequencies.Select(kv => (kv.Value * x.Definitions[kv.Key].GetMidpoint()) - x_mean);
+
+            var weightedXVals = x.Frequencies.Select(kv => kv.Value * x.Definitions[kv.Key].GetMidpoint());
+            var weightedYVals = y.Frequencies.Select(kv => kv.Value * y.Definitions[kv.Key].GetMidpoint());
+
+            var mannWhitneyUStat = weightedXVals.Sum(xVal => weightedYVals.Sum(yVal => InnerFunction(xVal, yVal)));
+
+            return new Dictionary<string, object>
+            {
+                {"ranksum", mannWhitneyUStat}
+            };
         }
 
         public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
-            throw new InvalidOperationException("Rank Sum Test cannot be performed on Frequency Data.");
+            // TODO: This might be totally wrong ngl.
+            FrequencyData<double>[] concreteValues;
+
+            try
+            {
+                concreteValues = values.ToArray() as FrequencyData<double>[];
+            }
+            catch (InvalidCastException _)
+            {
+                throw new InvalidOperationException("Cannot perform rank sum test on non-numerical data!");
+            }
+
+            if (concreteValues.Length != 2)
+            {
+                throw new InvalidOperationException("Input data must be a 2D list!");
+            }
+
+            var x = concreteValues[0];
+            var y = concreteValues[1];
+
+            if (x.Count == 0 || y.Count == 0)
+            {
+                throw new InvalidOperationException("Input data must have data in it!");
+            }
+
+            //  x.Frequencies.Select(kv => (kv.Value * x.Definitions[kv.Key].GetMidpoint()) - x_mean);
+
+            var weightedXVals = x.Select(kv => kv.Value * kv.Key);
+            var weightedYVals = y.Select(kv => kv.Value * kv.Key);
+
+            var mannWhitneyUStat = weightedXVals.Sum(xVal => weightedYVals.Sum(yVal => InnerFunction(xVal, yVal)));
+
+            return new Dictionary<string, object>
+            {
+                {"ranksum", mannWhitneyUStat}
+            };
         }
 
         private double InnerFunction(double x, double y)
