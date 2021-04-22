@@ -138,25 +138,9 @@ namespace Notrosoft_Accel
 
         private void GraphButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var data = new FrequencyData<string>(new Dictionary<string, int>
-            {
-                {"Cats", 30},
-                {"Dogs", 45},
-                {"Parrots", 12}
-            });
-
-            var savePieChartToDialog = new SaveFileDialog
-            {
-                Filter = "JPeg Image|*.jpg",
-                Title = "Save graph to..."
-            };
-
-            savePieChartToDialog.ShowDialog(this);
-
-            if (!string.IsNullOrWhiteSpace(savePieChartToDialog.FileName))
-                _grapher.PlotPieChart(data, savePieChartToDialog.FileName);
-            else
-                MessageBox.Show("Cannot save graph to an empty file location!");
+            if (graphButtPlane.Visibility == Visibility.Visible) graphButtPlane.Visibility = Visibility.Collapsed;
+            
+            else graphButtPlane.Visibility = Visibility.Visible;
         }
 
         private void Data_OnSelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
@@ -544,7 +528,25 @@ namespace Notrosoft_Accel
 
         private void pieChartButton_Click(object sender, RoutedEventArgs e)
         {
+            var data = new FrequencyData<string>(new Dictionary<string, int>
+            {
+                {"Cats", 30},
+                {"Dogs", 45},
+                {"Parrots", 12}
+            });
 
+            var savePieChartToDialog = new SaveFileDialog
+            {
+                Filter = "JPeg Image|*.jpg",
+                Title = "Save graph to..."
+            };
+
+            savePieChartToDialog.ShowDialog(this);
+
+            if (!string.IsNullOrWhiteSpace(savePieChartToDialog.FileName))
+                _grapher.PlotPieChart(data, savePieChartToDialog.FileName);
+            else
+                MessageBox.Show("Cannot save graph to an empty file location!");
         }
 
         private void horBarButton_Click(object sender, RoutedEventArgs e)
