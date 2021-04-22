@@ -65,7 +65,6 @@ namespace Notrosoft_Accel.Backend.Statistics
             var variance = Utilities.GetGroupedVariance(flattenedValues);
             var mean = Utilities.GetGroupedMean(flattenedValues);
 
-            // TODO: Return both values.
             return new Dictionary<string, object>
             {
                 {"mean", mean},
