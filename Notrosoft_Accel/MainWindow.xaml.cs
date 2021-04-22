@@ -541,12 +541,36 @@ namespace Notrosoft_Accel
 
         private void pieChartButton_Click(object sender, RoutedEventArgs e)
         {
-            var data = new FrequencyData<string>(new Dictionary<string, int>
+            var sel = Data.SelectedCells;
+            var try1 = new List<string>();
+            int lastC = int.MaxValue, thisC;
+            int count = 0;
+            foreach (var cellInfo in sel)
             {
-                {"Cats", 30},
-                {"Dogs", 45},
-                {"Parrots", 12}
-            });
+                // Ensures cell information is valid. If not then don't try and do anything with it
+                if (cellInfo.IsValid)
+                {
+                    count++;
+                    thisC = cellInfo.Column.DisplayIndex;
+
+                    lastC = thisC;
+
+                    // Get's the current cell's information (specifically for Column info)
+                    var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
+                    // Get's the current row's information
+                    var row = (DataRowView)cont.DataContext;
+                    // Get the current row's data as an item array
+                    var obj = row.Row.ItemArray;
+                    // Add the item of the current row at the current column's index and add it to the outbound list.
+                    try1.Add(obj[thisC].ToString());
+                }
+            }
+            var dic = new Dictionary<string, int>();
+            for (int i = 0; i < try1.Count(); i += 2)
+            {
+                dic.Add(try1[i], int.Parse(try1[i + 1]));
+            }
+            var data = new FrequencyData<string>(dic);
 
             var savePieChartToDialog = new SaveFileDialog
             {
@@ -557,11 +581,16 @@ namespace Notrosoft_Accel
             savePieChartToDialog.ShowDialog(this);
 
             if (!string.IsNullOrWhiteSpace(savePieChartToDialog.FileName))
+            {
                 _grapher.PlotPieChart(data, savePieChartToDialog.FileName);
+                ImageViewWindow PieChart = new(savePieChartToDialog.FileName);
+                PieChart.Show();
+            }
             else
-                MessageBox.Show("Cannot save graph to an empty file location!");
-            ImageViewWindow PieChart = new(savePieChartToDialog.FileName);
-            PieChart.Show();
+            {
+                MessageBox.Show("Graph not saved.");
+            }
+            
         }
 
         private void horBarButton_Click(object sender, RoutedEventArgs e)

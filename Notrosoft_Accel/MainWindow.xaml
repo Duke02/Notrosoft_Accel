@@ -72,7 +72,7 @@
                               VerticalAlignment="Top" Checked="SpearmanRankCorrelationCoefficientButton_Checked"
                               Unchecked="SpearmanRankCorrelationCoefficientButton_Unchecked" />
                     <Button x:Name="setInterval" Content="Set Intervals" Click="setInterval_Click" IsEnabled="False" Visibility="Collapsed"/>
-                    <Button x:Name="doStatsButton" Content="Perform Statistics" Click="doStatsButton_Click" />
+                    <Button x:Name="doStatsButton" Content="Perform Statistics" Click="doStatsButton_Click" Margin="0,0,0,8" />
                     <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" VerticalAlignment="Top" Visibility="Visible"/>
                     <Button x:Name="pieChartButton" Content="Pie Chart" Click="pieChartButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
                     <Button x:Name="horBarButton" Content="Horizontal Bar" Click="horBarButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
