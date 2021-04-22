@@ -32,6 +32,18 @@ namespace Notrosoft_Accel.Infrastructure
             return values.SelectMany(vals => vals);
         }
 
+        public static IntervalData Flatten(IEnumerable<IntervalData> values)
+        {
+            var data = values.SelectMany(v => v.Values).SelectMany(v => v);
+            var definitions = values.First(v => v.Definitions != null).Definitions;
+            return ConvertToIntervalData(data, definitions);
+        }
+
+        public static FrequencyData<T> Flatten<T>(IEnumerable<FrequencyData<T>> values)
+        {
+            return new FrequencyData<T>(values.SelectMany(v => v).ToDictionary(kv => kv.Key, kv => kv.Value));
+        }
+
         /// <summary>
         ///     Gets the population variance of the given data.
         /// </summary>

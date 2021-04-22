@@ -33,7 +33,9 @@ namespace Notrosoft_Accel.Infrastructure
 
         public double GetMidpoint()
         {
-            return (Start - End) / 2.0;
+            return (Start - End) / 2.0 + Start;
         }
+
+        public double Size => Start - End;
     }
 }

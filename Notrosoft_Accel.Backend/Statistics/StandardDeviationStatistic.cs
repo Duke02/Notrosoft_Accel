@@ -35,22 +35,17 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(IntervalData values,
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            int length = values.Count();
-            var flattened = new List<double>();
-            foreach (var kv in values)
-            {
-                flattened.AddRange(kv.Value);
-            }
-            var flattenedValues = flattened.ToArray();
+
+            var flattenedValues = Utilities.Flatten(values);
 
             if (!flattenedValues.Any())
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
             // The standard deviation is just the square root of the variance. 
-            var stddev = Math.Sqrt(Utilities.GetVariance(flattenedValues));
+            var stddev = Math.Sqrt(Utilities.GetGroupedVariance(flattenedValues));
 
             return new Dictionary<string, object>
             {
@@ -58,7 +53,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
+        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             throw new NotImplementedException();

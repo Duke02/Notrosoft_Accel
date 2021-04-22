@@ -34,18 +34,12 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(IntervalData values,
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            int length = values.Count();
-            var flattened = new List<double>();
-            foreach (var kv in values)
-            {
-                flattened.AddRange(kv.Value);
-            }
-            var flattenedValues = flattened.ToArray();
+            var flattenedValues = Utilities.Flatten(values);
 
-            if (flattenedValues.Length == 0)
+            if (flattenedValues.Count  == 0)
                 throw new InvalidOperationException("Input data needs to have values in it to operate!");
 
             var hypothesis = (double)parameters[0];
@@ -53,8 +47,8 @@ namespace Notrosoft_Accel.Backend.Statistics
 
             var confidence = parameters.Length > 2 ? (double)parameters[2] : .95;
 
-            var n = flattenedValues.Length;
-            var numSuccesses = flattenedValues.Count(v => v < hypothesis);
+            var n = flattenedValues.TotalSize;
+            var numSuccesses = flattenedValues.Frequencies.Values.Count(v => v < hypothesis);
 
             var pValue = Enumerable.Range(0, numSuccesses + 1)
                 .Sum(i => Utilities.BinomialProbability(n, i, probOfSuccess));
@@ -66,7 +60,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
+        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             throw new NotImplementedException();

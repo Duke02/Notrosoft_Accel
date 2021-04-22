@@ -60,47 +60,54 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(IntervalData values,
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            int length = values.Count();
-            var flattenedValues = new List<double>();
-            foreach (var kv in values)
-            {
-                flattenedValues.AddRange(kv.Value);
-            }
-            flattenedValues.ToArray();
+            var flattenedValues = Utilities.Flatten(values);
 
             if (!flattenedValues.Any())
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
-            // Sort the values from least to greatest.
-            var sortedValues = flattenedValues.OrderBy(val => val).ToArray();
-
             var desiredPercentile = (double)parameters[0];
 
-            var indexOfPercentile = desiredPercentile * sortedValues.Length;
+            // https://mathlibra.com/calculation-of-percentiles-for-grouped-data/
 
-            double percentile;
+            var totalSize = flattenedValues.TotalSize;
 
-            var isCleanInt = Math.Abs(indexOfPercentile - (int)indexOfPercentile) < 0.001;
-            if (isCleanInt)
+            var locationOfPercentile = totalSize * desiredPercentile;
+
+            var cumulativeFreqs = flattenedValues.CumulativeFrequencies;
+
+            string prevInterval = string.Empty;
+            string intervalName = string.Empty;
+            foreach(var (name, freq) in cumulativeFreqs)
             {
-                percentile = sortedValues[(int)indexOfPercentile];
-            }
-            else
-            {
-                // Need to figure out the closest indexes and the weight I have to do between them.
-                var lowerIndex = (int)indexOfPercentile;
-                var upperIndex = (int)(indexOfPercentile + 1);
+                if(string.IsNullOrEmpty(intervalName))
+                {
+                    intervalName = name;
+                    continue;
+                }
 
-                // The greater the weight, the closer the value
-                // should be towards the element at the upper index.
-                // Example: IndexOfPercentile is 2.6? weight is .6 
-                // and the upperIndex should be weighted more heavily.
-                var weight = indexOfPercentile - (int)indexOfPercentile;
-                percentile = sortedValues[upperIndex] * weight + sortedValues[lowerIndex] * (1 - weight);
+                if(locationOfPercentile > freq)
+                {
+                    break;
+                }
+
+                prevInterval = intervalName;
+                intervalName = name;
             }
+
+            var boundsForInterval = flattenedValues.Definitions[intervalName];
+
+            var previousCumulativeFrequency = cumulativeFreqs[prevInterval];
+
+            var currentFrequency = flattenedValues.Frequencies[intervalName];
+
+            var lowerBound = boundsForInterval.Start;
+
+            var boundSize = boundsForInterval.Size;
+
+            var percentile = lowerBound + (boundSize / currentFrequency) * (desiredPercentile * totalSize - previousCumulativeFrequency);
 
             return new Dictionary<string, object>
             {
@@ -108,7 +115,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
+        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             throw new NotImplementedException();

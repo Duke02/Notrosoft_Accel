@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Notrosoft_Accel.Backend.Statistics;
 using Notrosoft_Accel.Infrastructure;
 
@@ -40,12 +41,12 @@ namespace Notrosoft_Accel
             // String used for when a Statistical method is not implemented quite yet.
             var NaS = "Statistic method has not been added yet";
 
-            IntervalData interData = null;
+            var interData = new List<IntervalData>();
             var ordData = new OrdinalData(_doubles);
             if (intervals != null)
             {
                 var tempInter = new IntervalDefinitions(intervals);
-                interData = Utilities.ConvertToIntervalData(Utilities.Flatten<double>(_doubles), tempInter);
+                interData = _doubles.Select(ds => Utilities.ConvertToIntervalData(ds, tempInter)).ToList();
             }
             
 
