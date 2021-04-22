@@ -40,36 +40,33 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(IntervalData values,
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            int length = values.Count();
-            var flattened = new List<double>();
-            foreach (var kv in values)
-            {
-                flattened.AddRange(kv.Value);
-            }
-            var flattenedValues = flattened.ToArray();
 
-            if (flattenedValues.Length == 0)
+            var flattenedValues = Utilities.Flatten(values);
+
+            if (flattenedValues.Count== 0)
                 throw new InvalidOperationException(
                     "There must be input data in order to perform the sign test statistic!");
 
             var comparisonType = (ComparisonType)parameters[0];
             var value = (double)parameters[1];
 
+            var frequencies = flattenedValues.Frequencies;
+
             var numSuccesses = comparisonType switch
             {
-                ComparisonType.GreaterThan => flattenedValues.Count(v => v > value),
-                ComparisonType.LessThan => flattenedValues.Count(v => v < value),
-                ComparisonType.EqualTo => flattenedValues.Count(v => Math.Abs(v - value) < Tolerance),
-                ComparisonType.GreaterThanOrEqualTo => flattenedValues.Count(v => v >= value),
-                ComparisonType.LessThanOrEqualTo => flattenedValues.Count(v => v <= value),
+                ComparisonType.GreaterThan => frequencies.Values.Count(v => v > value),
+                ComparisonType.LessThan => frequencies.Values.Count(v => v < value),
+                ComparisonType.EqualTo => frequencies.Values.Count(v => Math.Abs(v - value) < Tolerance),
+                ComparisonType.GreaterThanOrEqualTo => frequencies.Values.Count(v => v >= value),
+                ComparisonType.LessThanOrEqualTo => frequencies.Values.Count(v => v <= value),
                 _ => throw new ArgumentOutOfRangeException()
             };
 
             var p = 0.5;
-            var n = flattenedValues.Length;
+            var n = flattenedValues.TotalSize;
             var output = Utilities.BinomialProbability(n, numSuccesses, p);
 
             return new Dictionary<string, object>
@@ -78,7 +75,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
+        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             throw new NotImplementedException();

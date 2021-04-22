@@ -56,13 +56,13 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(IntervalData values,
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
             throw new NotImplementedException();
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
+        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             throw new NotImplementedException();

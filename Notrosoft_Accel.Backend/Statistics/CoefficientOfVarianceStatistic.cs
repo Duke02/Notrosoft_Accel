@@ -39,14 +39,16 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(IntervalData values,
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            if (values.Count <= 0)
+            var flattenedValues = Utilities.Flatten(values);
+
+            if (flattenedValues.Count <= 0)
                 throw new InvalidOperationException("Inputted values must have a count greater than 0!");
 
-            var groupedAverage = Utilities.GetGroupedMean(values);
-            var groupedVariance = Utilities.GetGroupedVariance(values);
+            var groupedAverage = Utilities.GetGroupedMean(flattenedValues);
+            var groupedVariance = Utilities.GetGroupedVariance(flattenedValues);
 
             return new Dictionary<string, object>
             {
@@ -54,7 +56,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
+        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             throw new InvalidOperationException("Coefficient Of Variance cannot be performed on Frequency Data!");

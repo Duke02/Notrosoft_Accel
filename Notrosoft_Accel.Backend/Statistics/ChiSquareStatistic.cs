@@ -13,17 +13,18 @@ namespace Notrosoft_Accel.Backend.Statistics
             throw new InvalidOperationException("Chi Square Statistic cannot operate on Ordinal Data!");
         }
 
-        public Dictionary<string, object> OperateIntervalData(IntervalData values,
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            return OperateFrequencyData(Utilities.ConvertFromIntervalDataToFrequencyValues<string>(values),
-                parameters);
+            return OperateFrequencyData(values.Select(v => Utilities.ConvertFromIntervalDataToFrequencyValues<string>(v)), parameters);
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
+        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
-            if (values.Count == 0)
+            var flattenedValues = Utilities.Flatten(values);
+
+            if (flattenedValues.Count == 0)
                 throw new InvalidOperationException("Chi Square Statistic must be given data in order to operate.");
 
             // if (parameters.Length != values.Count)
@@ -31,10 +32,10 @@ namespace Notrosoft_Accel.Backend.Statistics
             //         "Input P Values must be the same length as the number of categories in the input data.");
 
             // Assumes that each category should be the same probability.
-            double totalN = values.Sum(kv => kv.Value);
-            var testProportion = values.Count / totalN;
+            double totalN =flattenedValues.Sum(kv => kv.Value);
+            var testProportion = flattenedValues.Count / totalN;
 
-            var sum = values.Sum(observed =>
+            var sum = flattenedValues.Sum(observed =>
                 Math.Pow(observed.Value / totalN - testProportion, 2) / testProportion);
 
             var chiSquareStat = sum * totalN;

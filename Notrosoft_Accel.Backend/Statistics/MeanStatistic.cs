@@ -33,21 +33,23 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(IntervalData values,
+        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
+            var flattenedValues = Utilities.Flatten(values);
+
             // Throw an exception if there's nothing in the inputted container.
-            if (!values.Any())
+            if (!flattenedValues.Any())
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
             // Return the average/mean of the inputted values.
             return new Dictionary<string, object>
             {
-                {"mean", Utilities.GetGroupedMean(values)}
+                {"mean", Utilities.GetGroupedMean(flattenedValues)}
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(FrequencyData<T> values,
+        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             throw new NotImplementedException();

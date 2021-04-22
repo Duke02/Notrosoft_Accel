@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Notrosoft_Accel.Backend.Statistics;
 using Notrosoft_Accel.Infrastructure;
@@ -26,7 +27,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1d();
 
             var expected = 0;
-            var actual = (double) modeStatistic.OperateOrdinalData(data)["mode"];
+            var actual = (double)modeStatistic.OperateOrdinalData(data)["mode"];
 
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
@@ -41,7 +42,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 1.0;
-            var actual = (double) modeStatistic.OperateOrdinalData(data)["mode"];
+            var actual = (double)modeStatistic.OperateOrdinalData(data)["mode"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
                 "Mode Statistic does not give the correct value!");
@@ -54,7 +55,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1d();
 
             var expected = 0.9375;
-            var actual = (double) meanStatistic.OperateOrdinalData(data)["mean"];
+            var actual = (double)meanStatistic.OperateOrdinalData(data)["mean"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
                 "Mean Statistic does not give the correct value!");
@@ -67,7 +68,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 150.3292683;
-            var actual = (double) meanStatistic.OperateOrdinalData(data)["mean"];
+            var actual = (double)meanStatistic.OperateOrdinalData(data)["mean"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance,
                 "Mean Statistic does not give the correct value!");
@@ -98,7 +99,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1dOdd();
 
             var expected = 1.0;
-            var actual = (double) medianStatistic.OperateOrdinalData(data)["median"];
+            var actual = (double)medianStatistic.OperateOrdinalData(data)["median"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -110,7 +111,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1dEven();
 
             var expected = 1.0;
-            var actual = (double) medianStatistic.OperateOrdinalData(data)["median"];
+            var actual = (double)medianStatistic.OperateOrdinalData(data)["median"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -122,7 +123,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 124;
-            var actual = (double) medianStatistic.OperateOrdinalData(data)["median"];
+            var actual = (double)medianStatistic.OperateOrdinalData(data)["median"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -134,7 +135,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 13514.36719;
-            var actual = (double) varianceStatistic.OperateOrdinalData(data)["variance"];
+            var actual = (double)varianceStatistic.OperateOrdinalData(data)["variance"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -146,7 +147,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1d();
 
             var expected = 0.68359375;
-            var actual = (double) varianceStatistic.OperateOrdinalData(data)["variance"];
+            var actual = (double)varianceStatistic.OperateOrdinalData(data)["variance"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -176,7 +177,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1d();
 
             var expected = 0.8267972847;
-            var actual = (double) stddevStatistic.OperateOrdinalData(data)["Standard Deviation"];
+            var actual = (double)stddevStatistic.OperateOrdinalData(data)["Standard Deviation"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -188,7 +189,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 116.2513105;
-            var actual = (double) stddevStatistic.OperateOrdinalData(data)["Standard Deviation"];
+            var actual = (double)stddevStatistic.OperateOrdinalData(data)["Standard Deviation"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -200,7 +201,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetSmallData1d();
 
             var expected = 0.8819171037;
-            var actual = (double) cvStatistic.OperateOrdinalData(data)["cv"];
+            var actual = (double)cvStatistic.OperateOrdinalData(data)["cv"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -212,7 +213,7 @@ namespace Notrosoft_Accel.Tests
             var data = TestHelperFunctions.GetLargeData1d();
 
             var expected = 0.7733112242;
-            var actual = (double) cvStatistic.OperateOrdinalData(data)["cv"];
+            var actual = (double)cvStatistic.OperateOrdinalData(data)["cv"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -240,8 +241,8 @@ namespace Notrosoft_Accel.Tests
 
             var actualOutput = binDistStat.OperateOrdinalData(data, hypothesis, probSuccess);
 
-            var actualPValue = (double) actualOutput["P-Value"];
-            var actualShouldReject = (bool) actualOutput["Reject Null Hypothesis?"];
+            var actualPValue = (double)actualOutput["P-Value"];
+            var actualShouldReject = (bool)actualOutput["Reject Null Hypothesis?"];
 
             Assert.AreEqual(expectedPValue, actualPValue, TestHelperFunctions.Tolerance, "P Value is not the same!");
             Assert.AreEqual(expectedShouldReject, actualShouldReject,
@@ -262,8 +263,8 @@ namespace Notrosoft_Accel.Tests
 
             var actualOutput = binDistStat.OperateOrdinalData(data, hypothesis, probSuccess);
 
-            var actualPValue = (double) actualOutput["P-Value"];
-            var actualShouldReject = (bool) actualOutput["Reject Null Hypothesis?"];
+            var actualPValue = (double)actualOutput["P-Value"];
+            var actualShouldReject = (bool)actualOutput["Reject Null Hypothesis?"];
 
             Assert.AreEqual(expectedPValue, actualPValue, TestHelperFunctions.Tolerance, "P Value is not the same!");
             Assert.AreEqual(expectedShouldReject, actualShouldReject,
@@ -286,8 +287,8 @@ namespace Notrosoft_Accel.Tests
 
             var actualOutput = binDistStat.OperateOrdinalData(data, hypothesis, probSuccess, confidence);
 
-            var actualPValue = (double) actualOutput["P-Value"];
-            var actualShouldReject = (bool) actualOutput["Reject Null Hypothesis?"];
+            var actualPValue = (double)actualOutput["P-Value"];
+            var actualShouldReject = (bool)actualOutput["Reject Null Hypothesis?"];
 
             Assert.AreEqual(expectedPValue, actualPValue, TestHelperFunctions.Tolerance, "P Value is not the same!");
             Assert.AreEqual(expectedShouldReject, actualShouldReject,
@@ -317,7 +318,7 @@ namespace Notrosoft_Accel.Tests
 
             const double expected = 0.2210526794;
 
-            var actual = (double) corrCoeff.OperateOrdinalData(data)["coeff"];
+            var actual = (double)corrCoeff.OperateOrdinalData(data)["coeff"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -333,8 +334,8 @@ namespace Notrosoft_Accel.Tests
             const double expectedYIntercept = 2.032258065;
 
             var actualOutput = stat.OperateOrdinalData(data);
-            var actualSlope = (double) actualOutput["slope"];
-            var actualYIntercept = (double) actualOutput["intercept"];
+            var actualSlope = (double)actualOutput["slope"];
+            var actualYIntercept = (double)actualOutput["intercept"];
 
             Assert.AreEqual(expectedSlope, actualSlope, TestHelperFunctions.Tolerance);
             Assert.AreEqual(expectedYIntercept, actualYIntercept, TestHelperFunctions.Tolerance);
@@ -352,8 +353,8 @@ namespace Notrosoft_Accel.Tests
 
             var actualOutput = stat.OperateOrdinalData(data);
 
-            var actualMean = (double) actualOutput["mean"];
-            var actualVariance = (double) actualOutput["variance"];
+            var actualMean = (double)actualOutput["mean"];
+            var actualVariance = (double)actualOutput["variance"];
 
             Assert.AreEqual(expectedMean, actualMean, TestHelperFunctions.Tolerance);
             Assert.AreEqual(expectedVariance, actualVariance, TestHelperFunctions.Tolerance);
@@ -371,10 +372,10 @@ namespace Notrosoft_Accel.Tests
             const double expectedThirdQuarter = 2;
             const double expectedNinety = 2;
 
-            var tenth = (double) stat.OperateOrdinalData(data, .1)["percentile"];
-            var quarter = (double) stat.OperateOrdinalData(data, .25)["percentile"];
-            var thirdQuarter = (double) stat.OperateOrdinalData(data, .75)["percentile"];
-            var ninety = (double) stat.OperateOrdinalData(data, 0.9)["percentile"];
+            var tenth = (double)stat.OperateOrdinalData(data, .1)["percentile"];
+            var quarter = (double)stat.OperateOrdinalData(data, .25)["percentile"];
+            var thirdQuarter = (double)stat.OperateOrdinalData(data, .75)["percentile"];
+            var ninety = (double)stat.OperateOrdinalData(data, 0.9)["percentile"];
 
             Assert.AreEqual(expectedTenth, tenth, TestHelperFunctions.Tolerance);
             Assert.AreEqual(expectedQuarter, quarter, TestHelperFunctions.Tolerance);
@@ -394,7 +395,7 @@ namespace Notrosoft_Accel.Tests
 
             const double expected = 5.666666666666666;
 
-            var actual = (double) stat.OperateIntervalData(intervalData)["chi-square"];
+            var actual = (double)stat.OperateIntervalData(new List<IntervalData> { intervalData })["chi-square"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -407,7 +408,7 @@ namespace Notrosoft_Accel.Tests
 
             const double expected = 174.5;
 
-            var actual = (double) stat.OperateOrdinalData(data)["ranksum"];
+            var actual = (double)stat.OperateOrdinalData(data)["ranksum"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -421,7 +422,7 @@ namespace Notrosoft_Accel.Tests
 
             const double expected = 0.0669002533;
 
-            var actual = (double) stat.OperateOrdinalData(data)["sign-prop"];
+            var actual = (double)stat.OperateOrdinalData(data)["sign-prop"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -435,7 +436,7 @@ namespace Notrosoft_Accel.Tests
 
             const double expected = 0.3982620897;
 
-            var actual = (double) stat.OperateOrdinalData(data)["spearman"];
+            var actual = (double)stat.OperateOrdinalData(data)["spearman"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -447,7 +448,7 @@ namespace Notrosoft_Accel.Tests
 
             var data = TestHelperFunctions.GetIntervalData();
 
-            var actual = stat.OperateIntervalData(data)["mean"];
+            var actual = stat.OperateIntervalData(new List<IntervalData> { data })["mean"];
         }
     }
 }
