@@ -138,9 +138,22 @@ namespace Notrosoft_Accel
 
         private void GraphButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (graphButtPlane.Visibility == Visibility.Visible) graphButtPlane.Visibility = Visibility.Collapsed;
-            
-            else graphButtPlane.Visibility = Visibility.Visible;
+            if (pieChartButton.Visibility == Visibility.Visible)
+            {
+                pieChartButton.Visibility = Visibility.Collapsed;
+                horBarButton.Visibility = Visibility.Collapsed;
+                verBarButton.Visibility = Visibility.Collapsed;
+                xyButton.Visibility = Visibility.Collapsed;
+                normalDistButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                pieChartButton.Visibility = Visibility.Visible;
+                horBarButton.Visibility = Visibility.Visible;
+                verBarButton.Visibility = Visibility.Visible;
+                xyButton.Visibility = Visibility.Visible;
+                normalDistButton.Visibility = Visibility.Visible;
+            }
         }
 
         private void Data_OnSelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
