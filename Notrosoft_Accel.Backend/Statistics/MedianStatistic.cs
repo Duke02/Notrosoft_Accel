@@ -10,6 +10,8 @@ namespace Notrosoft_Accel.Backend.Statistics
     /// </summary>
     public class MedianStatistic : IStatistic
     {
+        private const double Tolerance = 0.001;
+
         /// <summary>
         ///     Calculates the Median Statistic from the provided 2 dimensional data.
         /// </summary>
@@ -69,86 +71,48 @@ namespace Notrosoft_Accel.Backend.Statistics
             if (!flattenedInput.Any())
                 throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
 
-            // Sorts the input in ascending order then converts it into an array.
-            var sortedInput = flattenedInput.OrderBy(val => val).ToArray();
 
-            /* var count = sortedInput.Length;
+            // https://mathlibra.com/calculation-of-percentiles-for-grouped-data/
 
-             double median;
+            // This was taken from the percentile statistic since median is just the 50th percentile.
+            var desiredPercentile = .5;
 
-             // If the length is even...
-             if (count % 2 == 0)
-             {
-                 // Get the elements that are around the middle 
-                 var firstIndex = count / 2;
-                 var secondIndex = firstIndex - 1;
+            var totalSize = flattenedInput.TotalSize;
 
-                 // And return their midpoint.
-                 median = (sortedInput[secondIndex] + sortedInput[firstIndex]) / 2.0;
-             }
-             else
-             {
-                 // Just return the middle of the input.
-                 var middleIndex = count / 2;
+            var locationOfPercentile = totalSize * desiredPercentile;
 
-                 median = sortedInput[middleIndex];
-             }
+            var cumulativeFreqs = flattenedInput.CumulativeFrequencies;
 
-             return new Dictionary<string, object>
-             {
-                 {
-                     "median", median
-                 }
-             };*/
-            throw new NotImplementedException();
-        }
-
-        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
-            params object[] parameters)
-        {
-            FrequencyData<double> flattenedValues;
-
-            try
+            string prevInterval = string.Empty;
+            string intervalName = string.Empty;
+            foreach (var (name, freq) in cumulativeFreqs)
             {
-                flattenedValues = Utilities.Flatten(values) as FrequencyData<double>;
-            }
-            catch (InvalidOperationException _)
-            {
-                throw new InvalidOperationException("Cannot perform Mean Statistic on non-numerical data!");
+                if (string.IsNullOrEmpty(intervalName))
+                {
+                    intervalName = name;
+                    continue;
+                }
+
+                if (locationOfPercentile > freq)
+                {
+                    break;
+                }
+
+                prevInterval = intervalName;
+                intervalName = name;
             }
 
-            if (flattenedValues.Count == 0)
-                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+            var boundsForInterval = flattenedInput.Definitions[intervalName];
 
-            List<double> flattenedData = new List<double>();
-            foreach(var (val, counts) in flattenedValues)
-            {
-                flattenedData.Add(val);
-            }
+            var previousCumulativeFrequency = cumulativeFreqs[prevInterval];
 
-            var sortedInput = flattenedData.OrderBy(val => val).ToArray();
+            var currentFrequency = flattenedInput.Frequencies[intervalName];
 
-            var count = sortedInput.Length;
+            var lowerBound = boundsForInterval.Start;
 
-            double median;
+            var boundSize = boundsForInterval.Size;
 
-            // If the length is even...
-            if (count % 2 == 0)
-            {
-                // Get the elements that are around the middle 
-                var firstIndex = count / 2;
-                var secondIndex = firstIndex - 1;
-
-                // And return their midpoint.
-                median = (sortedInput[secondIndex] + sortedInput[firstIndex]) / 2.0;
-            }
-            else
-            {
-                // Just return the middle of the input.
-                var middleIndex = count / 2;
-
-                median = sortedInput[middleIndex];
-            }
+            var median = lowerBound + (boundSize / currentFrequency) * (desiredPercentile * totalSize - previousCumulativeFrequency);
 
             return new Dictionary<string, object>
             {
@@ -156,6 +120,74 @@ namespace Notrosoft_Accel.Backend.Statistics
                     "median", median
                 }
             };
+
+        }
+
+        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
+            params object[] parameters)
+        {
+            FrequencyData<double> flattenedInput;
+
+            try
+            {
+                flattenedInput = Utilities.Flatten(values) as FrequencyData<double>;
+            }
+            catch (InvalidOperationException _)
+            {
+                throw new InvalidOperationException("Cannot perform Mean Statistic on non-numerical data!");
+            }
+
+            if (flattenedInput.Count == 0)
+                throw new InvalidOperationException("Inputted values need to have a count greater than 0!");
+
+
+            // This was taken from the percentile statistic since median is just the 50th percentile.
+            var desiredPercentile = .5;
+
+            var totalSize = flattenedInput.TotalSize;
+
+            var locationOfPercentile = totalSize * desiredPercentile;
+
+            var cumulativeFreqs = flattenedInput.CumulativeFrequencies;
+
+            var previousValue = double.MinValue;
+            var desiredValue = double.MinValue;
+            foreach (var (name, freq) in cumulativeFreqs)
+            {
+                if (Math.Abs(desiredValue - double.MinValue) < Tolerance)
+                {
+                    desiredValue = name;
+                    continue;
+                }
+
+                if (locationOfPercentile > freq)
+                {
+                    break;
+                }
+
+                previousValue = desiredValue;
+                desiredValue = name;
+            }
+
+
+            var previousCumulativeFrequency = cumulativeFreqs[previousValue];
+
+            var currentFrequency = flattenedInput[desiredValue];
+
+            var lowerBound = desiredValue;
+
+            // TODO: this might be wrong.
+            var median = lowerBound + (1 / currentFrequency) * (desiredPercentile * totalSize - previousCumulativeFrequency);
+
+            return new Dictionary<string, object>
+            {
+                {
+                    "median", median
+                }
+            };
+
+
+
         }
     }
 }

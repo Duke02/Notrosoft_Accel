@@ -14,5 +14,28 @@ namespace Notrosoft_Accel.Infrastructure
         }
 
         public int TotalSize => Values.Sum(v => v);
+
+        public Dictionary<T, int> CumulativeFrequencies
+        {
+            get
+            {
+                // Taken from Interval data.
+                var output = new Dictionary<string, int>();
+                var orderedDefs = this.OrderBy(kv => kv.Key).ToList();
+
+                var frequencies = this.Join(orderedDefs, kv => kv.Key,
+                    kv => kv.Key,
+                    (freq, def) => new
+                    {
+                        Freq = freq.Value,
+                        Key = def.Key
+                    })
+                    .OrderBy(fs => fs.Key)
+                    .ToList();
+
+                return frequencies.ToDictionary(fs => fs.Key, fs => frequencies.TakeWhile(f => !f.Key.Equals(fs.Key)).Sum(f => f.Freq));
+            }
+        }
+
     }
 }
