@@ -48,7 +48,6 @@ namespace Notrosoft_Accel.Backend.Statistics
             var slope = Utilities.GetSampleCovariance(xValues, yValues) / Utilities.GetSampleVariance(xValues);
             var intercept = yAverage - slope * xAverage;
 
-            // TODO: Figure out a way to return the slope and intercept.
             return new Dictionary<string, object>
             {
                 {"slope", slope},
@@ -59,13 +58,82 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            var valuesArray = values.ToArray();
+
+            if (valuesArray.Length != 2)
+            {
+                throw new InvalidOperationException("Inputted values need to be a 2 dimensional collecction of data!");
+            }
+
+            var xValues = valuesArray[0];
+            var yValues = valuesArray[1];
+
+            if(xValues.Count != yValues.Count)
+            {
+                throw new InvalidOperationException("Input data must have the same number of intervals!");
+            }
+
+            if(xValues.TotalSize == 0 || yValues.TotalSize == 0)
+            {
+                throw new InvalidOperationException("Input data must have data within it to perform least squares line statistic.");
+            }
+
+            var xAverage = Utilities.GetGroupedMean(xValues);
+            var yAverage = Utilities.GetGroupedMean(yValues);
+
+            var slope = Utilities.GetGroupedCovariance(xValues, yValues) / Utilities.GetGroupedVariance(xValues);
+            var intercept = yAverage - slope * xAverage;
+
+            return new Dictionary<string, object>
+            {
+                {"slope", slope},
+                {"intercept", intercept}
+            };
         }
 
         public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
-            throw new NotImplementedException();
+            FrequencyData<double>[] valuesArray;
+
+            try
+            {
+                valuesArray = values.ToArray() as FrequencyData<double>[];
+            } catch(InvalidCastException _)
+            {
+                throw new InvalidOperationException("Cannot get least squares line statistic from non-numerical data!");
+            }
+
+
+            if (valuesArray.Length != 2)
+            {
+                throw new InvalidOperationException("Inputted values need to be a 2 dimensional collecction of data!");
+            }
+
+            var xValues = valuesArray[0];
+            var yValues = valuesArray[1];
+
+            if (xValues.Count != yValues.Count)
+            {
+                throw new InvalidOperationException("Input data must have the same number of intervals!");
+            }
+
+            if (xValues.TotalSize == 0 || yValues.TotalSize == 0)
+            {
+                throw new InvalidOperationException("Input data must have data within it to perform least squares line statistic.");
+            }
+
+            var xAverage = Utilities.GetGroupedMean(xValues);
+            var yAverage = Utilities.GetGroupedMean(yValues);
+
+            var slope = Utilities.GetGroupedCovariance(xValues, yValues) / Utilities.GetGroupedVariance(xValues);
+            var intercept = yAverage - slope * xAverage;
+
+            return new Dictionary<string, object>
+            {
+                {"slope", slope},
+                {"intercept", intercept}
+            };
         }
     }
 }
