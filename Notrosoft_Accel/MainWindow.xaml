@@ -81,9 +81,9 @@
                     <Button x:Name="normalDistButton" Content="Normal Chart" Click="normalDistButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
                 </StackPanel>
 
-                
-                
-                
+
+
+
                 <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False"
                           CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50"
                           GridLinesVisibility="All" HeadersVisibility="All"
@@ -96,7 +96,7 @@
                           Padding="0,0,0,10" HorizontalScrollBarVisibility="Visible"
                           VerticalScrollBarVisibility="Visible" RowDetailsVisibilityMode="Visible"
                           SelectedCellsChanged="Data_OnSelectedCellsChanged" HorizontalContentAlignment="Right"
-                          MaxHeight="550" CellEditEnding="Data_CellEditEnding"/>
+                          MaxHeight="550" CellEditEnding="Data_CellEditEnding" />
 
 
                 <WrapPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch">

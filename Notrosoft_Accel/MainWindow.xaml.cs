@@ -17,7 +17,7 @@ namespace Notrosoft_Accel
     {
         private static readonly Interlayer interlayer = new();
         private static int colNum = 50; // Number of Columns present in the data structure.
-        private static int rowNum = 100; // Number of Rows present in the data structure.
+        private static int rowNum = 200; // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new(); // The data structure.
 
         public static DataTable
@@ -56,13 +56,13 @@ namespace Notrosoft_Accel
         // Constructs a dataTable object and binds it to the DataGrid's ItemsSource.
         private void dataGridTable(int oldC, int oldR)
         {
-            // Set the dataTable to a new object.
-            if (oldR == rowNum)
+            // Set the dataTable to a new object if adding rows.
+            /*if (oldR == rowNum)
             {
                 dataTable = new DataTable();
                 oldR = 0;
                 oldC = 0;
-            }
+            }*/
 
             // Column constructor
             for (var i = oldC; i < colNum; i++)
@@ -70,10 +70,12 @@ namespace Notrosoft_Accel
                 // Instantiate a new DataColumn with a string type to be put into the DataTable.
                 var newColumn = new DataColumn(i.ToString(), typeof(string));
                 // Add the new column to the list of columns in the DataTable.
-                dataTable.Columns.Add(newColumn);
+                dataTable.Columns.Add(newColumn);                
             }
 
             // Creates a row object with the number of columns defined in the above loop.
+            
+            
             for (var row = oldR; row < rowNum; row++)
             {
                 // Instantiate a new row.
@@ -84,8 +86,12 @@ namespace Notrosoft_Accel
                 dataTable.Rows.Add(newRow);
             }
 
+            // Columns need to reset the items source to get them to display properly.
+            if (oldR == rowNum) Data.ItemsSource = null;
+            
             // Bind the DataGrid to the constructed dataTable.
             Data.ItemsSource = dataTable.DefaultView;
+            
         }
 
         // Ensures the DataGrid is properly bound to the DataTable on window launch.
@@ -98,13 +104,13 @@ namespace Notrosoft_Accel
         private void addColumnButton_Click(object sender, RoutedEventArgs e)
         {
             // Inrease the column number.
-            if (colNum >= 200)
+            /*if (colNum >= 200)
             {
                 colNum = 200;
-                MessageBox.Show("Only 200 columns allowed max");
+                MessageBox.Show("Going above 200 columns can noticeably impact performance");
             }
             else
-            {
+            {*/
                 colNum++;
 
                 // Add an additional empty column to each row in the list.
@@ -112,7 +118,7 @@ namespace Notrosoft_Accel
 
                 // Redo the dataTable to DataGrid binding.
                 dataGridTable(colNum - 1, rowNum);
-            }
+            //}
         }
 
         // Defines the Row headers
