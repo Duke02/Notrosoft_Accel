@@ -41,7 +41,7 @@ namespace Notrosoft_Accel.Infrastructure
 
         public static FrequencyData<T> Flatten<T>(IEnumerable<FrequencyData<T>> values)
         {
-            return new FrequencyData<T>(values.SelectMany(v => v).ToDictionary(kv => kv.Key, kv => kv.Value));
+            return new(values.SelectMany(v => v).ToDictionary(kv => kv.Key, kv => kv.Value));
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Notrosoft_Accel.Infrastructure
             // https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch12/5214891-eng.htm Example 2
             var mean = GetGroupedMean(freqData);
 
-            return (1.0 / freqData.TotalSize) * freqData
+            return 1.0 / freqData.TotalSize * freqData
                 .Select(kv => (Diff: (kv.Key - mean) * (kv.Key - mean), Freq: kv.Value))
                 .Sum(kv => kv.Diff * kv.Freq);
         }
@@ -149,25 +149,21 @@ namespace Notrosoft_Accel.Infrastructure
 
             // TODO: They might be able to have the same total size? Not sure.
             if (x_N != y_N || x.Count != y.Count)
-            {
                 throw new InvalidOperationException("Cannot get grouped covariance of variables of different lengths!");
-            }
 
             var x_mean = GetGroupedMean(x);
             var y_mean = GetGroupedMean(y);
 
-            var x_diffs = x.Frequencies.Select(kv => (kv.Value * x.Definitions[kv.Key].GetMidpoint()) - x_mean);
-            var y_diffs = y.Frequencies.Select(kv => (kv.Value * y.Definitions[kv.Key].GetMidpoint()) - y_mean);
+            var x_diffs = x.Frequencies.Select(kv => kv.Value * x.Definitions[kv.Key].GetMidpoint() - x_mean);
+            var y_diffs = y.Frequencies.Select(kv => kv.Value * y.Definitions[kv.Key].GetMidpoint() - y_mean);
 
             return x_diffs.Zip(y_diffs).Sum(xy => xy.First * xy.Second) / (x_N - 1.0);
         }
 
         public static double GetGroupedCovariance(FrequencyData<double> x, FrequencyData<double> y)
         {
-            if(x.Count != y.Count)
-            {
+            if (x.Count != y.Count)
                 throw new InvalidOperationException("Cannot get grouped covariance of variables of different lengths!");
-            }
 
             var n = x.TotalSize;
 

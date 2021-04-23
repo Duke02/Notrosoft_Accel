@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Notrosoft_Accel.Infrastructure;
-using System.Collections.Generic;
 using ScottPlot;
 
 namespace Notrosoft_Accel
@@ -38,7 +38,8 @@ namespace Notrosoft_Accel
             Console.WriteLine($"Saved pie chart to '{fullPath}'!");
         }
 
-        public void PlotBarChart(FrequencyData<string> data, string filePath, int width = 600, int height = 400, char direction = 'v')
+        public void PlotBarChart(FrequencyData<string> data, string filePath, int width = 600, int height = 400,
+            char direction = 'v')
         {
             // Create the parent directory if it doesn't already exist.
             var parentDirectoryPath = Directory.GetParent(filePath)?.FullName;
@@ -47,13 +48,13 @@ namespace Notrosoft_Accel
 
             var plt = new Plot(width, height);
 
-            var values = data.Values.Select(i => (double)i).ToArray();
+            var values = data.Values.Select(i => (double) i).ToArray();
 
             var labels = data.Keys.Select(k => k.ToString()).ToArray();
             var barCount = DataGen.Consecutive(values.Length);
             if (direction == 'v')
             {
-                plt.PlotBar(barCount, values, null, horizontal: false);
+                plt.PlotBar(barCount, values);
                 plt.Grid(enableHorizontal: true);
                 plt.XTicks(barCount, labels);
             }
@@ -85,13 +86,15 @@ namespace Notrosoft_Accel
             List<double> xs = new();
             List<double> ys = new();
 
-            for (int i = 0; i < data.Count; i += 2)
+            for (var i = 0; i < data.Count; i += 2)
             {
+                // TODO: Change the upper bound to be i < data.Count - 1
+                // Or add a check to see if we're at the end of the data.
                 xs.Add(data[i]);
                 ys.Add(data[i + 1]);
             }
 
-            
+
             var fullPath = Path.GetFullPath(filePath);
 
             plt.PlotScatter(xs.ToArray(), ys.ToArray());
@@ -108,7 +111,6 @@ namespace Notrosoft_Accel
 
         public void PlotNormalGraph(List<double> data, string filePath, int width = 600, int height = 400)
         {
-
         }
     }
 }

@@ -16,7 +16,8 @@ namespace Notrosoft_Accel.Backend.Statistics
         public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            return OperateFrequencyData(values.Select(v => Utilities.ConvertFromIntervalDataToFrequencyValues<string>(v)), parameters);
+            return OperateFrequencyData(
+                values.Select(v => Utilities.ConvertFromIntervalDataToFrequencyValues<string>(v)), parameters);
         }
 
         public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
@@ -32,7 +33,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             //         "Input P Values must be the same length as the number of categories in the input data.");
 
             // Assumes that each category should be the same probability.
-            double totalN =flattenedValues.Sum(kv => kv.Value);
+            double totalN = flattenedValues.Sum(kv => kv.Value);
             var testProportion = flattenedValues.Count / totalN;
 
             var sum = flattenedValues.Sum(observed =>
@@ -44,11 +45,6 @@ namespace Notrosoft_Accel.Backend.Statistics
             {
                 {"chi-square", chiSquareStat}
             };
-        }
-
-        private string GetCategory(double value, Dictionary<string, int> categories)
-        {
-            throw new NotImplementedException();
         }
     }
 }

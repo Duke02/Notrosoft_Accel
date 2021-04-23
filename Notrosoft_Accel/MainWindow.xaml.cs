@@ -26,11 +26,11 @@ namespace Notrosoft_Accel
         public static List<StatisticType> ordinalStats = new();
         public static List<StatisticType> intervalStats = new();
         public static List<StatisticType> frequencyStats = new();
+
+        private static readonly Dictionary<string, IEnumerable<double>> interDataDef = new();
         private readonly FileInput _fileImporter;
 
         private readonly GraphingWrapper _grapher;
-
-        private static Dictionary<string, IEnumerable<double>> interDataDef = new();
 
         public MainWindow()
         {
@@ -72,7 +72,7 @@ namespace Notrosoft_Accel
                 // Add the new column to the list of columns in the DataTable.
                 dataTable.Columns.Add(newColumn);
             }
-            
+
             // Creates a row object with the number of columns defined in the above loop.
             for (var row = oldR; row < rowNum; row++)
             {
@@ -91,7 +91,7 @@ namespace Notrosoft_Accel
         // Ensures the DataGrid is properly bound to the DataTable on window launch.
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            dataGridTable(0,0);
+            dataGridTable(0, 0);
         }
 
         // Handles the event of the user adding a column to the DataGrid.
@@ -221,7 +221,8 @@ namespace Notrosoft_Accel
                 }
                 catch (IOException ex)
                 {
-                    MessageBox.Show($"There was an error saving the statistics!\n{ex.Message}", "Error saving statistics!",
+                    MessageBox.Show($"There was an error saving the statistics!\n{ex.Message}",
+                        "Error saving statistics!",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
@@ -285,17 +286,13 @@ namespace Notrosoft_Accel
 
         private void doStatsButton_Click(object sender, RoutedEventArgs e)
         {
-            
             var sel = Data.SelectedCells;
             var try1 = new List<List<string>>();
             int lastC = int.MaxValue, thisC;
             var i = -1;
 
             //If no cells are selected, does nothing
-            if(sel.Count < 1)
-            {
-                return;
-            }
+            if (sel.Count < 1) return;
 
             foreach (var cellInfo in sel)
                 // Ensures cell information is valid. If not then don't try and do anything with it
@@ -319,20 +316,18 @@ namespace Notrosoft_Accel
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1[i].Add(obj[thisC].ToString());
                 }
-            outputTextBlock.Text += "Statistics performed at " + System.DateTime.Now + "\n";
+
+            outputTextBlock.Text += "Statistics performed at " + DateTime.Now + "\n";
             // Ordinal Data
             if (StatTypeBox.SelectedIndex == 0)
-            {
                 outputTextBlock.Text += interlayer.doStatistics(try1, ordinalStats.ToArray(), null, null) + '\n';
-            }
             // Frequency Data
             else if (StatTypeBox.SelectedIndex == 1) MessageBox.Show("Frequency Statistics not implemented yet");
 
             // Interval Data
             else if (StatTypeBox.SelectedIndex == 2)
-            {
-                outputTextBlock.Text += interlayer.doStatistics(try1, intervalStats.ToArray(), interDataDef, null) + '\n';
-            }
+                outputTextBlock.Text +=
+                    interlayer.doStatistics(try1, intervalStats.ToArray(), interDataDef, null) + '\n';
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -343,13 +338,10 @@ namespace Notrosoft_Accel
         // WIP to maybe make the row and column additions faster
         private void Data_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            string qq = e.Column.GetCellContent(e.Row.Item).ToString();
+            var qq = e.Column.GetCellContent(e.Row.Item).ToString();
             var theOut = "";
-            if (qq.Length > 33)
-            {
-                theOut = qq.Substring(33);
-            }
-            int rN = e.Row.GetIndex();
+            if (qq.Length > 33) theOut = qq.Substring(33);
+            var rN = e.Row.GetIndex();
             //dataTable.Rows[rN][e.Column.DisplayIndex] = theOut;
             dataList[rN][e.Column.DisplayIndex] = theOut;
         }
@@ -515,9 +507,8 @@ namespace Notrosoft_Accel
             var sel = Data.SelectedCells;
             var try1 = new List<string>();
             int lastC = int.MaxValue, thisC;
-            int count = 0;
+            var count = 0;
             foreach (var cellInfo in sel)
-            {
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
                 {
@@ -529,29 +520,32 @@ namespace Notrosoft_Accel
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
                     var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1.Add(obj[thisC].ToString());
                 }
+
+            if (count % 3 != 0)
+            {
+                MessageBox.Show(
+                    "Interval input formatted incorrectly;\nplease have the interval name, lower numerical limit, then upper numerical limit for every interval",
+                    "Format Error", MessageBoxButton.OK);
             }
-            if ((count % 3) != 0) MessageBox.Show("Interval input formatted incorrectly;\nplease have the interval name, lower numerical limit, then upper numerical limit for every interval",
-                "Format Error", MessageBoxButton.OK);
             else
             {
                 interDataDef.Clear();
-                for (int i = 0; i < (count/3); i++)
+                for (var i = 0; i < count / 3; i++)
                 {
-                    double a = double.Parse(try1[(3 * i) + 1]);
-                    double b = double.Parse(try1[(3 * i) + 2]);
-                    List<double> tAB = new List<double>{ a, b };
-                    interDataDef.Add(try1[(3 * i)], tAB);
+                    var a = double.Parse(try1[3 * i + 1]);
+                    var b = double.Parse(try1[3 * i + 2]);
+                    var tAB = new List<double> {a, b};
+                    interDataDef.Add(try1[3 * i], tAB);
                 }
 
                 if (doStatsButton.IsEnabled == false) doStatsButton.IsEnabled = true;
             }
-            
         }
 
         // Interval
@@ -561,12 +555,14 @@ namespace Notrosoft_Accel
             setInterval.Visibility = Visibility.Visible;
             doStatsButton.IsEnabled = false;
         }
+
         // Frequency
         private void ComboBoxItem_Selected_1(object sender, RoutedEventArgs e)
         {
             setInterval.IsEnabled = false;
             setInterval.Visibility = Visibility.Collapsed;
         }
+
         // Ordinal (since this is the first one active on launch; it has to check if things are null or not)
         private void ComboBoxItem_Selected_2(object sender, RoutedEventArgs e)
         {
@@ -586,9 +582,8 @@ namespace Notrosoft_Accel
             var sel = Data.SelectedCells;
             var try1 = new List<string>();
             int lastC = int.MaxValue, thisC;
-            int count = 0;
+            var count = 0;
             foreach (var cellInfo in sel)
-            {
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
                 {
@@ -600,18 +595,17 @@ namespace Notrosoft_Accel
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
                     var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1.Add(obj[thisC].ToString());
                 }
-            }
+
             var dic = new Dictionary<string, int>();
-            for (int i = 0; i < try1.Count(); i += 2)
-            {
+            for (var i = 0; i < try1.Count(); i += 2)
+                // TODO: If there are multiple cells with the same value, this throws an exception.
                 dic.Add(try1[i], int.Parse(try1[i + 1]));
-            }
             var data = new FrequencyData<string>(dic);
 
             var saveChartToDialog = new SaveFileDialog
@@ -632,7 +626,6 @@ namespace Notrosoft_Accel
             {
                 MessageBox.Show("Graph not saved.");
             }
-            
         }
 
         private void horBarButton_Click(object sender, RoutedEventArgs e)
@@ -640,9 +633,8 @@ namespace Notrosoft_Accel
             var sel = Data.SelectedCells;
             var try1 = new List<string>();
             int lastC = int.MaxValue, thisC;
-            int count = 0;
+            var count = 0;
             foreach (var cellInfo in sel)
-            {
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
                 {
@@ -654,18 +646,17 @@ namespace Notrosoft_Accel
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
                     var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1.Add(obj[thisC].ToString());
                 }
-            }
+
             var dic = new Dictionary<string, int>();
-            for (int i = 0; i < try1.Count(); i += 2)
-            {
+            for (var i = 0; i < try1.Count(); i += 2)
+                // TODO: This throws an exception when there is a duplicate data value.
                 dic.Add(try1[i], int.Parse(try1[i + 1]));
-            }
             var data = new FrequencyData<string>(dic);
 
             var saveChartToDialog = new SaveFileDialog
@@ -693,9 +684,8 @@ namespace Notrosoft_Accel
             var sel = Data.SelectedCells;
             var try1 = new List<string>();
             int lastC = int.MaxValue, thisC;
-            int count = 0;
+            var count = 0;
             foreach (var cellInfo in sel)
-            {
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
                 {
@@ -707,18 +697,17 @@ namespace Notrosoft_Accel
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
                     var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1.Add(obj[thisC].ToString());
                 }
-            }
+
             var dic = new Dictionary<string, int>();
-            for (int i = 0; i < try1.Count(); i += 2)
-            {
+            for (var i = 0; i < try1.Count(); i += 2)
+                // TODO: This throws an exception when there are duplicate items in the selected cells.
                 dic.Add(try1[i], int.Parse(try1[i + 1]));
-            }
             var data = new FrequencyData<string>(dic);
 
             var saveChartToDialog = new SaveFileDialog
@@ -746,9 +735,8 @@ namespace Notrosoft_Accel
             var sel = Data.SelectedCells;
             var try1 = new List<string>();
             int lastC = int.MaxValue, thisC;
-            int count = 0;
+            var count = 0;
             foreach (var cellInfo in sel)
-            {
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
                 {
@@ -760,14 +748,13 @@ namespace Notrosoft_Accel
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
                     var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1.Add(obj[thisC].ToString());
                 }
-            }
-            
+
             var saveChartToDialog = new SaveFileDialog
             {
                 Filter = "JPeg Image|*.jpg",
@@ -776,7 +763,7 @@ namespace Notrosoft_Accel
 
             saveChartToDialog.ShowDialog(this);
             List<double> data = new();
-            for (int i = 0; i < try1.Count; i++) data.Add(double.Parse(try1[i]));
+            for (var i = 0; i < try1.Count; i++) data.Add(double.Parse(try1[i]));
             if (!string.IsNullOrWhiteSpace(saveChartToDialog.FileName))
             {
                 _grapher.PlotXYGraph(data, saveChartToDialog.FileName);
@@ -791,7 +778,6 @@ namespace Notrosoft_Accel
 
         private void normalDistButton_Click(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }
