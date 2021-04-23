@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Notrosoft_Accel.Infrastructure
 {
-    public class OrdinalData : List<List<double>>
+    public class OrdinalData : List<List<double>>, INotrosoftData
     {
         public OrdinalData(IEnumerable<IEnumerable<double>> data) : base(data.Select(d => d.ToList()))
         {

@@ -72,7 +72,7 @@ namespace Notrosoft_Accel
                 // Add the new column to the list of columns in the DataTable.
                 dataTable.Columns.Add(newColumn);
             }
-            
+
             // Creates a row object with the number of columns defined in the above loop.
             for (var row = oldR; row < rowNum; row++)
             {
@@ -91,7 +91,7 @@ namespace Notrosoft_Accel
         // Ensures the DataGrid is properly bound to the DataTable on window launch.
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            dataGridTable(0,0);
+            dataGridTable(0, 0);
         }
 
         // Handles the event of the user adding a column to the DataGrid.
@@ -253,23 +253,23 @@ namespace Notrosoft_Accel
 
         private void doStatsButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            var sel = Data.SelectedCells;
-            var try1 = new List<List<string>>();
-            int lastC = int.MaxValue, thisC;
+            var selectedCells = Data.SelectedCells;
+            var statsInput = new List<List<string>>();
+            var lastColumn = int.MaxValue;
+            int currentColumn;
             var i = -1;
-            foreach (var cellInfo in sel)
+            foreach (var cellInfo in selectedCells)
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
                 {
-                    thisC = cellInfo.Column.DisplayIndex;
-                    if (thisC < lastC)
+                    currentColumn = cellInfo.Column.DisplayIndex;
+                    if (currentColumn < lastColumn)
                     {
                         i++;
-                        try1.Add(new List<string>());
+                        statsInput.Add(new List<string>());
                     }
 
-                    lastC = thisC;
+                    lastColumn = currentColumn;
 
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
@@ -278,22 +278,22 @@ namespace Notrosoft_Accel
                     // Get the current row's data as an item array
                     var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
-                    try1[i].Add(obj[thisC].ToString());
+                    statsInput[i].Add(obj[currentColumn].ToString());
                 }
-            outputTextBlock.Text += "Statistics performed at " + System.DateTime.Today + "\n";
-            // Ordinal Data
-            if (StatTypeBox.SelectedIndex == 0)
-            {
-                outputTextBlock.Text += interlayer.doStatistics(try1, ordinalStats.ToArray(), null, null) + '\n';
-            }
-            // Frequency Data
-            else if (StatTypeBox.SelectedIndex == 1) MessageBox.Show("Frequency Statistics not implemented yet");
 
-            // Interval Data
-            else if (StatTypeBox.SelectedIndex == 2)
+            outputTextBlock.Text += "Statistics performed at " + DateTime.Now + "\n";
+            var textAddition = StatTypeBox.SelectedIndex switch
             {
-                outputTextBlock.Text += interlayer.doStatistics(try1, intervalStats.ToArray(), interDataDef, null) + '\n';
-            }
+                // Ordinal Data
+                0 => interlayer.doStatistics(statsInput, ordinalStats.ToArray(), null, null) + '\n',
+                // Frequency Data
+                1 => interlayer.doStatistics(statsInput, frequencyStats.ToArray(), null, null) + "\n",
+                // Interval Data
+                2 => interlayer.doStatistics(statsInput, intervalStats.ToArray(), interDataDef, null) + '\n',
+                _ => string.Empty
+            };
+
+            outputTextBlock.Text += textAddition;
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -310,6 +310,7 @@ namespace Notrosoft_Accel
             {
                 theOut = qq.Substring(33);
             }
+
             int rN = e.Row.GetIndex();
             //dataTable.Rows[rN][e.Column.DisplayIndex] = theOut;
             dataList[rN][e.Column.DisplayIndex] = theOut;
@@ -488,31 +489,33 @@ namespace Notrosoft_Accel
                     lastC = thisC;
 
                     // Get's the current cell's information (specifically for Column info)
-                    var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
+                    var content = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) content.DataContext;
                     // Get the current row's data as an item array
-                    var obj = row.Row.ItemArray;
+                    var obj = row.Row.ItemArray.Select(i => i?.ToString() ?? string.Empty).ToArray();
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1.Add(obj[thisC].ToString());
                 }
             }
-            if ((count % 3) != 0) MessageBox.Show("Interval input formatted incorrectly;\nplease have the interval name, lower numerical limit, then upper numerical limit for every interval",
-                "Format Error", MessageBoxButton.OK);
+
+            if ((count % 3) != 0)
+                MessageBox.Show(
+                    "Interval input formatted incorrectly;\nplease have the interval name, lower numerical limit, then upper numerical limit for every interval",
+                    "Format Error", MessageBoxButton.OK);
             else
             {
                 interDataDef.Clear();
-                for (int i = 0; i < (count/3); i++)
+                for (int i = 0; i < (count / 3); i++)
                 {
                     double a = double.Parse(try1[(3 * i) + 1]);
                     double b = double.Parse(try1[(3 * i) + 2]);
-                    List<double> tAB = new List<double>{ a, b };
+                    List<double> tAB = new List<double> {a, b};
                     interDataDef.Add(try1[(3 * i)], tAB);
                 }
 
                 if (doStatsButton.IsEnabled == false) doStatsButton.IsEnabled = true;
             }
-            
         }
 
         // Interval
@@ -522,12 +525,14 @@ namespace Notrosoft_Accel
             setInterval.Visibility = Visibility.Visible;
             doStatsButton.IsEnabled = false;
         }
+
         // Frequency
         private void ComboBoxItem_Selected_1(object sender, RoutedEventArgs e)
         {
             setInterval.IsEnabled = false;
             setInterval.Visibility = Visibility.Collapsed;
         }
+
         // Ordinal (since this is the first one active on launch; it has to check if things are null or not)
         private void ComboBoxItem_Selected_2(object sender, RoutedEventArgs e)
         {
@@ -561,18 +566,20 @@ namespace Notrosoft_Accel
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
                     var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1.Add(obj[thisC].ToString());
                 }
             }
+
             var dic = new Dictionary<string, int>();
             for (int i = 0; i < try1.Count(); i += 2)
             {
                 dic.Add(try1[i], int.Parse(try1[i + 1]));
             }
+
             var data = new FrequencyData<string>(dic);
 
             var saveChartToDialog = new SaveFileDialog
@@ -593,7 +600,6 @@ namespace Notrosoft_Accel
             {
                 MessageBox.Show("Graph not saved.");
             }
-            
         }
 
         private void horBarButton_Click(object sender, RoutedEventArgs e)
@@ -615,18 +621,20 @@ namespace Notrosoft_Accel
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
                     var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1.Add(obj[thisC].ToString());
                 }
             }
+
             var dic = new Dictionary<string, int>();
             for (int i = 0; i < try1.Count(); i += 2)
             {
                 dic.Add(try1[i], int.Parse(try1[i + 1]));
             }
+
             var data = new FrequencyData<string>(dic);
 
             var saveChartToDialog = new SaveFileDialog
@@ -668,18 +676,20 @@ namespace Notrosoft_Accel
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
                     var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1.Add(obj[thisC].ToString());
                 }
             }
+
             var dic = new Dictionary<string, int>();
             for (int i = 0; i < try1.Count(); i += 2)
             {
                 dic.Add(try1[i], int.Parse(try1[i + 1]));
             }
+
             var data = new FrequencyData<string>(dic);
 
             var saveChartToDialog = new SaveFileDialog
@@ -721,14 +731,14 @@ namespace Notrosoft_Accel
                     // Get's the current cell's information (specifically for Column info)
                     var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
                     // Get's the current row's information
-                    var row = (DataRowView)cont.DataContext;
+                    var row = (DataRowView) cont.DataContext;
                     // Get the current row's data as an item array
                     var obj = row.Row.ItemArray;
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     try1.Add(obj[thisC].ToString());
                 }
             }
-            
+
             var saveChartToDialog = new SaveFileDialog
             {
                 Filter = "JPeg Image|*.jpg",
@@ -752,7 +762,6 @@ namespace Notrosoft_Accel
 
         private void normalDistButton_Click(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Notrosoft_Accel.Infrastructure
     /// Keeps track of the number of times the key occurs within the dataset.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class FrequencyData<T> : Dictionary<T, int>
+    public class FrequencyData<T> : Dictionary<T, int>, INotrosoftData
     {
         public FrequencyData(IDictionary<T, int> data) : base(data)
         {
@@ -24,18 +24,18 @@ namespace Notrosoft_Accel.Infrastructure
                 var orderedDefs = this.OrderBy(kv => kv.Key).ToList();
 
                 var frequencies = this.Join(orderedDefs, kv => kv.Key,
-                    kv => kv.Key,
-                    (freq, def) => new
-                    {
-                        Freq = freq.Value,
-                        Key = def.Key
-                    })
+                        kv => kv.Key,
+                        (freq, def) => new
+                        {
+                            Freq = freq.Value,
+                            Key = def.Key
+                        })
                     .OrderBy(fs => fs.Key)
                     .ToList();
 
-                return frequencies.ToDictionary(fs => fs.Key, fs => frequencies.TakeWhile(f => !f.Key.Equals(fs.Key)).Sum(f => f.Freq));
+                return frequencies.ToDictionary(fs => fs.Key,
+                    fs => frequencies.TakeWhile(f => !f.Key.Equals(fs.Key)).Sum(f => f.Freq));
             }
         }
-
     }
 }
