@@ -9,7 +9,7 @@ namespace Notrosoft_Accel.Backend.Statistics
     {
         private const double Tolerance = .0001;
 
-        public Dictionary<string, object> PerformStatistic(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(IEnumerable<OrdinalData> values,
             params object[] parameters)
         {
             var concreteValues = values.ToArray();
@@ -30,7 +30,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
+        public Dictionary<string, object> PerformStatistic(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
             // TODO: This might be totally wrong ngl.
@@ -63,7 +63,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
+        public Dictionary<string, object> PerformStatistic<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             // TODO: This might be totally wrong ngl.

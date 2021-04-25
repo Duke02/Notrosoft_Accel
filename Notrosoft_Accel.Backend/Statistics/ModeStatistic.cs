@@ -16,7 +16,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="values">A 2D data collection of numbers.</param>
         /// <param name="param"></param>
         /// <returns>The most common number of the inputted data.</returns>
-        public Dictionary<string, object> PerformStatistic(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(IEnumerable<OrdinalData> values,
             params object[] param)
         {
             // Flatten the 2d list of lists into a 1d list.
@@ -43,7 +43,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
+        public Dictionary<string, object> PerformStatistic(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
 
@@ -60,7 +60,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
+        public Dictionary<string, object> PerformStatistic<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             var flattenedData = Utilities.Flatten(values);

@@ -14,13 +14,13 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="values">The input values to calculate the statistic from.</param>
         /// <param name="parameters"></param>
         /// <returns>The statistic for the child class.</returns>
-        public Dictionary<string, object> PerformStatistic(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(IEnumerable<OrdinalData> values,
             params object[] parameters);
 
-        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
+        public Dictionary<string, object> PerformStatistic<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters);
 
-        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
+        public Dictionary<string, object> PerformStatistic(IEnumerable<IntervalData> values,
             params object[] parameters);
         
     }

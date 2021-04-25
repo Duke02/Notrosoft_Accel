@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,6 +43,31 @@ namespace Notrosoft_Accel.Infrastructure
         public static FrequencyData<T> Flatten<T>(IEnumerable<FrequencyData<T>> values)
         {
             return new FrequencyData<T>(values.SelectMany(v => v).ToDictionary(kv => kv.Key, kv => kv.Value));
+        }
+
+        public static IEnumerable<IEnumerable<double>> ParseForDoubles(IEnumerable<IEnumerable<string>> input)
+        {
+            var output = new List<List<double>>();
+            var concreteData = input.Select(i => i.ToArray()).ToArray();
+
+            foreach (var col in concreteData)
+            {
+                var tempArray = new List<double>(col.Length);
+
+                foreach (var cellStr in col)
+                {
+                    if (!double.TryParse(cellStr, out var parsedVal))
+                    {
+                        throw new InvalidOperationException("Cannot parse data for Ordinal data.");
+                    }
+
+                    tempArray.Add(parsedVal);
+                }
+
+                output.Add(new List<double>(tempArray));
+            }
+
+            return output;
         }
 
         /// <summary>
@@ -164,7 +190,7 @@ namespace Notrosoft_Accel.Infrastructure
 
         public static double GetGroupedCovariance(FrequencyData<double> x, FrequencyData<double> y)
         {
-            if(x.Count != y.Count)
+            if (x.Count != y.Count)
             {
                 throw new InvalidOperationException("Cannot get grouped covariance of variables of different lengths!");
             }

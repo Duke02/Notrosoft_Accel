@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Notrosoft_Accel.Infrastructure
@@ -35,6 +37,48 @@ namespace Notrosoft_Accel.Infrastructure
 
                 return frequencies.ToDictionary(fs => fs.Key,
                     fs => frequencies.TakeWhile(f => !f.Key.Equals(fs.Key)).Sum(f => f.Freq));
+            }
+        }
+
+        public static IEnumerable<FrequencyData<double>> ConvertDouble(IEnumerable<IEnumerable<string>> data,
+            int numColumns)
+        {
+            var concreteData = data.Select(l => l.ToArray()).ToArray();
+
+            switch (numColumns)
+            {
+                case 2:
+                {
+                    var output = new Dictionary<double, int>();
+
+                    // TODO: Handle it Cameron's way.
+                    foreach (var row in concreteData)
+                    {
+                        var valueStr = row[0];
+                        var countStr = row[1];
+
+                        if (!double.TryParse(valueStr, out var value))
+                        {
+                            throw new InvalidOperationException("Cannot parse value of Frequency data!");
+                        }
+
+                        if (!int.TryParse(countStr, out var count))
+                        {
+                            throw new InvalidOperationException("Cannot parse count of frequency data!");
+                        }
+
+                        output[value] = count;
+                    }
+
+                    return new List<FrequencyData<double>>()
+                    {
+                        new FrequencyData<double>(output)
+                    };
+                }
+                case 1:
+                    return Utilities.ParseForDoubles(concreteData).Select(Utilities.ConvertToFrequencyValues);
+                default:
+                    throw new InvalidOperationException("Got wrong number of columns.");
             }
         }
     }

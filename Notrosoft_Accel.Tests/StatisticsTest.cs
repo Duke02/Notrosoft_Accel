@@ -239,7 +239,7 @@ namespace Notrosoft_Accel.Tests
             const double expectedPValue = 0.7374313133;
             const bool expectedShouldReject = false;
 
-            var actualOutput = binDistStat.PerformStatistic(data, hypothesis, probSuccess);
+            var actualOutput = binDistStat.PerformStatistic((IEnumerable<OrdinalData>) data, hypothesis, probSuccess);
 
             var actualPValue = (double)actualOutput["P-Value"];
             var actualShouldReject = (bool)actualOutput["Reject Null Hypothesis?"];
@@ -261,7 +261,7 @@ namespace Notrosoft_Accel.Tests
             const double expectedPValue = 0.00152243884;
             const bool expectedShouldReject = true;
 
-            var actualOutput = binDistStat.PerformStatistic(data, hypothesis, probSuccess);
+            var actualOutput = binDistStat.PerformStatistic((IEnumerable<OrdinalData>) data, hypothesis, probSuccess);
 
             var actualPValue = (double)actualOutput["P-Value"];
             var actualShouldReject = (bool)actualOutput["Reject Null Hypothesis?"];
@@ -285,7 +285,7 @@ namespace Notrosoft_Accel.Tests
             const double expectedPValue = 0.00152243884;
             const bool expectedShouldReject = false;
 
-            var actualOutput = binDistStat.PerformStatistic(data, hypothesis, probSuccess, confidence);
+            var actualOutput = binDistStat.PerformStatistic((IEnumerable<OrdinalData>) data, hypothesis, probSuccess, confidence);
 
             var actualPValue = (double)actualOutput["P-Value"];
             var actualShouldReject = (bool)actualOutput["Reject Null Hypothesis?"];
@@ -306,7 +306,7 @@ namespace Notrosoft_Accel.Tests
             const double confidence = .999;
 
             Assert.ThrowsException<InvalidOperationException>(() =>
-                binDistStat.PerformStatistic(data, hypothesis, probSuccess, confidence));
+                binDistStat.PerformStatistic((IEnumerable<OrdinalData>) data, hypothesis, probSuccess, confidence));
         }
 
         [TestMethod]
@@ -372,10 +372,10 @@ namespace Notrosoft_Accel.Tests
             const double expectedThirdQuarter = 2;
             const double expectedNinety = 2;
 
-            var tenth = (double)stat.PerformStatistic(data, .1)["percentile"];
-            var quarter = (double)stat.PerformStatistic(data, .25)["percentile"];
-            var thirdQuarter = (double)stat.PerformStatistic(data, .75)["percentile"];
-            var ninety = (double)stat.PerformStatistic(data, 0.9)["percentile"];
+            var tenth = (double)stat.PerformStatistic((IEnumerable<OrdinalData>) data, .1)["percentile"];
+            var quarter = (double)stat.PerformStatistic((IEnumerable<OrdinalData>) data, .25)["percentile"];
+            var thirdQuarter = (double)stat.PerformStatistic((IEnumerable<OrdinalData>) data, .75)["percentile"];
+            var ninety = (double)stat.PerformStatistic((IEnumerable<OrdinalData>) data, 0.9)["percentile"];
 
             Assert.AreEqual(expectedTenth, tenth, TestHelperFunctions.Tolerance);
             Assert.AreEqual(expectedQuarter, quarter, TestHelperFunctions.Tolerance);
@@ -395,7 +395,7 @@ namespace Notrosoft_Accel.Tests
 
             const double expected = 5.666666666666666;
 
-            var actual = (double)stat.OperateIntervalData(new List<IntervalData> { intervalData })["chi-square"];
+            var actual = (double)stat.PerformStatistic(new List<IntervalData> { intervalData })["chi-square"];
 
             Assert.AreEqual(expected, actual, TestHelperFunctions.Tolerance);
         }
@@ -448,7 +448,7 @@ namespace Notrosoft_Accel.Tests
 
             var data = TestHelperFunctions.GetIntervalData();
 
-            var actual = stat.OperateIntervalData(new List<IntervalData> { data })["mean"];
+            var actual = stat.PerformStatistic(new List<IntervalData> { data })["mean"];
         }
     }
 }

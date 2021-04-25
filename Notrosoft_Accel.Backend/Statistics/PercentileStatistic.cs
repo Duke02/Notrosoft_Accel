@@ -18,7 +18,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="values">The input values to calculate the statistic from.</param>
         /// <param name="param"></param>
         /// <returns>The requested percentile for the inputted data.</returns>
-        public Dictionary<string, object> PerformStatistic(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(IEnumerable<OrdinalData> values,
             params object[] param)
         {
             // Flatten the 2D inputted container into a 1D container.
@@ -62,7 +62,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateIntervalData(IEnumerable<IntervalData> values,
+        public Dictionary<string, object> PerformStatistic(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
             var flattenedValues = Utilities.Flatten(values);
@@ -117,7 +117,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> OperateFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
+        public Dictionary<string, object> PerformStatistic<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             FrequencyData<double> flattenedInput;

@@ -43,5 +43,13 @@ namespace Notrosoft_Accel.Infrastructure
         }
 
         public int TotalSize => Frequencies.Sum(kv => kv.Value);
+
+        public static IEnumerable<IntervalData> Convert(IEnumerable<IEnumerable<string>> data,
+            IntervalDefinitions definitions)
+        {
+            return Utilities.ParseForDoubles(data)
+                .Select(l => l.ToList())
+                .Select(l => GetIntervalData(l, definitions));
+        }
     }
 }
