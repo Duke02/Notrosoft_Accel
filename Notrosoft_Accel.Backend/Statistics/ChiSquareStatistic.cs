@@ -7,7 +7,7 @@ namespace Notrosoft_Accel.Backend.Statistics
 {
     public class ChiSquareStatistic : IStatistic
     {
-        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(OrdinalData values,
             params object[] parameters)
         {
             throw new InvalidOperationException("Chi Square Statistic cannot operate on Ordinal Data!");

@@ -9,7 +9,7 @@ namespace Notrosoft_Accel.Backend.Statistics
     {
         private const double Tolerance = .0001;
 
-        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(OrdinalData values,
             params object[] parameters)
         {
             var concreteValues = values.ToArray();

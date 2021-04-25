@@ -18,7 +18,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="values">The 2 dimensional data to calculate the median from.</param>
         /// <param name="param"></param>
         /// <returns>The median of the data.</returns>
-        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(OrdinalData values,
             params object[] param)
         {
             // Flattens the 2D input into a 1d enumerable.

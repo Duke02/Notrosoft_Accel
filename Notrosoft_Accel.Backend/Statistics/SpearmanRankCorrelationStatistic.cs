@@ -7,7 +7,7 @@ namespace Notrosoft_Accel.Backend.Statistics
 {
     public class SpearmanRankCorrelationStatistic : IStatistic
     {
-        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(OrdinalData values,
             params object[] parameters)
         {
             var concreteValues = values.Select(vals => vals.ToArray()).ToArray();

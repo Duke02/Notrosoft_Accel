@@ -18,7 +18,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="values">The input values to calculate the statistic from.</param>
         /// <param name="param"></param>
         /// <returns>The requested percentile for the inputted data.</returns>
-        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(OrdinalData values,
             params object[] param)
         {
             // Flatten the 2D inputted container into a 1D container.

@@ -7,7 +7,7 @@ namespace Notrosoft_Accel.Backend.Statistics
 {
     public class NormalDistribution : IStatistic
     {
-        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(OrdinalData values,
             params object[] parameters)
         {
             var flattenedValues = Utilities.Flatten(values).ToArray();

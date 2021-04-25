@@ -7,7 +7,7 @@ namespace Notrosoft_Accel.Backend.Statistics
 {
     public class CorrelationCoefficientStatistic : IStatistic
     {
-        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(OrdinalData values,
             params object[] parameters)
         {
             var concreteValues = values.ToArray();

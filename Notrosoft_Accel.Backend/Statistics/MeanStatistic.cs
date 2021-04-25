@@ -16,7 +16,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="values">The 2D data to use in the calculations.</param>
         /// <param name="param"></param>
         /// <returns>The mathematical mean of the inputted data.</returns>
-        public Dictionary<string, object> OperateOrdinalData(OrdinalData values,
+        public Dictionary<string, object> PerformStatistic(OrdinalData values,
             params object[] param)
         {
             // Flatten the 2D inputted container into a 1D container.
