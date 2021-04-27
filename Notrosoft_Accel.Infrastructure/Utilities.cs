@@ -45,6 +45,18 @@ namespace Notrosoft_Accel.Infrastructure
             return new FrequencyData<T>(values.SelectMany(v => v).ToDictionary(kv => kv.Key, kv => kv.Value));
         }
 
+        public static IEnumerable<INotrosoftData> ConvertData(IEnumerable<IEnumerable<string>> data, DataType dataType, int numColumns,
+            IntervalDefinitions definitions = null)
+        {
+            return dataType switch
+            {
+                DataType.Ordinal => OrdinalData.Convert(data, numColumns),
+                DataType.Interval => IntervalData.Convert(data, definitions),
+                DataType.Frequency => FrequencyData<double>.ConvertDouble(data, numColumns),
+                _ => throw new ArgumentOutOfRangeException(nameof(dataType), dataType, null)
+            };
+        }
+
         public static IEnumerable<IEnumerable<double>> ParseForDoubles(IEnumerable<IEnumerable<string>> input)
         {
             var output = new List<List<double>>();
