@@ -7,19 +7,19 @@ namespace Notrosoft_Accel.Backend.Statistics
 {
     public class ChiSquareStatistic : IStatistic
     {
-        public Dictionary<string, object> PerformStatistic(IEnumerable<OrdinalData> values,
+        public Dictionary<string, object> DoOrdinalData(IEnumerable<OrdinalData> values,
             params object[] parameters)
         {
             throw new InvalidOperationException("Chi Square Statistic cannot operate on Ordinal Data!");
         }
 
-        public Dictionary<string, object> PerformStatistic(IEnumerable<IntervalData> values,
+        public Dictionary<string, object> DoIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
-            return PerformStatistic(values.Select(v => Utilities.ConvertFromIntervalDataToFrequencyValues<string>(v)), parameters);
+            return DoFrequencyData(values.Select(v => Utilities.ConvertFromIntervalDataToFrequencyValues<string>(v)), parameters);
         }
 
-        public Dictionary<string, object> PerformStatistic<T>(IEnumerable<FrequencyData<T>> values,
+        public Dictionary<string, object> DoFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             var flattenedValues = Utilities.Flatten(values);

@@ -16,7 +16,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="values">The input values to calculate the statistic from.</param>
         /// <param name="param"></param>
         /// <returns>The slope for the linear line. TODO: Needs to return intercept as well.</returns>
-        public Dictionary<string, object> PerformStatistic(IEnumerable<OrdinalData> values,
+        public Dictionary<string, object> DoOrdinalData(IEnumerable<OrdinalData> values,
             params object[] param)
         {
             var valuesArray = values.ToArray();
@@ -55,7 +55,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> PerformStatistic(IEnumerable<IntervalData> values,
+        public Dictionary<string, object> DoIntervalData(IEnumerable<IntervalData> values,
             params object[] parameters)
         {
             var valuesArray = values.ToArray();
@@ -91,7 +91,7 @@ namespace Notrosoft_Accel.Backend.Statistics
             };
         }
 
-        public Dictionary<string, object> PerformStatistic<T>(IEnumerable<FrequencyData<T>> values,
+        public Dictionary<string, object> DoFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
             params object[] parameters)
         {
             FrequencyData<double>[] valuesArray;

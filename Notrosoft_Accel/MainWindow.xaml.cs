@@ -259,6 +259,7 @@ namespace Notrosoft_Accel
             int currentColumn;
             var i = -1;
             foreach (var cellInfo in selectedCells)
+            {
                 // Ensures cell information is valid. If not then don't try and do anything with it
                 if (cellInfo.IsValid)
                 {
@@ -280,22 +281,35 @@ namespace Notrosoft_Accel
                     // Add the item of the current row at the current column's index and add it to the outbound list.
                     statsInput[i].Add(obj[currentColumn].ToString());
                 }
+            }
 
             outputTextBlock.Text += "Statistics performed at " + DateTime.Now + "\n";
-            var textAddition = StatTypeBox.SelectedIndex switch
+
+            DataType dataType;
+            switch (StatTypeBox.SelectedIndex)
             {
-                // Ordinal Data
-                0 => interlayer.doStatistics(statsInput, ordinalStats.ToArray(), null, null) + '\n',
-                // Frequency Data
-                1 => interlayer.doStatistics(statsInput, frequencyStats.ToArray(), null, null) + "\n",
-                // Interval Data
-                2 => interlayer.doStatistics(statsInput, intervalStats.ToArray(), interDataDef, null) + '\n',
-                _ => string.Empty
-            };
-
-            outputTextBlock.Text += textAddition;
+                case 0:
+                    dataType = DataType.Ordinal;
+                    break;
+                case 1:
+                    dataType = DataType.Frequency;
+                    break;
+                case 2:
+                    dataType = dataType = DataType.Interval;
+                    break;
+                default:
+                    throw new InvalidOperationException("Somehow got an index we didn't expect!");
+            }
+            
+            try
+            {
+                outputTextBlock.Text += interlayer.doStatistics(statsInput, ordinalStats.ToArray(), dataType, new IntervalDefinitions( interDataDef), null) + '\n';
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Encountered a problem...", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Data.MaxHeight = e.NewSize.Height - 110;
