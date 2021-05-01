@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Notrosoft_Accel.Infrastructure;
 
 namespace Notrosoft_Accel.Backend.Statistics
@@ -14,9 +15,9 @@ namespace Notrosoft_Accel.Backend.Statistics
         {
             return dataType switch
             {
-                DataType.Ordinal => DoOrdinalData(data as IEnumerable<OrdinalData>, parameters),
-                DataType.Interval => DoIntervalData(data as IEnumerable<IntervalData>, parameters),
-                DataType.Frequency => DoFrequencyData(data as IEnumerable<FrequencyData<double>>, parameters),
+                DataType.Ordinal => DoOrdinalData(data.Select(d => d as OrdinalData) , parameters),
+                DataType.Interval => DoIntervalData(data.Select(d => d as IntervalData), parameters),
+                DataType.Frequency => DoFrequencyData(data.Select(d => d as FrequencyData<double>), parameters),
                 _ => throw new ArgumentOutOfRangeException(nameof(dataType), dataType, null)
             };
         }

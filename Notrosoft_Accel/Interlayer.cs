@@ -46,10 +46,22 @@ namespace Notrosoft_Accel
             //     interData = _doubles.Select(ds => Utilities.ConvertToIntervalData(ds, tempInter)).ToList();
             // }
 
+            var output = new List<string>(stats.Length);
+            
+            foreach (var statType in stats)
+            {
+                var stat = GetStatistic(statType);
+                var statOutput = stat.Operate(convertedData, dataType, param);
+                var joinedKeys = string.Join("\n", statOutput.Select(kv => $"{kv.Key}: {kv.Value}"));
+                output.Add(joinedKeys);
+            }
 
-            // TODO: This might be decent?
-            return string.Join("\n", stats.Select(sType => GetStatistic(sType).Operate(convertedData, dataType, param))
-                .Select(d => string.Join("\n", d.Select(kv => $"{kv.Key}: {kv.Value}"))));
+            return string.Join("\n", output);
+
+                // TODO: This might be decent?
+                // return string.Join("\n",
+                //     stats.Select(sType => GetStatistic(sType).Operate(convertedData, dataType, param))
+                //         .Select(d => string.Join("\n", d.Select(kv => $"{kv.Key}: {kv.Value}"))));
 
             // foreach (var statType in stats)
             // {
