@@ -20,7 +20,7 @@ namespace Notrosoft_Accel
         private static int rowNum = 100; // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new(); // The data structure.
 
-        public Dictionary<string, double> Parameters;
+        public Dictionary<string, double> Parameters = new();
 
         public static DataTable
             dataTable = new(); // DataTable sits between the dataList of the backend and DataGrid of the GUI.
@@ -30,7 +30,7 @@ namespace Notrosoft_Accel
 
         private readonly GraphingWrapper _grapher;
 
-        private static Dictionary<string, IEnumerable<double>> interDataDef = new();
+        private static Dictionary<string, IEnumerable<double>> interDataDef = null;
 
         public MainWindow()
         {
@@ -295,28 +295,29 @@ namespace Notrosoft_Accel
                 }
             }
 
-            outputTextBlock.Text += "Statistics performed at " + DateTime.Now + "\n";
-
-            DataType dataType;
-            switch (StatTypeBox.SelectedIndex)
+            // Currently statsInput is oriented as rows x colums, when stats expects it to be columns x rows.
+            if (statsInput.Count > 1)
             {
-                case 0:
-                    dataType = DataType.Ordinal;
-                    break;
-                case 1:
-                    dataType = DataType.Frequency;
-                    break;
-                case 2:
-                    dataType = dataType = DataType.Interval;
-                    break;
-                default:
-                    throw new InvalidOperationException("Somehow got an index we didn't expect!");
+                statsInput = Utilities.Transpose(statsInput).Select(l => l.ToList()).ToList();
             }
+
+
+            outputTextBlock.Text += "Statistics performed at " + DateTime.Now + "\n";
 
             try
             {
+                var dataType = StatTypeBox.SelectedIndex switch
+                {
+                    0 => DataType.Ordinal,
+                    1 => DataType.Frequency,
+                    2 => DataType.Interval,
+                    _ => throw new InvalidOperationException("Somehow got an index we didn't expect!")
+                };
+
+                var intervalDefinitions = interDataDef != null ? new IntervalDefinitions(interDataDef) : null;
+
                 outputTextBlock.Text += interlayer.doStatistics(statsInput, statisticTypesToPerform.ToArray(), dataType,
-                    new IntervalDefinitions(interDataDef), Parameters.Values.ToArray()) + '\n';
+                    intervalDefinitions, Parameters.Values.ToArray()) + '\n';
             }
             catch (Exception ex)
             {
@@ -813,7 +814,7 @@ namespace Notrosoft_Accel
                 MessageBox.Show("There are no statistics selected that require parameters!");
                 return;
             }
-            
+
             var parametersDialog = new ParameterDialog(parametersNeeded)
             {
                 Owner = this

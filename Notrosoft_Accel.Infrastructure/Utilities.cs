@@ -45,7 +45,8 @@ namespace Notrosoft_Accel.Infrastructure
             return new FrequencyData<T>(values.SelectMany(v => v).ToDictionary(kv => kv.Key, kv => kv.Value));
         }
 
-        public static IEnumerable<INotrosoftData> ConvertData(IEnumerable<IEnumerable<string>> data, DataType dataType, int numColumns,
+        public static IEnumerable<INotrosoftData> ConvertData(IEnumerable<IEnumerable<string>> data, DataType dataType,
+            int numColumns,
             IntervalDefinitions definitions = null)
         {
             return dataType switch
@@ -401,6 +402,31 @@ namespace Notrosoft_Accel.Infrastructure
             }
 
             return output;
+        }
+
+        public static IEnumerable<IEnumerable<T>> Transpose<T>(IEnumerable<IEnumerable<T>> matrix)
+        {
+            var concrete = matrix.Select(r => r.ToList()).ToList();
+
+            var numCols = concrete.Max(l => l.Count);
+            var numRows = concrete.Count;
+
+            var output = new T[numCols][];
+
+            for (var col = 0; col < numCols; col++)
+            {
+                output[col] = new T[numRows];
+            }
+
+            for (var row = 0; row < concrete.Count; row++)
+            {
+                for (var col = 0; col < concrete[row].Count; col++)
+                {
+                    output[col][row] = concrete[row][col];
+                }
+            }
+
+            return output.Select(l => l.Where(d => d != null).ToList()).ToList();
         }
     }
 }
