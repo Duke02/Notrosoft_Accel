@@ -19,7 +19,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="param"></param>
         /// <returns>The median of the data.</returns>
         public Dictionary<string, object> DoOrdinalData(IEnumerable<OrdinalData> values,
-            params object[] param)
+            params double[] param)
         {
             // Flattens the 2D input into a 1d enumerable.
             var flattenedInput = Utilities.Flatten(values).ToArray();
@@ -62,7 +62,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> DoIntervalData(IEnumerable<IntervalData> values,
-            params object[] parameters)
+            params double[] parameters)
         {
 
             var flattenedInput = Utilities.Flatten(values);
@@ -124,7 +124,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> DoFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
-            params object[] parameters)
+            params double[] parameters)
         {
             FrequencyData<double> flattenedInput;
 

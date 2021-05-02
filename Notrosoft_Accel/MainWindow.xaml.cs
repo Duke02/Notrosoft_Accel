@@ -20,17 +20,17 @@ namespace Notrosoft_Accel
         private static int rowNum = 100; // Number of Rows present in the data structure.
         public static List<List<string>> dataList = new(); // The data structure.
 
+        public Dictionary<string, double> Parameters = new();
+
         public static DataTable
             dataTable = new(); // DataTable sits between the dataList of the backend and DataGrid of the GUI.
 
-        public static List<StatisticType> ordinalStats = new();
-        public static List<StatisticType> intervalStats = new();
-        public static List<StatisticType> frequencyStats = new();
+        public static List<StatisticType> statisticTypesToPerform = new();
         private readonly FileInput _fileImporter;
 
         private readonly GraphingWrapper _grapher;
 
-        private static Dictionary<string, IEnumerable<double>> interDataDef = new();
+        private static Dictionary<string, IEnumerable<double>> interDataDef = null;
 
         public MainWindow()
         {
@@ -53,8 +53,10 @@ namespace Notrosoft_Accel
             _fileImporter = new FileInput();
         }
 
+        #region DataGrid manipulation
+
         // Constructs a dataTable object and binds it to the DataGrid's ItemsSource.
-        private void dataGridTable(int oldC, int oldR)
+        private void ConstructDataGridTable(int oldC, int oldR)
         {
             // Set the dataTable to a new object.
             if (oldR == rowNum)
@@ -91,8 +93,9 @@ namespace Notrosoft_Accel
         // Ensures the DataGrid is properly bound to the DataTable on window launch.
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            dataGridTable(0, 0);
+            ConstructDataGridTable(0, 0);
         }
+
 
         // Handles the event of the user adding a column to the DataGrid.
         private void addColumnButton_Click(object sender, RoutedEventArgs e)
@@ -111,7 +114,7 @@ namespace Notrosoft_Accel
                 for (var i = 0; i < rowNum; i++) dataList[i].Add("");
 
                 // Redo the dataTable to DataGrid binding.
-                dataGridTable(colNum - 1, rowNum);
+                ConstructDataGridTable(colNum - 1, rowNum);
             }
         }
 
@@ -133,32 +136,37 @@ namespace Notrosoft_Accel
 
             dataList.Add(emptyCol);
             // Redo the dataTable to DataGrid binding.
-            dataGridTable(colNum, rowNum - 1);
+            ConstructDataGridTable(colNum, rowNum - 1);
         }
 
-        private void GraphButton_OnClick(object sender, RoutedEventArgs e)
+        // WIP to maybe make the row and column additions faster
+        private void Data_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            if (pieChartButton.Visibility == Visibility.Visible)
+            string qq = e.Column.GetCellContent(e.Row.Item).ToString();
+            var theOut = "";
+            if (qq.Length > 33)
             {
-                pieChartButton.Visibility = Visibility.Collapsed;
-                horBarButton.Visibility = Visibility.Collapsed;
-                verBarButton.Visibility = Visibility.Collapsed;
-                xyButton.Visibility = Visibility.Collapsed;
-                normalDistButton.Visibility = Visibility.Collapsed;
+                theOut = qq.Substring(33);
             }
-            else
-            {
-                pieChartButton.Visibility = Visibility.Visible;
-                horBarButton.Visibility = Visibility.Visible;
-                verBarButton.Visibility = Visibility.Visible;
-                xyButton.Visibility = Visibility.Visible;
-                normalDistButton.Visibility = Visibility.Visible;
-            }
+
+            int rN = e.Row.GetIndex();
+            //dataTable.Rows[rN][e.Column.DisplayIndex] = theOut;
+            dataList[rN][e.Column.DisplayIndex] = theOut;
         }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Data.MaxHeight = e.NewSize.Height - 110;
+        }
+
+        #endregion
+
 
         private void Data_OnSelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
         }
+
+        #region Data from file
 
         private void DataExport_Click(object sender, RoutedEventArgs e)
         {
@@ -213,7 +221,7 @@ namespace Notrosoft_Accel
             }
             else
             {
-                var newData = new List<List<string>>();
+                List<List<string>> newData;
 
                 try
                 {
@@ -247,9 +255,13 @@ namespace Notrosoft_Accel
                 dataList = newData;
 
                 // Redo the dataTable to DataGrid binding.
-                dataGridTable(colNum, rowNum);
+                ConstructDataGridTable(colNum, rowNum);
             }
         }
+
+        #endregion
+
+        #region Statistics
 
         private void doStatsButton_Click(object sender, RoutedEventArgs e)
         {
@@ -283,205 +295,193 @@ namespace Notrosoft_Accel
                 }
             }
 
+            // Currently statsInput is oriented as rows x colums, when stats expects it to be columns x rows.
+            if (statsInput.Count > 1)
+            {
+                statsInput = Utilities.Transpose(statsInput).Select(l => l.ToList()).ToList();
+            }
+
+
             outputTextBlock.Text += "Statistics performed at " + DateTime.Now + "\n";
 
-            DataType dataType;
-            switch (StatTypeBox.SelectedIndex)
-            {
-                case 0:
-                    dataType = DataType.Ordinal;
-                    break;
-                case 1:
-                    dataType = DataType.Frequency;
-                    break;
-                case 2:
-                    dataType = dataType = DataType.Interval;
-                    break;
-                default:
-                    throw new InvalidOperationException("Somehow got an index we didn't expect!");
-            }
-            
             try
             {
-                outputTextBlock.Text += interlayer.doStatistics(statsInput, ordinalStats.ToArray(), dataType, new IntervalDefinitions( interDataDef), null) + '\n';
+                var dataType = StatTypeBox.SelectedIndex switch
+                {
+                    0 => DataType.Ordinal,
+                    1 => DataType.Frequency,
+                    2 => DataType.Interval,
+                    _ => throw new InvalidOperationException("Somehow got an index we didn't expect!")
+                };
+
+                var intervalDefinitions = interDataDef != null ? new IntervalDefinitions(interDataDef) : null;
+
+                outputTextBlock.Text += interlayer.doStatistics(statsInput, statisticTypesToPerform.ToArray(), dataType,
+                    intervalDefinitions, Parameters.Values.ToArray()) + '\n';
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Encountered a problem...", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            Data.MaxHeight = e.NewSize.Height - 110;
-        }
 
-        // WIP to maybe make the row and column additions faster
-        private void Data_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            string qq = e.Column.GetCellContent(e.Row.Item).ToString();
-            var theOut = "";
-            if (qq.Length > 33)
-            {
-                theOut = qq.Substring(33);
-            }
-
-            int rN = e.Row.GetIndex();
-            //dataTable.Rows[rN][e.Column.DisplayIndex] = theOut;
-            dataList[rN][e.Column.DisplayIndex] = theOut;
-        }
 
         // ------------------------ CHECKBOX HANDLERS ------------------------
         // -------------------------------------------------------------------
 
         private void MeanButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.Mean);
+            statisticTypesToPerform.Add(StatisticType.Mean);
         }
 
         private void MeanButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.Mean);
+            statisticTypesToPerform.Remove(StatisticType.Mean);
         }
 
         private void MedianButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.Median);
+            statisticTypesToPerform.Add(StatisticType.Median);
         }
 
         private void MedianButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.Median);
+            statisticTypesToPerform.Remove(StatisticType.Median);
         }
 
         private void ModeButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.Mode);
+            statisticTypesToPerform.Add(StatisticType.Mode);
         }
 
         private void ModeButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.Mode);
+            statisticTypesToPerform.Remove(StatisticType.Mode);
         }
 
         private void StandardDeviationButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.StandardDeviation);
+            statisticTypesToPerform.Add(StatisticType.StandardDeviation);
         }
 
         private void StandardDeviationButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.StandardDeviation);
+            statisticTypesToPerform.Remove(StatisticType.StandardDeviation);
         }
 
         private void VarianceButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.Variance);
+            statisticTypesToPerform.Add(StatisticType.Variance);
         }
 
         private void VarianceButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.Variance);
+            statisticTypesToPerform.Remove(StatisticType.Variance);
         }
 
         private void CoefficientOfVarianceButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.CoefficientOfVariance);
+            statisticTypesToPerform.Add(StatisticType.CoefficientOfVariance);
         }
 
         private void CoefficientOfVarianceButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.CoefficientOfVariance);
+            statisticTypesToPerform.Remove(StatisticType.CoefficientOfVariance);
         }
 
         private void PercentileButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.Percentile);
+            statisticTypesToPerform.Add(StatisticType.Percentile);
         }
 
         private void PercentileButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.Percentile);
+            statisticTypesToPerform.Remove(StatisticType.Percentile);
         }
 
         private void ProbabilityDistributionButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.ProbabilityDistribution);
+            statisticTypesToPerform.Add(StatisticType.ProbabilityDistribution);
         }
 
         private void ProbabilityDistributionButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.ProbabilityDistribution);
+            statisticTypesToPerform.Remove(StatisticType.ProbabilityDistribution);
         }
 
         private void BinomialDistributionButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.BinomialDistribution);
+            statisticTypesToPerform.Add(StatisticType.BinomialDistribution);
         }
 
         private void BinomialDistributionButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.BinomialDistribution);
+            statisticTypesToPerform.Remove(StatisticType.BinomialDistribution);
         }
 
         private void LeastSquaresLineButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.LeastSquaresLine);
+            statisticTypesToPerform.Add(StatisticType.LeastSquaresLine);
         }
 
         private void LeastSquaresLineButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.LeastSquaresLine);
+            statisticTypesToPerform.Remove(StatisticType.LeastSquaresLine);
         }
 
         private void ChiSquareButton_Checked(object sender, RoutedEventArgs e)
         {
-            intervalStats.Add(StatisticType.ChiSquare);
+            statisticTypesToPerform.Add(StatisticType.ChiSquare);
         }
 
         private void ChiSquareButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.ChiSquare);
+            statisticTypesToPerform.Remove(StatisticType.ChiSquare);
         }
 
         private void CorrelationCoefficientButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.CorrelationCoefficient);
+            statisticTypesToPerform.Add(StatisticType.CorrelationCoefficient);
         }
 
         private void CorrelationCoefficientButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.CorrelationCoefficient);
+            statisticTypesToPerform.Remove(StatisticType.CorrelationCoefficient);
         }
 
         private void SignTestButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.SignTest);
+            statisticTypesToPerform.Add(StatisticType.SignTest);
         }
 
         private void SignTestButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.SignTest);
+            statisticTypesToPerform.Remove(StatisticType.SignTest);
         }
 
         private void RankSumTestButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.RankSumTest);
+            statisticTypesToPerform.Add(StatisticType.RankSumTest);
         }
 
         private void RankSumTestButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.RankSumTest);
+            statisticTypesToPerform.Remove(StatisticType.RankSumTest);
         }
 
         private void SpearmanRankCorrelationCoefficientButton_Checked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Add(StatisticType.SpearmanRankCorrelationCoefficient);
+            statisticTypesToPerform.Add(StatisticType.SpearmanRankCorrelationCoefficient);
         }
 
         private void SpearmanRankCorrelationCoefficientButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            ordinalStats.Remove(StatisticType.SpearmanRankCorrelationCoefficient);
+            statisticTypesToPerform.Remove(StatisticType.SpearmanRankCorrelationCoefficient);
         }
+
+        #endregion
+
+        #region DataTypes
 
         // ----------------------- DATA TYPES HANDLER ------------------------
         // -------------------------------------------------------------------
@@ -519,13 +519,26 @@ namespace Notrosoft_Accel
                     "Format Error", MessageBoxButton.OK);
             else
             {
-                interDataDef.Clear();
-                for (int i = 0; i < (count / 3); i++)
+                if (interDataDef == null)
                 {
-                    double a = double.Parse(try1[(3 * i) + 1]);
-                    double b = double.Parse(try1[(3 * i) + 2]);
-                    List<double> tAB = new List<double> {a, b};
-                    interDataDef.Add(try1[(3 * i)], tAB);
+                    interDataDef = new Dictionary<string, IEnumerable<double>>();
+                }
+
+                try
+                {
+                    interDataDef.Clear();
+                    for (var i = 0; i < (count / 3); i++)
+                    {
+                        var a = double.Parse(try1[(3 * i) + 1]);
+                        var b = double.Parse(try1[(3 * i) + 2]);
+                        var tAB = new List<double> {a, b};
+                        interDataDef.Add(try1[(3 * i)], tAB);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Encountered error parsing interval definitions! {ex.Message}",
+                        "Encountered a problem...", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 if (doStatsButton.IsEnabled == false) doStatsButton.IsEnabled = true;
@@ -558,9 +571,32 @@ namespace Notrosoft_Accel
             }
         }
 
+        #endregion
+
+        #region Graphing
 
         // ----------------------- GRAPHING HANDLER --------------------------
         // -------------------------------------------------------------------
+        private void GraphButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (pieChartButton.Visibility == Visibility.Visible)
+            {
+                pieChartButton.Visibility = Visibility.Collapsed;
+                horBarButton.Visibility = Visibility.Collapsed;
+                verBarButton.Visibility = Visibility.Collapsed;
+                xyButton.Visibility = Visibility.Collapsed;
+                normalDistButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                pieChartButton.Visibility = Visibility.Visible;
+                horBarButton.Visibility = Visibility.Visible;
+                verBarButton.Visibility = Visibility.Visible;
+                xyButton.Visibility = Visibility.Visible;
+                normalDistButton.Visibility = Visibility.Visible;
+            }
+        }
+
         private void pieChartButton_Click(object sender, RoutedEventArgs e)
         {
             var sel = Data.SelectedCells;
@@ -776,6 +812,82 @@ namespace Notrosoft_Accel
 
         private void normalDistButton_Click(object sender, RoutedEventArgs e)
         {
+            var sel = Data.SelectedCells;
+            var try1 = new List<string>();
+            int lastC = int.MaxValue, thisC;
+            int count = 0;
+            foreach (var cellInfo in sel)
+            {
+                // Ensures cell information is valid. If not then don't try and do anything with it
+                if (cellInfo.IsValid)
+                {
+                    count++;
+                    thisC = cellInfo.Column.DisplayIndex;
+
+                    lastC = thisC;
+
+                    // Get's the current cell's information (specifically for Column info)
+                    var cont = cellInfo.Column.GetCellContent(cellInfo.Item);
+                    // Get's the current row's information
+                    var row = (DataRowView) cont.DataContext;
+                    // Get the current row's data as an item array
+                    var obj = row.Row.ItemArray;
+                    // Add the item of the current row at the current column's index and add it to the outbound list.
+                    try1.Add(obj[thisC].ToString());
+                }
+            }
+
+            var saveChartToDialog = new SaveFileDialog
+            {
+                Filter = "JPeg Image|*.jpg",
+                Title = "Save graph to..."
+            };
+
+            saveChartToDialog.ShowDialog(this);
+            List<double> data = new();
+            for (int i = 0; i < try1.Count; i++) data.Add(double.Parse(try1[i]));
+            if (!string.IsNullOrWhiteSpace(saveChartToDialog.FileName))
+            {
+                _grapher.PlotNormalGraph(data, saveChartToDialog.FileName);
+                ImageViewWindow normalDistImage = new(saveChartToDialog.FileName);
+                normalDistImage.Show();
+            }
+            else
+            {
+                MessageBox.Show("Graph not saved.");
+            }
+        }
+
+        #endregion
+
+        private void SetParameters_OnClick(object sender, RoutedEventArgs e)
+        {
+            var parametersNeeded = statisticTypesToPerform
+                .SelectMany(Utilities.GetParameterNames)
+                .ToList();
+
+            if (parametersNeeded.Count == 0)
+            {
+                MessageBox.Show("There are no statistics selected that require parameters!");
+                return;
+            }
+
+            var parametersDialog = new ParameterDialog(parametersNeeded)
+            {
+                Owner = this
+            };
+
+            var accepted = parametersDialog.ShowDialog() ?? false;
+
+            if (!accepted)
+            {
+                MessageBox.Show("Parameters were not accepted.");
+            }
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            new HelpDialog().ShowDialog();
         }
     }
 }

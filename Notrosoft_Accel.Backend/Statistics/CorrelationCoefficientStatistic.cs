@@ -8,7 +8,7 @@ namespace Notrosoft_Accel.Backend.Statistics
     public class CorrelationCoefficientStatistic : IStatistic
     {
         public Dictionary<string, object> DoOrdinalData(IEnumerable<OrdinalData> values,
-            params object[] parameters)
+            params double[] parameters)
         {
             var concreteValues = values.ToArray();
 
@@ -36,7 +36,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> DoIntervalData(IEnumerable<IntervalData> values,
-            params object[] parameters)
+            params double[] parameters)
         {
             var concreteValues = values.ToArray();
 
@@ -64,7 +64,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> DoFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
-            params object[] parameters)
+            params double[] parameters)
         {
             FrequencyData<double>[] concreteValues;
             try

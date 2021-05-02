@@ -45,7 +45,8 @@ namespace Notrosoft_Accel.Infrastructure
             return new FrequencyData<T>(values.SelectMany(v => v).ToDictionary(kv => kv.Key, kv => kv.Value));
         }
 
-        public static IEnumerable<INotrosoftData> ConvertData(IEnumerable<IEnumerable<string>> data, DataType dataType, int numColumns,
+        public static IEnumerable<INotrosoftData> ConvertData(IEnumerable<IEnumerable<string>> data, DataType dataType,
+            int numColumns,
             IntervalDefinitions definitions = null)
         {
             return dataType switch
@@ -354,6 +355,78 @@ namespace Notrosoft_Accel.Infrastructure
         public static bool ShouldRejectNullHypothesis(double pValue, double confidence = 0.95)
         {
             return pValue < 1 - confidence;
+        }
+
+        public static IEnumerable<string> GetParameterNames(StatisticType sType)
+        {
+            var output = new List<string>();
+
+            switch (sType)
+            {
+                case StatisticType.Mean:
+                    break;
+                case StatisticType.Median:
+                    break;
+                case StatisticType.Mode:
+                    break;
+                case StatisticType.StandardDeviation:
+                    break;
+                case StatisticType.Variance:
+                    break;
+                case StatisticType.CoefficientOfVariance:
+                    break;
+                case StatisticType.Percentile:
+                    output.Add("P");
+                    break;
+                case StatisticType.ProbabilityDistribution:
+                    break;
+                case StatisticType.BinomialDistribution:
+                    output.Add("Hypothesis");
+                    output.Add("p");
+                    output.Add("Confidence");
+                    break;
+                case StatisticType.LeastSquaresLine:
+                    break;
+                case StatisticType.ChiSquare:
+                    break;
+                case StatisticType.CorrelationCoefficient:
+                    break;
+                case StatisticType.SignTest:
+                    break;
+                case StatisticType.RankSumTest:
+                    break;
+                case StatisticType.SpearmanRankCorrelationCoefficient:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(sType), sType, null);
+            }
+
+            return output;
+        }
+
+        public static IEnumerable<IEnumerable<T>> Transpose<T>(IEnumerable<IEnumerable<T>> matrix)
+        {
+            var concrete = matrix.Select(r => r.ToList()).ToList();
+
+            var numCols = concrete.Max(l => l.Count);
+            var numRows = concrete.Count;
+
+            var output = new T[numCols][];
+
+            for (var col = 0; col < numCols; col++)
+            {
+                output[col] = new T[numRows];
+            }
+
+            for (var row = 0; row < concrete.Count; row++)
+            {
+                for (var col = 0; col < concrete[row].Count; col++)
+                {
+                    output[col][row] = concrete[row][col];
+                }
+            }
+
+            return output.Select(l => l.Where(d => d != null).ToList()).ToList();
         }
     }
 }

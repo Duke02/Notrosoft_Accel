@@ -1,0 +1,28 @@
+﻿<Window x:Class="Notrosoft_Accel.HelpDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Notrosoft_Accel"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        Title="HelpDialog" Height="450" Width="800">
+    <Grid Name="Grid" Width="800" Height="450">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBox Name="HelpBox" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" IsReadOnly="True"
+                 Text="{Binding HelpText}" TextWrapping="Wrap"/>
+
+        <Button Grid.Row="1" Grid.Column="2" Name="OkButton" Click="OkButton_OnClick" IsDefault="True">OK</Button>
+    </Grid>
+</Window>

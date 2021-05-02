@@ -20,6 +20,7 @@ namespace Notrosoft_Accel
     public partial class ImageViewWindow : Window
     {
         BitmapImage bmap = new();
+
         public ImageViewWindow(string input)
         {
             bmap.BeginInit();

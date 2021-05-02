@@ -5,16 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notrosoft_Accel"
         mc:Ignorable="d"
-        x:Name="mWind" Title="ImageViewWindow" Height="600" Width="800" SizeChanged="mWind_SizeChanged" Unloaded="mWind_Unloaded">
+        x:Name="mWind" Title="ImageViewWindow" Height="600" Width="800" SizeChanged="mWind_SizeChanged"
+        Unloaded="mWind_Unloaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions >
+        <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
-        <Image x:Name="Graph1" Initialized="Graph1_Initialized" Stretch="UniformToFill" IsManipulationEnabled="True" HorizontalAlignment="Center" StretchDirection="DownOnly" />
-        
+
+        <Image x:Name="Graph1" Initialized="Graph1_Initialized" Stretch="UniformToFill" IsManipulationEnabled="True"
+               HorizontalAlignment="Center" StretchDirection="DownOnly" />
+
     </Grid>
 </Window>
