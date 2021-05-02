@@ -109,6 +109,36 @@ namespace Notrosoft_Accel
 
         public void PlotNormalGraph(List<double> data, string filePath, int width = 600, int height = 400)
         {
+            // Create the parent directory if it doesn't already exist.
+            var parentDirectoryPath = Directory.GetParent(filePath)?.FullName;
+            if (!string.IsNullOrWhiteSpace(parentDirectoryPath) && !Directory.Exists(parentDirectoryPath))
+                Directory.CreateDirectory(parentDirectoryPath);
+
+
+            var stdDev = Math.Sqrt(Utilities.GetSampleVariance(data));
+            var mean = data.Average();
+
+            var random = new Random((int) DateTime.Now.Ticks);
+
+            var normalDistData = DataGen.RandomNormal(random, 1000, mean, stdDev, 3.5);
+
+            var plt = new Plot(width, height);
+
+            var fullPath = Path.GetFullPath(filePath);
+
+            var hist = new ScottPlot.Statistics.Histogram(normalDistData, binCount: 25);
+            var barWidth = hist.binSize * 1.2;
+
+            plt.PlotBar(hist.bins, hist.countsFrac, barWidth: barWidth, outlineWidth: 0);
+
+            var title = Path.GetFileNameWithoutExtension(filePath);
+            plt.Title(title);
+            plt.YLabel("Frequency (fraction)");
+            plt.XLabel("Data");
+            plt.Axis(null, null, 0, null);
+            plt.Grid(lineStyle: LineStyle.Dot);
+            
+            plt.SaveFig(fullPath);
         }
     }
 }
