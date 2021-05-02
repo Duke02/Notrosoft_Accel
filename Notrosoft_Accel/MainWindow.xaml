@@ -108,13 +108,14 @@
                           MaxHeight="550" CellEditEnding="Data_CellEditEnding" />
 
 
-                <WrapPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch">
+                <WrapPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Stretch">
                     <Button x:Name="ImportFile" Content="Import File..." Click="ImportFile_OnClick"
                             Width="160" VerticalAlignment="Top" />
 
                     <Button Content="Export Data..." Width="160" VerticalAlignment="Top"
                             Click="DataExport_Click" />
                     
+                    <Button Content="Help..." Width="160" VerticalAlignment="Top" Click="ButtonBase_OnClick"></Button>
                 </WrapPanel>
 
                 <Button x:Name="addColumnButton" Grid.Column="4" Grid.Row="0"

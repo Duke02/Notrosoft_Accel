@@ -827,5 +827,10 @@ namespace Notrosoft_Accel
                 MessageBox.Show("Parameters were not accepted.");
             }
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            new HelpDialog().ShowDialog();
+        }
     }
 }
