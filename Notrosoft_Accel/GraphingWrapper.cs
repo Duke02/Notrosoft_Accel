@@ -38,7 +38,8 @@ namespace Notrosoft_Accel
             Console.WriteLine($"Saved pie chart to '{fullPath}'!");
         }
 
-        public void PlotBarChart(FrequencyData<string> data, string filePath, int width = 600, int height = 400, char direction = 'v')
+        public void PlotBarChart(FrequencyData<string> data, string filePath, int width = 600, int height = 400,
+            char direction = 'v')
         {
             // Create the parent directory if it doesn't already exist.
             var parentDirectoryPath = Directory.GetParent(filePath)?.FullName;
@@ -47,7 +48,7 @@ namespace Notrosoft_Accel
 
             var plt = new Plot(width, height);
 
-            var values = data.Values.Select(i => (double)i).ToArray();
+            var values = data.Values.Select(i => (double) i).ToArray();
 
             var labels = data.Keys.Select(k => k.ToString()).ToArray();
             var barCount = DataGen.Consecutive(values.Length);
@@ -91,7 +92,7 @@ namespace Notrosoft_Accel
                 ys.Add(data[i + 1]);
             }
 
-            
+
             var fullPath = Path.GetFullPath(filePath);
 
             plt.PlotScatter(xs.ToArray(), ys.ToArray());
@@ -108,7 +109,6 @@ namespace Notrosoft_Accel
 
         public void PlotNormalGraph(List<double> data, string filePath, int width = 600, int height = 400)
         {
-
         }
     }
 }

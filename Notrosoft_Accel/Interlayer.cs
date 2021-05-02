@@ -47,7 +47,7 @@ namespace Notrosoft_Accel
             // }
 
             var output = new List<string>(stats.Length);
-            
+
             foreach (var statType in stats)
             {
                 var stat = GetStatistic(statType);
@@ -58,10 +58,10 @@ namespace Notrosoft_Accel
 
             return string.Join("\n", output);
 
-                // TODO: This might be decent?
-                // return string.Join("\n",
-                //     stats.Select(sType => GetStatistic(sType).Operate(convertedData, dataType, param))
-                //         .Select(d => string.Join("\n", d.Select(kv => $"{kv.Key}: {kv.Value}"))));
+            // TODO: This might be decent?
+            // return string.Join("\n",
+            //     stats.Select(sType => GetStatistic(sType).Operate(convertedData, dataType, param))
+            //         .Select(d => string.Join("\n", d.Select(kv => $"{kv.Key}: {kv.Value}"))));
 
             // foreach (var statType in stats)
             // {

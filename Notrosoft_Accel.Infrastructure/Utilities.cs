@@ -355,5 +355,52 @@ namespace Notrosoft_Accel.Infrastructure
         {
             return pValue < 1 - confidence;
         }
+
+        public static IEnumerable<string> GetParameterNames(StatisticType sType)
+        {
+            var output = new List<string>();
+
+            switch (sType)
+            {
+                case StatisticType.Mean:
+                    break;
+                case StatisticType.Median:
+                    break;
+                case StatisticType.Mode:
+                    break;
+                case StatisticType.StandardDeviation:
+                    break;
+                case StatisticType.Variance:
+                    break;
+                case StatisticType.CoefficientOfVariance:
+                    break;
+                case StatisticType.Percentile:
+                    output.Add("P");
+                    break;
+                case StatisticType.ProbabilityDistribution:
+                    break;
+                case StatisticType.BinomialDistribution:
+                    output.Add("Hypothesis");
+                    output.Add("p");
+                    output.Add("Confidence");
+                    break;
+                case StatisticType.LeastSquaresLine:
+                    break;
+                case StatisticType.ChiSquare:
+                    break;
+                case StatisticType.CorrelationCoefficient:
+                    break;
+                case StatisticType.SignTest:
+                    break;
+                case StatisticType.RankSumTest:
+                    break;
+                case StatisticType.SpearmanRankCorrelationCoefficient:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(sType), sType, null);
+            }
+
+            return output;
+        }
     }
 }

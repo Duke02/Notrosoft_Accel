@@ -32,9 +32,10 @@
                             CanVerticallyScroll="True"
                             ScrollViewer.CanContentScroll="True">
                     <ComboBox x:Name="StatTypeBox">
-                        <ComboBoxItem Tag="Ordinal" Content="Ordinal" IsSelected="True" Selected="ComboBoxItem_Selected_2"/>
-                        <ComboBoxItem Tag="Frequncy" Content="Frequency" Selected="ComboBoxItem_Selected_1"/>
-                        <ComboBoxItem Tag="Interval" Content="Interval" Selected="ComboBoxItem_Selected"/>
+                        <ComboBoxItem Tag="Ordinal" Content="Ordinal" IsSelected="True"
+                                      Selected="ComboBoxItem_Selected_2" />
+                        <ComboBoxItem Tag="Frequncy" Content="Frequency" Selected="ComboBoxItem_Selected_1" />
+                        <ComboBoxItem Tag="Interval" Content="Interval" Selected="ComboBoxItem_Selected" />
                     </ComboBox>
                     <CheckBox x:Name="MeanButton" Content="Mean" VerticalAlignment="Top" Checked="MeanButton_Checked"
                               Unchecked="MeanButton_Unchecked" />
@@ -71,19 +72,27 @@
                     <CheckBox x:Name="SpearmanRankCorrelationCoefficient" Content="SpearmanRank"
                               VerticalAlignment="Top" Checked="SpearmanRankCorrelationCoefficientButton_Checked"
                               Unchecked="SpearmanRankCorrelationCoefficientButton_Unchecked" />
-                    <Button x:Name="setInterval" Content="Set Intervals" Click="setInterval_Click" IsEnabled="False" Visibility="Collapsed"/>
-                    <Button x:Name="doStatsButton" Content="Perform Statistics" Click="doStatsButton_Click" Margin="0,0,0,8" />
-                    <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" VerticalAlignment="Top" Visibility="Visible"/>
-                    <Button x:Name="pieChartButton" Content="Pie Chart" Click="pieChartButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
-                    <Button x:Name="horBarButton" Content="Horizontal Bar" Click="horBarButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
-                    <Button x:Name="verBarButton" Content="Vertical Bar" Click="verBarButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
-                    <Button x:Name="xyButton" Content="X,Y Graph" Click="xyButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
-                    <Button x:Name="normalDistButton" Content="Normal Chart" Click="normalDistButton_Click" VerticalAlignment="Top" Visibility="Collapsed"/>
+                    <Button x:Name="setInterval" Content="Set Intervals" Click="setInterval_Click" IsEnabled="False"
+                            Visibility="Collapsed" />
+                    <Button x:Name="setParameters" Content="Set Parameters" Click="SetParameters_OnClick" IsEnabled="True"></Button>
+
+                    <Button x:Name="doStatsButton" Content="Perform Statistics" Click="doStatsButton_Click"
+                            Margin="0,0,0,8" />
+                    <Button x:Name="GraphButton" Content="Graph..." Click="GraphButton_OnClick" VerticalAlignment="Top"
+                            Visibility="Visible" />
+                    <Button x:Name="pieChartButton" Content="Pie Chart" Click="pieChartButton_Click"
+                            VerticalAlignment="Top" Visibility="Collapsed" />
+                    <Button x:Name="horBarButton" Content="Horizontal Bar" Click="horBarButton_Click"
+                            VerticalAlignment="Top" Visibility="Collapsed" />
+                    <Button x:Name="verBarButton" Content="Vertical Bar" Click="verBarButton_Click"
+                            VerticalAlignment="Top" Visibility="Collapsed" />
+                    <Button x:Name="xyButton" Content="X,Y Graph" Click="xyButton_Click" VerticalAlignment="Top"
+                            Visibility="Collapsed" />
+                    <Button x:Name="normalDistButton" Content="Normal Chart" Click="normalDistButton_Click"
+                            VerticalAlignment="Top" Visibility="Collapsed" />
                 </StackPanel>
 
-                
-                
-                
+
                 <DataGrid x:Name="Data" AlternatingRowBackground="LightGray" CanUserReorderColumns="False"
                           CanUserResizeColumns="False" CanUserSortColumns="False" MinColumnWidth="50"
                           GridLinesVisibility="All" HeadersVisibility="All"
@@ -96,7 +105,7 @@
                           Padding="0,0,0,10" HorizontalScrollBarVisibility="Visible"
                           VerticalScrollBarVisibility="Visible" RowDetailsVisibilityMode="Visible"
                           SelectedCellsChanged="Data_OnSelectedCellsChanged" HorizontalContentAlignment="Right"
-                          MaxHeight="550" CellEditEnding="Data_CellEditEnding"/>
+                          MaxHeight="550" CellEditEnding="Data_CellEditEnding" />
 
 
                 <WrapPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch">
@@ -105,8 +114,9 @@
 
                     <Button Content="Export Data..." Width="160" VerticalAlignment="Top"
                             Click="DataExport_Click" />
+                    
                 </WrapPanel>
-                
+
                 <Button x:Name="addColumnButton" Grid.Column="4" Grid.Row="0"
                         Content="Add Column" Click="addColumnButton_Click" MaxWidth="200" />
 
