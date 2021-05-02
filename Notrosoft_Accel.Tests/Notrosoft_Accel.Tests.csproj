@@ -8,6 +8,8 @@
     <LangVersion>9</LangVersion>
 
     <Nullable>enable</Nullable>
+
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

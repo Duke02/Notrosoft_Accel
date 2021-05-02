@@ -2,10 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Notrosoft_Accel.Infrastructure\Notrosoft_Accel.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Notrosoft_Accel.Infrastructure\Notrosoft_Accel.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
