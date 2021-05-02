@@ -91,6 +91,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -199,11 +207,11 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:NotrosoftAccel"
         "ProductCode" = "8:{41B2DE0D-7F38-431F-873D-4FC5DAB519F2}"
-        "PackageCode" = "8:{63098E3C-B0D8-4F3C-BD44-1D4CCD99A03C}"
-        "UpgradeCode" = "8:{AD9AF53C-7BB4-4E5C-8D2D-D16D9AF8C8CD}"
+        "PackageCode" = "8:{21C0F192-9782-4266-9C61-598DBD3FC35C}"
+        "UpgradeCode" = "8:{F818F8E4-3D38-4612-A12D-70CA5D6B2075}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
