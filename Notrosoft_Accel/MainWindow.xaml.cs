@@ -519,13 +519,25 @@ namespace Notrosoft_Accel
                     "Format Error", MessageBoxButton.OK);
             else
             {
-                interDataDef.Clear();
-                for (int i = 0; i < (count / 3); i++)
+                if (interDataDef == null)
                 {
-                    double a = double.Parse(try1[(3 * i) + 1]);
-                    double b = double.Parse(try1[(3 * i) + 2]);
-                    List<double> tAB = new List<double> {a, b};
-                    interDataDef.Add(try1[(3 * i)], tAB);
+                    interDataDef = new Dictionary<string, IEnumerable<double>>();
+                }
+
+                try
+                {
+                    interDataDef.Clear();
+                    for (var i = 0; i < (count / 3); i++)
+                    {
+                        var a = double.Parse(try1[(3 * i) + 1]);
+                        var b = double.Parse(try1[(3 * i) + 2]);
+                        var tAB = new List<double> {a, b};
+                        interDataDef.Add(try1[(3 * i)], tAB);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Encountered error parsing interval definitions! {ex.Message}", "Encountered a problem...", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 if (doStatsButton.IsEnabled == false) doStatsButton.IsEnabled = true;
