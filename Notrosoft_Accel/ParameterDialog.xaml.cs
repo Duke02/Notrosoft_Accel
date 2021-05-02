@@ -15,15 +15,28 @@ namespace Notrosoft_Accel
         {
             InitializeComponent();
 
-            foreach (var paramName in parametersNeeded)
+            for (var i = 0; i < parametersNeeded.Count; i++)
             {
-                ParameterPanel.Children.Add(new ParameterRow(paramName));
+                Grid.RowDefinitions.Insert(i, new RowDefinition() {Height = GridLength.Auto});
+                var row = new ParameterRow(parametersNeeded[i])
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch
+                };
+                Grid.SetRow(row, i);
+                Grid.SetColumn(row, 0);
+                Grid.SetColumnSpan(row, 3);
+                Grid.Children.Add(row);
             }
+
+            Grid.RowDefinitions.Add(new RowDefinition() {Height = GridLength.Auto});
             
+            Grid.SetRow(OkButton, parametersNeeded.Count);
+            Grid.SetRow(CancelButton, parametersNeeded.Count);
+
             // ParameterPanel.UpdateLayout();
             Grid.UpdateLayout();
-            // this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             
+            // this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
         }
 
         private void ParameterDialog_OnClosing(object sender, CancelEventArgs e)
@@ -40,7 +53,7 @@ namespace Notrosoft_Accel
 
             var output = new Dictionary<string, double>();
 
-            foreach (UIElement paramRow in ParameterPanel.Children)
+            foreach (UIElement paramRow in Grid.Children)
             {
                 if (paramRow is not ParameterRow row)
                 {
@@ -56,9 +69,8 @@ namespace Notrosoft_Accel
                     DialogResult = false;
                     return;
                 }
-                
-                output.Add(name, value);
 
+                output.Add(name, value);
             }
 
             mainWindow.Parameters = output;

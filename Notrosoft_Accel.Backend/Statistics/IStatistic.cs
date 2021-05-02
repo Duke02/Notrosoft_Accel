@@ -11,7 +11,7 @@ namespace Notrosoft_Accel.Backend.Statistics
     public interface IStatistic
     {
         public Dictionary<string, object> Operate(IEnumerable<INotrosoftData> data, DataType dataType,
-            params object[] parameters)
+            params double[] parameters)
         {
             return dataType switch
             {
@@ -29,12 +29,12 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="parameters"></param>
         /// <returns>The statistic for the child class.</returns>
         public Dictionary<string, object> DoOrdinalData(IEnumerable<OrdinalData> values,
-            params object[] parameters);
+            params double[] parameters);
 
         public Dictionary<string, object> DoFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
-            params object[] parameters);
+            params double[] parameters);
 
         public Dictionary<string, object> DoIntervalData(IEnumerable<IntervalData> values,
-            params object[] parameters);
+            params double[] parameters);
     }
 }

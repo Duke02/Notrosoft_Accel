@@ -17,7 +17,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         /// <param name="param"></param>
         /// <returns>The most common number of the inputted data.</returns>
         public Dictionary<string, object> DoOrdinalData(IEnumerable<OrdinalData> values,
-            params object[] param)
+            params double[] param)
         {
             // Flatten the 2d list of lists into a 1d list.
             var flattenedArray = Utilities.Flatten(values).ToArray();
@@ -44,7 +44,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> DoIntervalData(IEnumerable<IntervalData> values,
-            params object[] parameters)
+            params double[] parameters)
         {
 
             var flattenedArray = Utilities.Flatten(values);
@@ -61,7 +61,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> DoFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
-            params object[] parameters)
+            params double[] parameters)
         {
             var flattenedData = Utilities.Flatten(values);
 

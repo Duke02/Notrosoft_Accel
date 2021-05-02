@@ -10,7 +10,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         private const double Tolerance = 0.001;
 
         public Dictionary<string, object> DoOrdinalData(IEnumerable<OrdinalData> values,
-            params object[] parameters)
+            params double[] parameters)
         {
             var concreteValues = values.ToArray();
             if (concreteValues.Length != 2) throw new InvalidOperationException("Input must be a 2D container.");
@@ -41,7 +41,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> DoIntervalData(IEnumerable<IntervalData> values,
-            params object[] parameters)
+            params double[] parameters)
         {
 
             var flattenedValues = Utilities.Flatten(values);
@@ -76,7 +76,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> DoFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
-            params object[] parameters)
+            params double[] parameters)
         {
             FrequencyData<double> flattenedValues;
             

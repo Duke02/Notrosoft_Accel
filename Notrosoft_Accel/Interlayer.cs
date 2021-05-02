@@ -12,7 +12,7 @@ namespace Notrosoft_Accel
         private List<List<string>> _strings = new();
 
         public string doStatistics(List<List<string>> input, StatisticType[] stats, DataType dataType,
-            IntervalDefinitions intervals, params object[] param)
+            IntervalDefinitions intervals, params double[] param)
         {
             // _doubles.Clear();
             // _strings.Clear();

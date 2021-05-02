@@ -8,7 +8,7 @@ namespace Notrosoft_Accel.Backend.Statistics
     public class BinomialDistributionStatistic : IStatistic
     {
         public Dictionary<string, object> DoOrdinalData(IEnumerable<OrdinalData> values,
-            params object[] parameters)
+            params double[] parameters)
         {
             // https://en.wikipedia.org/wiki/Binomial_test
             var flattenedValues = Utilities.Flatten(values).ToArray();
@@ -35,7 +35,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> DoIntervalData(IEnumerable<IntervalData> values,
-            params object[] parameters)
+            params double[] parameters)
         {
             var flattenedValues = Utilities.Flatten(values);
 
@@ -61,7 +61,7 @@ namespace Notrosoft_Accel.Backend.Statistics
         }
 
         public Dictionary<string, object> DoFrequencyData<T>(IEnumerable<FrequencyData<T>> values,
-            params object[] parameters)
+            params double[] parameters)
         {
             FrequencyData<double> flattenedValues;
 

@@ -821,7 +821,10 @@ namespace Notrosoft_Accel
 
             var accepted = parametersDialog.ShowDialog() ?? false;
 
-            MessageBox.Show(!accepted ? "Parameters were not accepted." : "Parameters were accepted!");
+            if (!accepted)
+            {
+                MessageBox.Show("Parameters were not accepted.");
+            }
         }
     }
 }
